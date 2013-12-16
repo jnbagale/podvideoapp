@@ -6,6 +6,6 @@ To add this project to Momentics IDe
 File
 	.Import
 		. Existing Projects into Workspace
-		  . Select root directory
+		  . Select root directory [select the newly cloned directory]
 		    .Finish
 
