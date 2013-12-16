@@ -91,21 +91,23 @@
     <!-- Locale support -->
     <asset path="translations" dest="qm">
         <include name="*.qm"/>
-    </asset>
-   
-    <!-- XML files -->
-    <asset path="src/video.xml">video.xml</asset>
-    <asset path="src/video.xsd">video.xsd</asset>
-    
+    </asset> 
     
     <asset path="${QNX_TARGET}/${CPUVARDIR}/usr/lib/libpackedobjectsd.so" type="Qnx/Elf">lib/libpackedobjectsd.so.0</asset>
     <asset path="${QNX_TARGET}/${CPUVARDIR}/usr/lib/libpackedobjects.so" type="Qnx/Elf">lib/libpackedobjects.so.0</asset>
     <asset path="${QNX_TARGET}/${CPUVARDIR}/usr/lib/libxml2.so" type="Qnx/Elf">lib/libxml2.so.11</asset>
     <asset path="${QNX_TARGET}/${CPUVARDIR}/usr/lib/libzmq.so" type="Qnx/Elf">lib/libzmq.so.3</asset>
    
-    <asset path="${QNX_TARGET}/${CPUVARDIR}/usr/share/libpackedobjects/packedobjectsDataTypes.xsd">packedobjectsDataTypes.xsd</asset>
-    <asset path="${QNX_TARGET}/${CPUVARDIR}/usr/share/libpackedobjects/packedobjectsSchemaTypes.xsd">packedobjectsSchemaTypes.xsd</asset>
-    <asset path="${QNX_TARGET}/${CPUVARDIR}/usr/share/libpackedobjectsd/packedobjectsd.xsd">packedobjectsd.xsd</asset>
+    <!-- Easier for distribution but need to be synced with original files 
+    from the respective repos regulary -->
+       
+    <!-- XML & SCHEMA files -->
+    <asset path="schemas/video.xml">video.xml</asset>
+    <asset path="schemas/video.xsd">video.xsd</asset>
+    
+    <asset path="schemas/packedobjectsDataTypes.xsd">packedobjectsDataTypes.xsd</asset>
+    <asset path="schemas/packedobjectsSchemaTypes.xsd">packedobjectsSchemaTypes.xsd</asset>
+    <asset path="schemas/packedobjectsd.xsd">packedobjectsd.xsd</asset>
     
    
     <!-- Request permission to execute native code.  Required for native applications. -->
