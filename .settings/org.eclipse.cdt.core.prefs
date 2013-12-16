@@ -15,16 +15,7 @@ environment/project/com.qnx.qcc.toolChain.1322553357/EXCLUDE_VARIANTLIST/operati
 environment/project/com.qnx.qcc.toolChain.1322553357/EXCLUDE_VARIANTLIST/value=r
 environment/project/com.qnx.qcc.toolChain.1322553357/append=true
 environment/project/com.qnx.qcc.toolChain.1322553357/appendContributed=true
-environment/project/com.qnx.qcc.toolChain.1709398341/CC/delimiter=\:
-environment/project/com.qnx.qcc.toolChain.1709398341/CC/operation=replace
-environment/project/com.qnx.qcc.toolChain.1709398341/CC/value=qcc -V4.6.3,gcc_ntoarmv7le_gpp
 environment/project/com.qnx.qcc.toolChain.1709398341/append=true
 environment/project/com.qnx.qcc.toolChain.1709398341/appendContributed=true
-environment/project/com.qnx.qcc.toolChain.757955110/CC/delimiter=\:
-environment/project/com.qnx.qcc.toolChain.757955110/CC/operation=replace
-environment/project/com.qnx.qcc.toolChain.757955110/CC/value=qcc -V4.6.3,gcc_ntox86_gpp
-environment/project/com.qnx.qcc.toolChain.757955110/CPUVARDIR/delimiter=\:
-environment/project/com.qnx.qcc.toolChain.757955110/CPUVARDIR/operation=append
-environment/project/com.qnx.qcc.toolChain.757955110/CPUVARDIR/value=x86
 environment/project/com.qnx.qcc.toolChain.757955110/append=true
 environment/project/com.qnx.qcc.toolChain.757955110/appendContributed=true

@@ -1,4 +1,4 @@
-APP_NAME = MyCascadesProject
+APP_NAME = VideoExamplePOD
 
 CONFIG += qt warn_on cascades10
 

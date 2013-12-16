@@ -56,20 +56,20 @@
     <authorId>gYAAgGnOVSAH7OsXHAg63cT3hZ4</authorId>
     <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm/o.le-v7-g/VideoExamplePOD" entry="true" type="Qnx/Elf">MyCascadesProject</asset>
+       <asset path="arm/o.le-v7-g/VideoExamplePOD" entry="true" type="Qnx/Elf">VideoExamplePOD</asset>
     </configuration>
     <configuration name="Device-Release">
        <entryPointType>Qnx/Cascades</entryPointType>
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm/o.le-v7/VideoExamplePOD.so" entry="true" type="Qnx/Elf">MyCascadesProject.so</asset>
+       <asset path="arm/o.le-v7/VideoExamplePOD.so" entry="true" type="Qnx/Elf">VideoExamplePOD.so</asset>
     </configuration>
     <configuration name="Device-Profile">
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm-p/o.le-v7-g/VideoExamplePOD" entry="true" type="Qnx/Elf">MyCascadesProject</asset>
+       <asset path="arm-p/o.le-v7-g/VideoExamplePOD" entry="true" type="Qnx/Elf">VideoExamplePOD</asset>
     </configuration>
     <configuration name="Simulator-Debug">
        <platformArchitecture>x86</platformArchitecture>
-       <asset path="x86/o-g/VideoExamplePOD" entry="true" type="Qnx/Elf">MyCascadesProject</asset>
+       <asset path="x86/o-g/VideoExamplePOD" entry="true" type="Qnx/Elf">VideoExamplePOD</asset>
     </configuration>
     
     <!--  Unique author ID assigned by signing authority. Required if using debug tokens. -->
@@ -93,14 +93,16 @@
         <include name="*.qm"/>
     </asset> 
     
-    <asset path="${QNX_TARGET}/${CPUVARDIR}/usr/lib/libpackedobjectsd.so" type="Qnx/Elf">lib/libpackedobjectsd.so.0</asset>
-    <asset path="${QNX_TARGET}/${CPUVARDIR}/usr/lib/libpackedobjects.so" type="Qnx/Elf">lib/libpackedobjects.so.0</asset>
-    <asset path="${QNX_TARGET}/${CPUVARDIR}/usr/lib/libxml2.so" type="Qnx/Elf">lib/libxml2.so.11</asset>
-    <asset path="${QNX_TARGET}/${CPUVARDIR}/usr/lib/libzmq.so" type="Qnx/Elf">lib/libzmq.so.3</asset>
-   
     <!-- Easier for distribution but need to be synced with original files 
     from the respective repos regulary -->
-       
+    
+    <!-- Shared library objects -->
+    
+    <asset path="library-dependencies/${CPUVARDIR}/libpackedobjectsd.so" type="Qnx/Elf">lib/libpackedobjectsd.so.0</asset>
+    <asset path="library-dependencies/${CPUVARDIR}/libpackedobjects.so" type="Qnx/Elf">lib/libpackedobjects.so.0</asset>
+    <asset path="library-dependencies/${CPUVARDIR}/libxml2.so" type="Qnx/Elf">lib/libxml2.so.11</asset>
+   	<asset path="library-dependencies/${CPUVARDIR}/libzmq.so" type="Qnx/Elf">lib/libzmq.so.3</asset>
+        
     <!-- XML & SCHEMA files -->
     <asset path="schemas/video.xml">video.xml</asset>
     <asset path="schemas/video.xsd">video.xsd</asset>
