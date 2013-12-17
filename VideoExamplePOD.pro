@@ -6,14 +6,14 @@ simulator {
  INCLUDEPATH += \
 		${QNX_TARGET}/x86/usr/include/libxml2 \
 		${QNX_TARGET}/x86/usr/include
-LIBS+=-lpackedobjectsd -lxml2
+LIBS+=-L${PWD}/library-dependencies/x86 -lpackedobjectsd -lxml2
 }
 
 device {
 INCLUDEPATH += \
 	${QNX_TARGET}/armle-v7/usr/include/libxml2 \
 	${QNX_TARGET}/armle-v7/usr/include
-	LIBS+=-lpackedobjectsd -lxml2
+	LIBS+=-L${PWD}/library-dependencies/armle-v7 -lpackedobjectsd -lxml2
 }
 
 include(config.pri)
