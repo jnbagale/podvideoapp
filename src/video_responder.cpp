@@ -30,6 +30,10 @@ extern "C" {
 #include "video_responder.h"
 }
 
+// XML namespace and url for xpath
+#define NS_PREFIX "xs"
+#define NS_URL "http://www.w3.org/2001/XMLSchema"
+
 #define XML_DATA "app/native/video.xml"
 #define XML_SCHEMA "app/native/video.xsd"
 
@@ -113,7 +117,7 @@ int create_response(packedobjectsdObject *pod_obj, char *movie_title, double max
     return -1;
   }
 
-  if(xmlXPathRegisterNs(xpathp, (const xmlChar *)NSPREFIX, (const xmlChar *)NSURL) != 0) {
+  if(xmlXPathRegisterNs(xpathp, (const xmlChar *)NS_PREFIX, (const xmlChar *)NS_URL) != 0) {
     printf("Error: unable to register NS.");
     xmlXPathFreeContext(xpathp);
     return -1;
@@ -204,7 +208,7 @@ int process_search(packedobjectsdObject *pod_obj, xmlDocPtr doc_search)
     return -1;
   }
 
-  if(xmlXPathRegisterNs(xpathp, (const xmlChar *)NSPREFIX, (const xmlChar *)NSURL) != 0) {
+  if(xmlXPathRegisterNs(xpathp, (const xmlChar *)NS_PREFIX, (const xmlChar *)NS_URL) != 0) {
     printf("Error: unable to register NS.");
     xmlXPathFreeContext(xpathp);
     return -1;

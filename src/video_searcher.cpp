@@ -30,6 +30,10 @@ extern "C" {
 
 #include "video_searcher.h"
 
+// XML namespace and url for xpath
+#define NS_PREFIX "xs"
+#define NS_URL "http://www.w3.org/2001/XMLSchema"
+
 using namespace bb::cascades;
 
 /* global variables */
@@ -65,7 +69,7 @@ int read_response(ApplicationUI *app_object, xmlDocPtr doc_response)
     return -1;
   }
 
-  if(xmlXPathRegisterNs(xpathp, (const xmlChar *)NSPREFIX, (const xmlChar *)NSURL) != 0) {
+  if(xmlXPathRegisterNs(xpathp, (const xmlChar *)NS_PREFIX, (const xmlChar *)NS_URL) != 0) {
     printf("Error: unable to register NS.");
     xmlXPathFreeContext(xpathp);
     return -1;
