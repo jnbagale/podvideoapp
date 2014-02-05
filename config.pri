@@ -9,6 +9,13 @@ device {
                  $$quote($$BASEDIR/src/video_searcher.cpp)
 
         HEADERS +=  $$quote($$BASEDIR/src/applicationui.hpp) \
+                 $$quote($$BASEDIR/src/packedobjectsd/broker.h) \
+                 $$quote($$BASEDIR/src/packedobjectsd/config.h) \
+                 $$quote($$BASEDIR/src/packedobjectsd/message.h) \
+                 $$quote($$BASEDIR/src/packedobjectsd/packedobjectsd.h) \
+                 $$quote($$BASEDIR/src/packedobjectsd/request.h) \
+                 $$quote($$BASEDIR/src/packedobjectsd/response.h) \
+                 $$quote($$BASEDIR/src/packedobjectsd/xmlutils.h) \
                  $$quote($$BASEDIR/src/video_responder.h) \
                  $$quote($$BASEDIR/src/video_searcher.h)
     }
@@ -24,6 +31,13 @@ device {
                  $$quote($$BASEDIR/src/video_searcher.cpp)
 
         HEADERS +=  $$quote($$BASEDIR/src/applicationui.hpp) \
+                 $$quote($$BASEDIR/src/packedobjectsd/broker.h) \
+                 $$quote($$BASEDIR/src/packedobjectsd/config.h) \
+                 $$quote($$BASEDIR/src/packedobjectsd/message.h) \
+                 $$quote($$BASEDIR/src/packedobjectsd/packedobjectsd.h) \
+                 $$quote($$BASEDIR/src/packedobjectsd/request.h) \
+                 $$quote($$BASEDIR/src/packedobjectsd/response.h) \
+                 $$quote($$BASEDIR/src/packedobjectsd/xmlutils.h) \
                  $$quote($$BASEDIR/src/video_responder.h) \
                  $$quote($$BASEDIR/src/video_searcher.h)
     }
@@ -37,12 +51,20 @@ simulator {
                  $$quote($$BASEDIR/src/video_searcher.cpp)
 
         HEADERS +=  $$quote($$BASEDIR/src/applicationui.hpp) \
+                 $$quote($$BASEDIR/src/packedobjectsd/broker.h) \
+                 $$quote($$BASEDIR/src/packedobjectsd/config.h) \
+                 $$quote($$BASEDIR/src/packedobjectsd/message.h) \
+                 $$quote($$BASEDIR/src/packedobjectsd/packedobjectsd.h) \
+                 $$quote($$BASEDIR/src/packedobjectsd/request.h) \
+                 $$quote($$BASEDIR/src/packedobjectsd/response.h) \
+                 $$quote($$BASEDIR/src/packedobjectsd/xmlutils.h) \
                  $$quote($$BASEDIR/src/video_responder.h) \
                  $$quote($$BASEDIR/src/video_searcher.h)
     }
 }
 
-INCLUDEPATH +=  $$quote($$BASEDIR/src)
+INCLUDEPATH +=  $$quote($$BASEDIR/src/packedobjectsd) \
+         $$quote($$BASEDIR/src)
 
 CONFIG += precompile_header
 
@@ -54,6 +76,11 @@ lupdate_inclusion {
              $$quote($$BASEDIR/../src/*.cc) \
              $$quote($$BASEDIR/../src/*.cpp) \
              $$quote($$BASEDIR/../src/*.cxx) \
+             $$quote($$BASEDIR/../src/packedobjectsd/*.c) \
+             $$quote($$BASEDIR/../src/packedobjectsd/*.c++) \
+             $$quote($$BASEDIR/../src/packedobjectsd/*.cc) \
+             $$quote($$BASEDIR/../src/packedobjectsd/*.cpp) \
+             $$quote($$BASEDIR/../src/packedobjectsd/*.cxx) \
              $$quote($$BASEDIR/../assets/*.qml) \
              $$quote($$BASEDIR/../assets/*.js) \
              $$quote($$BASEDIR/../assets/*.qs)
