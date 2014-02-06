@@ -49,12 +49,13 @@ Page {
             maximumLength: 30
             verticalAlignment: VerticalAlignment.Bottom
             preferredWidth: 500
-            property string searchTitle;
-            
-            onTextChanging: searchTitle = text
             input {
                 flags: TextInputFlag.AutoCapitalizationOff
             }
+            
+            property string searchTitle;
+            
+            onTextChanging: searchTitle = text
         }    
         
         // to display price selected by the Slider
@@ -98,7 +99,7 @@ Page {
             text: "search"
             onClicked: {
                 appObject.status = qsTr("Sending search reuqest...");
-                appObject.sendSearch(videoTitleText.searchTitle, price.maxPrice); 
+                appObject.sendSearch(videoTitleText.searchTitle.toLowerCase(), price.maxPrice); 
             }
         }
         
