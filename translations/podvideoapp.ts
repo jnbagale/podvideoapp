@@ -4,7 +4,7 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../assets/main.qml" line="99"/>
+        <location filename="../assets/main.qml" line="100"/>
         <source>Sending search reuqest...</source>
         <translation type="unfinished"></translation>
     </message>

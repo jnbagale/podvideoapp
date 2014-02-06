@@ -14,7 +14,8 @@ import bb.cascades 1.2
 
 Page {
     property alias tempText:statusText.text;
-
+    property int count: 0;
+    
     Container {
         layout: AbsoluteLayout {
             
@@ -97,7 +98,7 @@ Page {
             text: "search"
             onClicked: {
                 appObject.status = qsTr("Sending search reuqest...");
-                appObject.sendSearch(videoTitleText.searchTitle, price.maxPrice);                
+                appObject.sendSearch(videoTitleText.searchTitle, price.maxPrice); 
             }
         }
         
@@ -131,14 +132,9 @@ Page {
             }
 
             onCreationCompleted: {
-                // for ( var a = 0; a < 20; a++ ) {
-                //     theDataModel.append("Item" + a);
-                // }
-                // theDataModel.append(["Appended 1", "Appended 2"]);
-                theDataModel.insert(0, ("Sender ID       Video Title         Price"));
-                //theDataModel.removeAt(0);
-                //theDataModel.insert(0,["Prepended 1", "Prepended 2"]);
                 
+                theDataModel.insert(0, ("Sender ID       Video Title         Price"));
+                                
                 //quick hack to remove mysterious 0 on the list
                 theDataModel.removeAt(1);
             }
@@ -159,19 +155,28 @@ Page {
             textStyle.fontStyle: FontStyle.Italic
 
         }
-        // Invisible Label to re-direct search result
+       // Invisible Label to update search results on list view
 
         Label {
             layoutProperties: AbsoluteLayoutProperties {
                 positionX: 130
-                positionY: 1230
+                positionY: 1170
             }
 
             id: dummyTitle
-            text: appObject.price
+            text: count + ":" + appObject.price
 
             onTextChanged: {
+                if (count == 5)
+                {
+                    count = 0;
+                    theDataModel.clear();
+                    theDataModel.insert(0, ("Sender ID       Video Title         Price"));
+                	
+                }
                 theDataModel.append(appObject.title + "   " + appObject.price);
+                count = count + 1;
+                
             }
             textFormat: TextFormat.Plain
             visible: false
