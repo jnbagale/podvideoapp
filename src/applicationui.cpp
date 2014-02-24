@@ -10,8 +10,9 @@
 /* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the */
 /* GNU General Public License for more details. */
 
-#include "applicationui.hpp"
 #include "video_searcher.h"
+#include "video_responder.h"
+#include "applicationui.hpp"
 
 #include <bb/cascades/Application>
 #include <bb/cascades/QmlDocument>
@@ -22,6 +23,9 @@
 #include <QString>
 
 using namespace bb::cascades;
+
+/* global variables */
+#define XML_SCHEMA "app/native/video.xsd"
 
 ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
         QObject(app)
@@ -59,14 +63,28 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     // Initialise video searcher
     pod_object2 = this->initialiseSearcher();
 
+    cout << "Unique ID" << pod_object2->unique_id <<endl;
+
     if(pod_object2 !=NULL) {
-    // creating a Qthread to run video receiver to get search results
+
+    // creating a QThread to run video receiver to get search results
+
     QThread* thread = new QThread;
     ReceiveThread* rt1= new ReceiveThread(this, pod_object2);
 
     rt1->moveToThread(thread);
     connect(thread, SIGNAL(started()), rt1, SLOT(process()));
     thread->start();
+
+    // creating QThread to run video responder to process search requests
+
+    QThread* thread_responder = new QThread;
+    ResponderThread* rt_responder= new ResponderThread(this, pod_object2);
+
+    rt_responder->moveToThread(thread_responder);
+    connect(thread_responder, SIGNAL(started()), rt_responder, SLOT(run_responder()));
+    thread_responder->start();
+
     }
     else {
     	cout << "failed to initialise properly! Please check network status"<<endl;
@@ -88,7 +106,12 @@ void ApplicationUI::onSystemLanguageChanged()
 packedobjectsdObject * ApplicationUI::initialiseSearcher()
 {
 	this->setStatus(QString ("Initialising..."));
-	pod_object1 = _initialiseSearcher();
+	//pod_object1 = _initialiseSearcher();
+
+	// Initialise packedobjectsd
+	if((pod_object1 = init_packedobjectsd(XML_SCHEMA, SEARCHER)) == NULL) {
+		printf("failed to initialise libpackedobjectsd\n");
+	}
 
 	if(pod_object1 !=NULL) {
 		this->setStatus(QString ("Initialisation complete."));
@@ -132,6 +155,20 @@ void ReceiveThread::process()
 	 emit finished();
  }
 
+ResponderThread::ResponderThread(ApplicationUI *app_object, packedobjectsdObject *pod_object2)
+ {
+	app_object2 = app_object;
+	pod_object4 = pod_object2;
+	this->pod_resp_obj = _initialiseResponder();
+ }
+
+void ResponderThread::run_responder()
+ {
+	 //qDebug("Hello QThread!");
+	app_object2->setStatus(QString ("Starting responder .."));
+	start_responder(app_object2, this->pod_resp_obj);
+	 emit finished();
+ }
 // Various functions to pass signals to QML
 
 QString ApplicationUI::status()

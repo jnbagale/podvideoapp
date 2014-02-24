@@ -27,8 +27,9 @@ extern "C" {
 #include <string.h>
 #include <fcntl.h>
 #include <packedobjectsd/packedobjectsd.h>
-#include "video_responder.h"
 }
+
+#include "video_responder.h"
 
 // XML namespace and url for xpath
 #define NS_PREFIX "xs"
@@ -280,10 +281,8 @@ int process_search(packedobjectsdObject *pod_obj, xmlDocPtr doc_search)
   return ret;
 }
 
-int _initialiseResponder()
+packedobjectsdObject *_initialiseResponder()
 {
-	int ret = 0;
-	xmlDocPtr doc_search = NULL;
 	packedobjectsdObject *pod_obj = NULL;
 
 	printf("///////////////////// VIDEO RESPONDER  /////////////////// \n");
@@ -292,29 +291,24 @@ int _initialiseResponder()
 	// Initialise packedobjectsd
 	if((pod_obj = init_packedobjectsd(XML_SCHEMA, RESPONDER)) == NULL) {
 		printf("failed to initialise libpackedobjectsd\n");
-		ret = -1;
+		return NULL;
 	}
 
-	return ret;
+	return pod_obj;
 }
 
-int start_responder()
+int start_responder(ApplicationUI *app_object, packedobjectsdObject *pod_obj)
 {
   /* Declare variables */
-  int init_success = 1;
-  int exit_application = 0;
   xmlDocPtr doc_search = NULL;
-	packedobjectsdObject *pod_obj = NULL;
 
 
-
-
-  while (!exit_application) {
+  while (1) {
 	/* waiting for search broadcast */
 	  printf("waiting for new search broadcast\n");
 	  if((doc_search = packedobjectsd_receive_search(pod_obj)) == NULL) {
 		  printf("message could not be received\n");
-	      exit(EXIT_FAILURE);
+	      //exit(EXIT_FAILURE);
 	    }
 
 	    printf("\nnew search broadcast received... \n");
@@ -327,6 +321,7 @@ int start_responder()
 	    xmlFreeDoc(doc_search);
 
   }
+
   ///////// Freeing ///////////////////
 
   /* free memory created by packedobjectsd but we should never reach here! */

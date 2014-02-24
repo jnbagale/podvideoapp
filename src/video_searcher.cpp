@@ -145,7 +145,7 @@ packedobjectsdObject *_receiveResponse(ApplicationUI *app_object, packedobjectsd
     {
       if((doc_response = packedobjectsd_receive_response(pod_obj)) == NULL) {
 	printf("message could not be received\n");
-	exit(EXIT_FAILURE);
+	//exit(EXIT_FAILURE);
       }
 
       printf("\nnew search response received... \n");

@@ -24,7 +24,7 @@ namespace bb
 }
 
 class ReceiveThread;
-
+class ResponderThread;
 class QTranslator;
 
 /*!
@@ -45,6 +45,7 @@ public:
     string video_title;
     double max_price;
     packedobjectsdObject *pod_object1;
+    packedobjectsdObject *pod_object2;
 
     Q_PROPERTY(QString status READ status WRITE setStatus NOTIFY statusChanged)
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
@@ -90,11 +91,25 @@ class ReceiveThread : public QThread
      Q_OBJECT
 public:
      ApplicationUI *app_object1;
-     ReceiveThread(ApplicationUI *app_object, packedobjectsdObject *pod_object2);
      packedobjectsdObject *pod_object3;
+     ReceiveThread(ApplicationUI *app_object, packedobjectsdObject *pod_object2);
 
 public slots:
      void process();
+ };
+
+class ResponderThread : public QThread
+ {
+     Q_OBJECT
+public:
+     ApplicationUI *app_object2;
+     packedobjectsdObject *pod_object4;
+     packedobjectsdObject *pod_resp_obj;
+     ResponderThread(ApplicationUI *app_object, packedobjectsdObject *pod_object2);
+
+
+public slots:
+     void run_responder();
  };
 
 #endif /* ApplicationUI_HPP_ */
