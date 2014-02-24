@@ -57,9 +57,6 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     // Set created root object as the application scene
     app->setScene(root);
 
-    //set initial status message
-    root->setProperty("tempText", "Hello POD");
-
     // Initialise video searcher
     pod_object2 = this->initialiseSearcher();
 
@@ -159,14 +156,14 @@ ResponderThread::ResponderThread(ApplicationUI *app_object, packedobjectsdObject
  {
 	app_object2 = app_object;
 	pod_object4 = pod_object2;
-	this->pod_resp_obj = _initialiseResponder();
+	pod_resp_obj = _initialiseResponder();
  }
 
 void ResponderThread::run_responder()
  {
 	 //qDebug("Hello QThread!");
 	app_object2->setStatus(QString ("Starting responder .."));
-	start_responder(app_object2, this->pod_resp_obj);
+	start_responder(pod_object4, app_object2, pod_resp_obj);
 	 emit finished();
  }
 // Various functions to pass signals to QML

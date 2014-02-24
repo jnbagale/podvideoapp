@@ -52,7 +52,8 @@
     <!-- <copyright></copyright> -->
 
     <!--  Name of author which is used for signing. Must match the developer name of your development certificate. -->
-    <author>Jiva N. Bagale</author>
+    <author>Jiva Nath Bagale</author>
+    <authorId>gYAAgGnOVSAH7OsXHAg63cT3hZ4</authorId>
     <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7-g/podvideoapp" entry="true" type="Qnx/Elf">podvideoapp</asset>

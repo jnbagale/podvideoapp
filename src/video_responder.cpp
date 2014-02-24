@@ -45,7 +45,7 @@ extern "C" {
 /* function prototypes */
 void send_response(packedobjectsdObject *pod_obj, char *movie_title, double price);
 int create_response(packedobjectsdObject *pod_obj, char *movie_title, double max_price);
-int process_search(packedobjectsdObject *pod_obj, xmlDocPtr search);
+int process_search(packedobjectsdObject *pod_obj_searcher, packedobjectsdObject *pod_obj, xmlDocPtr search);
 
 /* function definitions */
 void send_response(packedobjectsdObject *pod_obj, char *movie_title, double price)
@@ -187,7 +187,7 @@ int create_response(packedobjectsdObject *pod_obj, char *movie_title, double max
   return 1;
 }
 
-int process_search(packedobjectsdObject *pod_obj, xmlDocPtr doc_search)
+int process_search(packedobjectsdObject *pod_obj_searcher, packedobjectsdObject *pod_obj, xmlDocPtr doc_search)
 {
   /* Declare variables */
   int i;
@@ -267,11 +267,18 @@ int process_search(packedobjectsdObject *pod_obj, xmlDocPtr doc_search)
   printf("Maximum price: %g\n", max_price);
   printf("Searcher's id:- %lu\n\n", pod_obj->last_searcher);
 
+  // Compare the id with local SEARCHER ID and ignore
+
+  if(pod_obj_searcher->unique_id == pod_obj->last_searcher) {
+	  printf("This is a local searcher request so ignoring this request!\n");
+	  ret = 1;
+  }
+  else {
   ///////////////////// Checking on database ///////////////////
 
   /* checking if search broadcast matches record on the database */
-  ret = create_response(pod_obj, movie_title, max_price);
-
+	  ret = create_response(pod_obj, movie_title, max_price);
+  }
   ///////////////////// Freeing ///////////////////
 
   free(movie_title);
@@ -297,7 +304,7 @@ packedobjectsdObject *_initialiseResponder()
 	return pod_obj;
 }
 
-int start_responder(ApplicationUI *app_object, packedobjectsdObject *pod_obj)
+int start_responder(packedobjectsdObject *pod_obj_searcher, ApplicationUI *app_object, packedobjectsdObject *pod_obj)
 {
   /* Declare variables */
   xmlDocPtr doc_search = NULL;
@@ -317,7 +324,7 @@ int start_responder(ApplicationUI *app_object, packedobjectsdObject *pod_obj)
 	    ///////////////////// Processing search broadcast ///////////////////
 
 	    /* process search broadcast to retrieve search details */
-	    process_search(pod_obj, doc_search);
+	    process_search(pod_obj_searcher, pod_obj, doc_search);
 	    xmlFreeDoc(doc_search);
 
   }

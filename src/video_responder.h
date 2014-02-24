@@ -10,7 +10,7 @@
 #include "applicationui.hpp"
 
 packedobjectsdObject *_initialiseResponder();
-int start_responder(ApplicationUI *app_object, packedobjectsdObject *pod_obj);
+int start_responder(packedobjectsdObject *pod_obj_searcher, ApplicationUI *app_object, packedobjectsdObject *pod_obj);
 
 
 #endif /* VIDEO_RESPONDER_H_ */

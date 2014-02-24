@@ -13,7 +13,6 @@
 import bb.cascades 1.2
 
 Page {
-    property alias tempText:statusText.text;
     property int count: 0;
     
     Container {
