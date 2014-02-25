@@ -133,7 +133,7 @@ Page {
 
             onCreationCompleted: {
                 
-                theDataModel.insert(0, ("Sender ID       Video Title         Price"));
+                theDataModel.insert(0, ("Responder ID       Video Title         Price"));
                                 
                 //quick hack to remove mysterious 0 on the list
                 theDataModel.removeAt(1);
@@ -182,7 +182,7 @@ Page {
                 {
                     count = 0;
                     theDataModel.clear();
-                    theDataModel.insert(0, ("Sender ID       Video Title         Price"));
+                    theDataModel.insert(0, ("Responder ID       Video Title         Price"));
                 	
                 }
                 theDataModel.append(appObject.title + "   " + appObject.price);

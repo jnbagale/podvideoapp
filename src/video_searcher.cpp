@@ -127,13 +127,15 @@ int read_response(ApplicationUI *app_object, xmlDocPtr doc_response)
 
 			cur = cur->next;
 		}
+		char temp_string[200];
+		sprintf(temp_string, "%s    %s", responder_id, movie_title);
 		printf("\n********** search result details ***********\n");
 		printf("Responder ID: %s \n", responder_id);
 		printf("Movie title: %s \n", movie_title);
 		printf("Movie price: %g\n", movie_price);
 
 		// set label on qml to the search result
-		app_object->setTitle((QString) movie_title);
+		app_object->setTitle((QString) temp_string);
 		app_object->setPrice(movie_price);
 	}
 	///////////////////// Freeing ///////////////////
