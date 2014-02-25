@@ -18,7 +18,7 @@
 #include <bb/cascades/QmlDocument>
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/LocaleHandler>
-#include<bb/cascades/ArrayDataModel>
+#include <bb/cascades/ArrayDataModel>
 
 #include <QString>
 
@@ -28,76 +28,82 @@ using namespace bb::cascades;
 #define XML_SCHEMA "app/native/video.xsd"
 
 ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
-        QObject(app)
+        		QObject(app)
 {
 	packedobjectsdObject *pod_object2 = NULL;
 
-    // prepare the localization
-    m_pTranslator = new QTranslator(this);
-    m_pLocaleHandler = new LocaleHandler(this);
+	// prepare the localization
+	m_pTranslator = new QTranslator(this);
+	m_pLocaleHandler = new LocaleHandler(this);
 
-    if(!QObject::connect(m_pLocaleHandler, SIGNAL(systemLanguageChanged()), this, SLOT(onSystemLanguageChanged()))) {
-        // This is an abnormal situation! Something went wrong!
-        // Add own code to recover here
-        qWarning() << "Recovering from a failed connect()";
-    }
-    // initial load
-    onSystemLanguageChanged();
+	if(!QObject::connect(m_pLocaleHandler, SIGNAL(systemLanguageChanged()), this, SLOT(onSystemLanguageChanged()))) {
+		// This is an abnormal situation! Something went wrong!
+		// Add own code to recover here
+		qWarning() << "Recovering from a failed connect()";
+	}
+	// initial load
+	onSystemLanguageChanged();
 
-    // Create scene document from main.qml asset, the parent is set
-    // to ensure the document gets destroyed properly at shut down.
-    QmlDocument *qml = QmlDocument::create("asset:///main.qml").parent(this);
+	// Create scene document from main.qml asset, the parent is set
+	// to ensure the document gets destroyed properly at shut down.
+	QmlDocument *qml = QmlDocument::create("asset:///main.qml").parent(this);
 
-    // Make the ApplicationUI object available to the UI as context property
-    qml->setContextProperty("appObject", this);
+	// Make the ApplicationUI object available to the UI as context property
+	qml->setContextProperty("appObject", this);
 
-    // Create root object for the UI
-    AbstractPane *root = qml->createRootObject<AbstractPane>();
+	// Create root object for the UI
+	AbstractPane *root = qml->createRootObject<AbstractPane>();
 
-    // Set created root object as the application scene
-    app->setScene(root);
+	// Set created root object as the application scene
+	app->setScene(root);
 
-    // Initialise video searcher
-    pod_object2 = this->initialiseSearcher();
+	// Initialise video searcher
+	pod_object2 = this->initialiseSearcher();
 
-    cout << "Unique ID" << pod_object2->unique_id <<endl;
+	cout << "Unique ID" << pod_object2->unique_id <<endl;
+	//set the value of a unique id
+	QString id_string = QString::number(pod_object2->unique_id, 10);
 
-    if(pod_object2 !=NULL) {
+	qDebug() << "ID string" << id_string << endl;
+	root->setProperty("idText", QVariant ("ID" + id_string));
 
-    // creating a QThread to run video receiver to get search results
 
-    QThread* thread = new QThread;
-    ReceiveThread* rt1= new ReceiveThread(this, pod_object2);
+	if(pod_object2 !=NULL) {
 
-    rt1->moveToThread(thread);
-    connect(thread, SIGNAL(started()), rt1, SLOT(process()));
-    thread->start();
+		// creating a QThread to run video receiver to get search results
 
-    // creating QThread to run video responder to process search requests
+		QThread* thread = new QThread;
+		ReceiveThread* rt1= new ReceiveThread(this, pod_object2);
 
-    QThread* thread_responder = new QThread;
-    ResponderThread* rt_responder= new ResponderThread(this, pod_object2);
+		rt1->moveToThread(thread);
+		connect(thread, SIGNAL(started()), rt1, SLOT(process()));
+		thread->start();
 
-    rt_responder->moveToThread(thread_responder);
-    connect(thread_responder, SIGNAL(started()), rt_responder, SLOT(run_responder()));
-    thread_responder->start();
+		// creating QThread to run video responder to process search requests
 
-    }
-    else {
-    	cout << "failed to initialise properly! Please check network status"<<endl;
-    	this->setStatus(QString ("failed to initialise properly!"));
-    }
+		QThread* thread_responder = new QThread;
+		ResponderThread* rt_responder= new ResponderThread(this, pod_object2);
+
+		rt_responder->moveToThread(thread_responder);
+		connect(thread_responder, SIGNAL(started()), rt_responder, SLOT(run_responder()));
+		thread_responder->start();
+
+	}
+	else {
+		cout << "failed to initialise properly! Please check network status"<<endl;
+		this->setStatus(QString ("failed to initialise properly!"));
+	}
 }
 
 void ApplicationUI::onSystemLanguageChanged()
 {
-    QCoreApplication::instance()->removeTranslator(m_pTranslator);
-    // Initiate, load and install the application translation files.
-    QString locale_string = QLocale().name();
-    QString file_name = QString("MyCascadesProject_%1").arg(locale_string);
-    if (m_pTranslator->load(file_name, "app/native/qm")) {
-        QCoreApplication::instance()->installTranslator(m_pTranslator);
-    }
+	QCoreApplication::instance()->removeTranslator(m_pTranslator);
+	// Initiate, load and install the application translation files.
+	QString locale_string = QLocale().name();
+	QString file_name = QString("MyCascadesProject_%1").arg(locale_string);
+	if (m_pTranslator->load(file_name, "app/native/qm")) {
+		QCoreApplication::instance()->installTranslator(m_pTranslator);
+	}
 }
 
 packedobjectsdObject * ApplicationUI::initialiseSearcher()
@@ -114,7 +120,7 @@ packedobjectsdObject * ApplicationUI::initialiseSearcher()
 		this->setStatus(QString ("Initialisation complete."));
 	}
 
-    return pod_object1;
+	return pod_object1;
 }
 
 int ApplicationUI::sendSearch(QString videoTitle, double maxPrice)
@@ -124,7 +130,7 @@ int ApplicationUI::sendSearch(QString videoTitle, double maxPrice)
 
 	// Converting Qstring to char*
 	QByteArray ba = videoTitle.toLocal8Bit();
-    char *title_str = ba.data();
+	char *title_str = ba.data();
 
 	doc_search = create_search(pod_object1, title_str, maxPrice);
 
@@ -135,71 +141,74 @@ int ApplicationUI::sendSearch(QString videoTitle, double maxPrice)
 		return 1;
 	}
 
-    return -1;
+	return -1;
 }
 
 ReceiveThread::ReceiveThread(ApplicationUI *app_object, packedobjectsdObject *pod_object2)
- {
+{
 	app_object1 = app_object;
 	pod_object3 = pod_object2;
- }
+}
 
 void ReceiveThread::process()
- {
-	 //qDebug("Hello QThread!");
+{
+	//qDebug("Hello QThread!");
 	app_object1->setStatus(QString ("Ready to receive .."));
 	_receiveResponse(app_object1, pod_object3);
-	 emit finished();
- }
+	emit finished();
+}
 
 ResponderThread::ResponderThread(ApplicationUI *app_object, packedobjectsdObject *pod_object2)
- {
+{
 	app_object2 = app_object;
 	pod_object4 = pod_object2;
+
+	app_object2->setStatus(QString ("Initialising responder .."));
 	pod_resp_obj = _initialiseResponder();
- }
+
+}
 
 void ResponderThread::run_responder()
- {
-	 //qDebug("Hello QThread!");
-	app_object2->setStatus(QString ("Starting responder .."));
+{
+	//qDebug("Hello QThread!");
+	app_object2->setStatus(QString ("Responder ready .."));
 	start_responder(pod_object4, app_object2, pod_resp_obj);
-	 emit finished();
- }
+	emit finished();
+}
 // Various functions to pass signals to QML
 
 QString ApplicationUI::status()
 {
-    return str_status;
+	return str_status;
 }
 
 void ApplicationUI::setStatus(QString str)
 {
-// name is same as HPP WRITE Q_PROPERTY statement
+	// name is same as HPP WRITE Q_PROPERTY statement
 	str_status = str;
-    emit statusChanged();
+	emit statusChanged();
 }
 
 QString ApplicationUI::title()
 {
-    return str_title;
+	return str_title;
 }
 
 void ApplicationUI::setTitle(QString str)
 {
-// name is same as HPP WRITE Q_PROPERTY statement
+	// name is same as HPP WRITE Q_PROPERTY statement
 	str_title = str;
-    emit titleChanged();
+	emit titleChanged();
 }
 
 double ApplicationUI::price()
 {
-    return dbl_price;
+	return dbl_price;
 }
 
 void ApplicationUI::setPrice(double val)
 {
-// name is same as HPP WRITE Q_PROPERTY statement
+	// name is same as HPP WRITE Q_PROPERTY statement
 	dbl_price = val;
-    emit priceChanged();
+	emit priceChanged();
 }

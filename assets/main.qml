@@ -14,7 +14,7 @@ import bb.cascades 1.2
 
 Page {
     property int count: 0;
-    
+    property alias idText: uniqueID.text
     Container {
         layout: AbsoluteLayout {
             
@@ -23,7 +23,7 @@ Page {
         // to display price selected by the Slider
         Label {
             layoutProperties: AbsoluteLayoutProperties {
-                positionX: 130
+                positionX: 30
                 positionY: 30
             }
             
@@ -35,7 +35,7 @@ Page {
             textStyle.fontWeight: FontWeight.Bold
 
         } 
-        
+
         // to input title to search
         TextField {
             layoutProperties: AbsoluteLayoutProperties {
@@ -139,11 +139,23 @@ Page {
                 theDataModel.removeAt(1);
             }
         }
-
+        
+        Label {
+            layoutProperties: AbsoluteLayoutProperties {
+                positionX: 30
+                positionY: 1200
+            }
+            
+            id: uniqueID
+            textFormat: TextFormat.Plain
+            textStyle.color: Color.DarkYellow
+            textStyle.fontStyle: FontStyle.Default        
+        } 
+        
         // Displying status message
         Label {
             layoutProperties: AbsoluteLayoutProperties {
-                positionX: 130
+                positionX: 300
                 positionY: 1200
             }
 
@@ -156,7 +168,6 @@ Page {
 
         }
        // Invisible Label to update search results on list view
-
         Label {
             layoutProperties: AbsoluteLayoutProperties {
                 positionX: 130
