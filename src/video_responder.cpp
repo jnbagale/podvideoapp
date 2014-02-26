@@ -45,7 +45,7 @@ extern "C" {
 /* function prototypes */
 void send_response(packedobjectsdObject *pod_obj, char *movie_title, double price, char *genre, char *dateofrelease, char *director);
 int create_response(packedobjectsdObject *pod_obj, char *movie_title, double max_price);
-int process_search(packedobjectsdObject *pod_obj_searcher, packedobjectsdObject *pod_obj, xmlDocPtr search);
+int process_search(ApplicationUI *app_object, packedobjectsdObject *pod_obj_searcher, packedobjectsdObject *pod_obj, xmlDocPtr search);
 
 /* function definitions */
 void send_response(packedobjectsdObject *pod_obj, char *movie_title, double price, char *genre, char *dateofrelease, char *director)
@@ -216,7 +216,7 @@ int create_response(packedobjectsdObject *pod_obj, char *movie_title, double max
 	return 1;
 }
 
-int process_search(packedobjectsdObject *pod_obj_searcher, packedobjectsdObject *pod_obj, xmlDocPtr doc_search)
+int process_search(ApplicationUI *app_object, packedobjectsdObject *pod_obj_searcher, packedobjectsdObject *pod_obj, xmlDocPtr doc_search)
 {
 	/* Declare variables */
 	int i;
@@ -307,6 +307,14 @@ int process_search(packedobjectsdObject *pod_obj_searcher, packedobjectsdObject 
 
 		/* checking if search broadcast matches record on the database */
 		ret = create_response(pod_obj, movie_title, max_price);
+
+		// Update search queries on GUI
+		char temp_string[200];
+		sprintf(temp_string, "%lu    %s    %g", pod_obj->last_searcher, movie_title, max_price);
+
+		// set label on qml to the search result
+		app_object->setQuery((QString) temp_string);
+
 	}
 	///////////////////// Freeing ///////////////////
 
@@ -353,7 +361,7 @@ int start_responder(packedobjectsdObject *pod_obj_searcher, ApplicationUI *app_o
 		///////////////////// Processing search broadcast ///////////////////
 
 		/* process search broadcast to retrieve search details */
-		process_search(pod_obj_searcher, pod_obj, doc_search);
+		process_search(app_object, pod_obj_searcher, pod_obj, doc_search);
 		xmlFreeDoc(doc_search);
 
 	}

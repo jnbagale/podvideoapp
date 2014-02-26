@@ -260,11 +260,11 @@ TabbedPane{
                 Label {
                     layoutProperties: AbsoluteLayoutProperties {
                         positionX: 130
-                        positionY: 1170
+                        positionY: 970
                     }
                     
                     id: dummyTitle1
-                    text: count2 + ":" + appObject.title
+                    text: count2 + ":" + appObject.query
                     
                     onTextChanged: {
                         if (count2 == 5)
@@ -274,7 +274,7 @@ TabbedPane{
                             theDataModel1.insert(0, ("Searcher ID     Video Title     Max Price"));
                         
                         }
-                        theDataModel1.append(appObject.title);
+                        theDataModel1.append(appObject.query);
                         count2++;
                     
                     }
