@@ -65,7 +65,7 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 	QString id_string = QString::number(pod_object2->unique_id, 10);
 
 	qDebug() << "ID string" << id_string << endl;
-	root->setProperty("idText", QVariant ("ID" + id_string));
+	root->setProperty("searcheridText", QVariant ("ID" + id_string));
 
 
 	if(pod_object2 !=NULL) {
