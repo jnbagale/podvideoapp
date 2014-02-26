@@ -49,7 +49,7 @@ public:
 
     Q_PROPERTY(QString status READ status WRITE setStatus NOTIFY statusChanged)
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
-    Q_PROPERTY(double price READ price WRITE setPrice NOTIFY priceChanged)
+    Q_PROPERTY(QString size READ size WRITE setSize NOTIFY sizeChanged)
 
     Q_INVOKABLE packedobjectsdObject *initialiseSearcher();
     Q_INVOKABLE int sendSearch(QString videoTitle, double maxPrice);
@@ -65,19 +65,18 @@ public Q_SLOTS:
     void setTitle(QString str);
 
     // get latest search response - price
-    double price();
-    void setPrice(double val);
+    QString size();
+    void setSize(QString str);
 
     Q_SIGNALS:
     void statusChanged();
     void titleChanged();
-    void priceChanged();
+    void sizeChanged();
 
 private:
     QString str_status;
     QString str_title;
-    double dbl_price;
-
+    QString str_size;
 
 private slots:
     void onSystemLanguageChanged();

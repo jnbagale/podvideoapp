@@ -135,6 +135,7 @@ int ApplicationUI::sendSearch(QString videoTitle, double maxPrice)
 	doc_search = create_search(pod_object1, title_str, maxPrice);
 
 	if(doc_search != NULL) {
+		this->setSize(QString("Size of Search XML"));
 		_sendSearch(pod_object1, doc_search);
 
 		this->setStatus(QString ("Search request sent.."));
@@ -201,14 +202,14 @@ void ApplicationUI::setTitle(QString str)
 	emit titleChanged();
 }
 
-double ApplicationUI::price()
+QString ApplicationUI::size()
 {
-	return dbl_price;
+	return str_size;
 }
 
-void ApplicationUI::setPrice(double val)
+void ApplicationUI::setSize(QString str)
 {
 	// name is same as HPP WRITE Q_PROPERTY statement
-	dbl_price = val;
-	emit priceChanged();
+	str_size = str;
+	emit sizeChanged();
 }

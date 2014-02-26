@@ -28,6 +28,8 @@ extern "C" {
 #include <packedobjectsd/packedobjectsd.h>
 }
 
+#include <QString>
+
 #include "video_searcher.h"
 
 // XML namespace and url for xpath
@@ -128,7 +130,7 @@ int read_response(ApplicationUI *app_object, xmlDocPtr doc_response)
 			cur = cur->next;
 		}
 		char temp_string[200];
-		sprintf(temp_string, "%s    %s", responder_id, movie_title);
+		sprintf(temp_string, "%s    %s    %g", responder_id, movie_title, movie_price);
 		printf("\n********** search result details ***********\n");
 		printf("Responder ID: %s \n", responder_id);
 		printf("Movie title: %s \n", movie_title);
@@ -136,7 +138,6 @@ int read_response(ApplicationUI *app_object, xmlDocPtr doc_response)
 
 		// set label on qml to the search result
 		app_object->setTitle((QString) temp_string);
-		app_object->setPrice(movie_price);
 	}
 	///////////////////// Freeing ///////////////////
 
@@ -217,14 +218,15 @@ xmlDocPtr create_search(packedobjectsdObject *pod_obj, char *movie_title, double
 int _sendSearch(packedobjectsdObject *pod_object1, xmlDocPtr doc_search)
 {
 	///////////////////// Sending search request ///////////////////
-
+	int ret;
+	printf("size of search XML %d\n", xml_doc_size(doc_search));
 
 	if(packedobjectsd_send_search(pod_object1, doc_search) == -1){
 		printf("message could not be sent\n");
 		return -1;
 	}
 
-	printf("search request sent to responders...\n");
+	printf("search request of %d bytes sent to responders...\n", pod_object1->bytes_sent - 1);
 
 	return 1;
 }

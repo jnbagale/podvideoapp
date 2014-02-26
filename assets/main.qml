@@ -167,6 +167,21 @@ Page {
             textStyle.fontStyle: FontStyle.Italic
 
         }
+        // Displying size message
+        Label {
+            layoutProperties: AbsoluteLayoutProperties {
+                positionX: 300
+                positionY: 1150
+            }
+            
+            id: sizeText
+            text: appObject.size
+            preferredWidth: 500
+            preferredHeight: 100
+            textStyle.fontSize: FontSize.Small
+            textStyle.fontStyle: FontStyle.Italic
+        
+        }
        // Invisible Label to update search results on list view
         Label {
             layoutProperties: AbsoluteLayoutProperties {
@@ -175,7 +190,7 @@ Page {
             }
 
             id: dummyTitle
-            text: count + ":" + appObject.price
+            text: count + ":" + appObject.title
 
             onTextChanged: {
                 if (count == 5)
@@ -185,7 +200,7 @@ Page {
                     theDataModel.insert(0, ("Responder ID       Video Title         Price"));
                 	
                 }
-                theDataModel.append(appObject.title + "   " + appObject.price);
+                theDataModel.append(appObject.title);
                 count = count + 1;
                 
             }
