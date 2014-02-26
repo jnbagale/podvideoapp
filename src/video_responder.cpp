@@ -43,14 +43,17 @@ extern "C" {
  */
 
 /* function prototypes */
-void send_response(packedobjectsdObject *pod_obj, char *movie_title, double price, char *genre, char *dateofrelease, char *director);
-int create_response(packedobjectsdObject *pod_obj, char *movie_title, double max_price);
+void send_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, char *movie_title, double price, char *genre, char *dateofrelease, char *director);
+int create_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, char *movie_title, double max_price);
 int process_search(ApplicationUI *app_object, packedobjectsdObject *pod_obj_searcher, packedobjectsdObject *pod_obj, xmlDocPtr search);
 
 /* function definitions */
-void send_response(packedobjectsdObject *pod_obj, char *movie_title, double price, char *genre, char *dateofrelease, char *director)
+void send_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, char *movie_title, double price, char *genre, char *dateofrelease, char *director)
 {
 	/* Declare variables */
+	int xml_size;
+	int po_xml_size;
+	char size_str[200];
 	char price_string[50];
 	char id_string[100];
 	xmlDocPtr doc_response = NULL;
@@ -87,13 +90,22 @@ void send_response(packedobjectsdObject *pod_obj, char *movie_title, double pric
 		printf("message could not be sent\n");
 		exit(EXIT_FAILURE);
 	}
+
+	xml_size = xml_doc_size(doc_response);
+	printf("size of search XML %d\n", xml_size);
+	po_xml_size = pod_obj->bytes_sent - 1;
+
+	sprintf(size_str, "Size of Response XML %d. Size PO Data %d", xml_size, po_xml_size);
+
+	app_object->setSize1(QString(size_str));
+
 	printf("response sent to the searcher...\n");
 	//xml_dump_doc(doc_response);
 
 	xmlFreeDoc(doc_response);
 }
 
-int create_response(packedobjectsdObject *pod_obj, char *movie_title, double max_price)
+int create_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, char *movie_title, double max_price)
 {
 	/* Declare variables */
 	int i;
@@ -202,7 +214,7 @@ int create_response(packedobjectsdObject *pod_obj, char *movie_title, double max
 			///////////////////// Sending  search response ///////////////////
 
 			/* send response to searcher */
-			send_response(pod_obj, movie_title, price, genre, dateofrelease, director);
+			send_response(app_object, pod_obj, movie_title, price, genre, dateofrelease, director);
 		}
 		else {
 			printf("the movie exists on the database but does not match price limit\n");
@@ -306,7 +318,7 @@ int process_search(ApplicationUI *app_object, packedobjectsdObject *pod_obj_sear
 		///////////////////// Checking on database ///////////////////
 
 		/* checking if search broadcast matches record on the database */
-		ret = create_response(pod_obj, movie_title, max_price);
+		ret = create_response(app_object, pod_obj, movie_title, max_price);
 
 		// Update search queries on GUI
 		char temp_string[200];

@@ -234,3 +234,15 @@ void ApplicationUI::setQuery(QString str)
 	str_query = str;
 	emit queryChanged();
 }
+
+QString ApplicationUI::size1()
+{
+	return str_size1;
+}
+
+void ApplicationUI::setSize1(QString str)
+{
+	// name is same as HPP WRITE Q_PROPERTY statement
+	str_size1 = str;
+	emit size1Changed();
+}

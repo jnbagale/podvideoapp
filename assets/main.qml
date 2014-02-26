@@ -177,6 +177,7 @@ TabbedPane{
                     textStyle.fontStyle: FontStyle.Italic
                 
                 }
+                
                 // Displying size message
                 Label {
                     layoutProperties: AbsoluteLayoutProperties {
@@ -192,6 +193,7 @@ TabbedPane{
                     textStyle.fontStyle: FontStyle.Italic
                 
                 }
+                
                 // Invisible Label to update search results on list view
                 Label {
                     layoutProperties: AbsoluteLayoutProperties {
@@ -256,6 +258,22 @@ TabbedPane{
                     textStyle.color: Color.DarkYellow
                     textStyle.fontStyle: FontStyle.Default        
                 } 
+                
+                // Displying size message
+                Label {
+                    layoutProperties: AbsoluteLayoutProperties {
+                        positionX: 30
+                        positionY: 1050
+                    }
+                    
+                    id: size1Text
+                    text: appObject.size1
+                    preferredWidth: 900
+                    preferredHeight: 100
+                    textStyle.fontSize: FontSize.Small
+                    textStyle.fontStyle: FontStyle.Italic
+                
+                }
                 // Invisible Label to update search results on list view
                 Label {
                     layoutProperties: AbsoluteLayoutProperties {

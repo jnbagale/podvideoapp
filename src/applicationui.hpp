@@ -53,6 +53,7 @@ public:
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
     Q_PROPERTY(QString size READ size WRITE setSize NOTIFY sizeChanged)
     Q_PROPERTY(QString query READ query WRITE setQuery NOTIFY queryChanged)
+    Q_PROPERTY(QString size1 READ size1 WRITE setSize1 NOTIFY size1Changed)
 
     Q_INVOKABLE packedobjectsdObject *initialiseSearcher();
     Q_INVOKABLE int sendSearch(QString videoTitle, double maxPrice);
@@ -75,11 +76,16 @@ public Q_SLOTS:
     QString query();
     void setQuery(QString str);
 
+    // get latest response xml size
+    QString size1();
+    void setSize1(QString str);
+
     Q_SIGNALS:
     void statusChanged();
     void titleChanged();
     void sizeChanged();
     void queryChanged();
+    void size1Changed();
 
 
 private:
@@ -87,6 +93,7 @@ private:
     QString str_title;
     QString str_size;
     QString str_query;
+    QString str_size1;
 
 private slots:
     void onSystemLanguageChanged();
