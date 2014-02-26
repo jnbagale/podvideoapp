@@ -161,7 +161,7 @@ Page {
 
             id: statusText
             text: "status:- " + appObject.status
-            preferredWidth: 500
+            preferredWidth: 800
             preferredHeight: 100
             textStyle.fontSize: FontSize.Small
             textStyle.fontStyle: FontStyle.Italic
@@ -170,13 +170,13 @@ Page {
         // Displying size message
         Label {
             layoutProperties: AbsoluteLayoutProperties {
-                positionX: 300
+                positionX: 30
                 positionY: 1150
             }
             
             id: sizeText
             text: appObject.size
-            preferredWidth: 500
+            preferredWidth: 900
             preferredHeight: 100
             textStyle.fontSize: FontSize.Small
             textStyle.fontStyle: FontStyle.Italic

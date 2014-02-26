@@ -215,16 +215,26 @@ xmlDocPtr create_search(packedobjectsdObject *pod_obj, char *movie_title, double
 	return doc_search;
 }
 
-int _sendSearch(packedobjectsdObject *pod_object1, xmlDocPtr doc_search)
+int _sendSearch(ApplicationUI *app_object, packedobjectsdObject *pod_object1, xmlDocPtr doc_search)
 {
 	///////////////////// Sending search request ///////////////////
 	int ret;
-	printf("size of search XML %d\n", xml_doc_size(doc_search));
+	int xml_size;
+	int po_xml_size;
+	char size_str[200];
+
+	xml_size = xml_doc_size(doc_search);
+	printf("size of search XML %d\n", xml_size);
 
 	if(packedobjectsd_send_search(pod_object1, doc_search) == -1){
 		printf("message could not be sent\n");
 		return -1;
 	}
+
+	po_xml_size = pod_object1->bytes_sent - 1;
+	sprintf(size_str, "Size of Search XML %d. Size PO Data %d", xml_size, po_xml_size);
+
+	app_object->setSize(QString(size_str));
 
 	printf("search request of %d bytes sent to responders...\n", pod_object1->bytes_sent - 1);
 

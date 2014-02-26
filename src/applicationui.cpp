@@ -135,8 +135,8 @@ int ApplicationUI::sendSearch(QString videoTitle, double maxPrice)
 	doc_search = create_search(pod_object1, title_str, maxPrice);
 
 	if(doc_search != NULL) {
-		this->setSize(QString("Size of Search XML"));
-		_sendSearch(pod_object1, doc_search);
+
+			_sendSearch(this, pod_object1, doc_search);
 
 		this->setStatus(QString ("Search request sent.."));
 		return 1;
