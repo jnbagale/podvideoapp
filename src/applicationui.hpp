@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QThread>
 #include <QString>
+#include <bb/cascades/AbstractPane>
 #include <iostream>
 #include <string>
 
@@ -46,6 +47,7 @@ public:
     double max_price;
     packedobjectsdObject *pod_object1;
     packedobjectsdObject *pod_object2;
+
 
     Q_PROPERTY(QString status READ status WRITE setStatus NOTIFY statusChanged)
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
@@ -104,7 +106,7 @@ public:
      ApplicationUI *app_object2;
      packedobjectsdObject *pod_object4;
      packedobjectsdObject *pod_resp_obj;
-     ResponderThread(ApplicationUI *app_object, packedobjectsdObject *pod_object2);
+     ResponderThread(ApplicationUI *app_object, packedobjectsdObject *pod_object2, packedobjectsdObject *pod_obj_responder);
 
 
 public slots:

@@ -31,6 +31,8 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
         		QObject(app)
 {
 	packedobjectsdObject *pod_object2 = NULL;
+	packedobjectsdObject *pod_obj_responder = NULL;
+
 
 	// prepare the localization
 	m_pTranslator = new QTranslator(this);
@@ -60,13 +62,21 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 	// Initialise video searcher
 	pod_object2 = this->initialiseSearcher();
 
-	cout << "Unique ID" << pod_object2->unique_id <<endl;
-	//set the value of a unique id
-	QString id_string = QString::number(pod_object2->unique_id, 10);
+	//set the value of searcher's unique id
+	QString s_id_string = QString::number(pod_object2->unique_id, 10);
 
-	qDebug() << "ID string" << id_string << endl;
-	root->setProperty("searcheridText", QVariant ("ID" + id_string));
+	qDebug() << "Searcher ID:- " << s_id_string << endl;
+	root->setProperty("searcheridText", QVariant ("ID" + s_id_string));
 
+	// Initialise video responder
+
+	pod_obj_responder = _initialiseResponder();
+
+	//set the value of responder's unique id
+	QString r_id_string = QString::number(pod_obj_responder->unique_id, 10);
+
+	qDebug() << "Responder ID:- " << r_id_string << endl;
+	root->setProperty("responderidText", QVariant ("ID" + r_id_string));
 
 	if(pod_object2 !=NULL) {
 
@@ -82,7 +92,7 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 		// creating QThread to run video responder to process search requests
 
 		QThread* thread_responder = new QThread;
-		ResponderThread* rt_responder= new ResponderThread(this, pod_object2);
+		ResponderThread* rt_responder= new ResponderThread(this, pod_object2, pod_obj_responder);
 
 		rt_responder->moveToThread(thread_responder);
 		connect(thread_responder, SIGNAL(started()), rt_responder, SLOT(run_responder()));
@@ -93,6 +103,7 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 		cout << "failed to initialise properly! Please check network status"<<endl;
 		this->setStatus(QString ("failed to initialise properly!"));
 	}
+
 }
 
 void ApplicationUI::onSystemLanguageChanged()
@@ -159,13 +170,11 @@ void ReceiveThread::process()
 	emit finished();
 }
 
-ResponderThread::ResponderThread(ApplicationUI *app_object, packedobjectsdObject *pod_object2)
+ResponderThread::ResponderThread(ApplicationUI *app_object, packedobjectsdObject *pod_object2, packedobjectsdObject *pod_obj_responder)
 {
 	app_object2 = app_object;
 	pod_object4 = pod_object2;
-
-	app_object2->setStatus(QString ("Initialising responder .."));
-	pod_resp_obj = _initialiseResponder();
+	pod_resp_obj = pod_obj_responder;
 
 }
 
