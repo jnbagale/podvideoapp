@@ -10,337 +10,235 @@
 /* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the */
 /* GNU General Public License for more details. */
 
+import bb.data 1.0
 import bb.cascades 1.2
 
 TabbedPane{
-    property int count1: 0;
-    property int count2: 0;
-    property alias searcheridText: searcherID.text
-    property alias responderidText: responderID.text
+    id: tabPane
+    //showTabsOnActionBar: true
     
-    showTabsOnActionBar: true
+    onCreationCompleted: {
+        tabPane.activeTab = searcherTab;
+    }
+
+    
     Tab{
+        id:searcherTab
         title: "Searcher"
-        
+        // The first page, which appears at startup 
         Page {
-            id:page1
-                
-            Container {
-                layout: AbsoluteLayout {
-                
-                }
-                
-                // to display price selected by the Slider
-                Label {
-                    layoutProperties: AbsoluteLayoutProperties {
-                        positionX: 30
-                        positionY: 30
-                    }
-                    
-                    id: welcomeMsg
-                    text: "Real-time video search system"
-                    textFormat: TextFormat.Plain
-                    textStyle.color: Color.DarkYellow
-                    textStyle.fontStyle: FontStyle.Default
-                    textStyle.fontWeight: FontWeight.Bold
-                
-                } 
-                
-                // to input title to search
-                TextField {
-                    layoutProperties: AbsoluteLayoutProperties {
-                        positionX: 50
-                        positionY: 100
-                    }
-                    
-                    id: videoTitleText
-                    hintText: "Enter title to search here"
-                    maximumLength: 30
-                    verticalAlignment: VerticalAlignment.Bottom
-                    preferredWidth: 500
-                    input {
-                        flags: TextInputFlag.AutoCapitalizationOff
-                    }
-                    
-                    property string searchTitle;
-                    
-                    onTextChanging: searchTitle = text
-                }    
-                
-                // to display price selected by the Slider
-                Label {
-                    layoutProperties: AbsoluteLayoutProperties {
-                        positionX: 50
-                        positionY: 200
-                    }
-                    
-                    id: selectedPrice
-                }   
-                
-                // select maximum price to search for the above entered video title
-                Slider {
-                    layoutProperties: AbsoluteLayoutProperties {
-                        positionX: 50
-                        positionY: 270
-                    }
-                    
-                    id: price
-                    value: 1.0
-                    fromValue: 0.5
-                    toValue: 10.0
-                    
-                    property double	maxPrice;
-                    
-                    onImmediateValueChanged: {
-                        selectedPrice.text = "Maximum Price " + immediateValue.toFixed(2);
-                        maxPrice = immediateValue.toFixed(2); // fix price to 2 decimal places only          
-                    }
-                }  
-                
-                Button {
-                    layoutProperties: AbsoluteLayoutProperties {
-                        positionX: 100
-                        positionY: 340
-                    }
-                    preferredWidth: 250
-                    
-                    id: search
-                    text: "search"
-                    onClicked: {
-                        appObject.status = qsTr("Sending search reuqest...");
-                        appObject.sendSearch(videoTitleText.searchTitle.toLowerCase(), price.maxPrice); 
-                    }
-                }
-                
-                Button {
-                    layoutProperties: AbsoluteLayoutProperties {
-                        positionX: 400
-                        positionY: 340
-                    }
-                    preferredWidth: 250
-                    
-                    id: reset
-                    text: "Clear Results"
-                    onClicked: {
-                        theDataModel.clear();
-                        theDataModel.insert(0, ("Responder ID       Video Title         Price"));
-                    
-                    }
-                }
-                
-                // Displaying search results      
-                ListView {
-                    id: searchResults
-                    
-                    layoutProperties: AbsoluteLayoutProperties {
-                        positionX: 20
-                        positionY: 440
-                    }
-                    
-                    dataModel: ArrayDataModel {
-                        id: theDataModel
-                    }
-                    
-                    onCreationCompleted: {
-                        
-                        theDataModel.insert(0, ("Responder ID       Video Title         Price"));
-                        
-                        //quick hack to remove mysterious 0 on the list
-                        theDataModel.removeAt(1);
-                    }
-                }
-                
-                Label {
-                    layoutProperties: AbsoluteLayoutProperties {
-                        positionX: 30
-                        positionY: 1100
-                    }
-                    
-                    id: searcherID
-                    textFormat: TextFormat.Plain
-                    textStyle.color: Color.DarkYellow
-                    textStyle.fontStyle: FontStyle.Default        
-                } 
-                
-                // Displying status message
-                Label {
-                    layoutProperties: AbsoluteLayoutProperties {
-                        positionX: 300
-                        positionY: 1100
-                    }
-                    
-                    id: statusText
-                    text: "status:- " + appObject.status
-                    preferredWidth: 800
-                    preferredHeight: 100
-                    textStyle.fontSize: FontSize.Small
-                    textStyle.fontStyle: FontStyle.Italic
-                
-                }
-                
-                // Displying size message
-                Label {
-                    layoutProperties: AbsoluteLayoutProperties {
-                        positionX: 30
-                        positionY: 1050
-                    }
-                    
-                    id: sizeText
-                    text: appObject.size
-                    preferredWidth: 900
-                    preferredHeight: 100
-                    textStyle.fontSize: FontSize.Small
-                    textStyle.fontStyle: FontStyle.Italic
-                
-                }
-                
-                // Invisible Label to update search results on list view
-                Label {
-                    layoutProperties: AbsoluteLayoutProperties {
-                        positionX: 130
-                        positionY: 1170
-                    }
-                    
-                    id: dummyTitle
-                    text: count1 + ":" + appObject.title
-                    
-                    onTextChanged: {
-                        if (count1 == 5)
-                        {
-                            count1 = 0;
-                            theDataModel.clear();
-                            theDataModel.insert(0, ("Responder ID       Video Title         Price"));
-                        
-                        }
-                        theDataModel.append(appObject.title);
-                        count1++;
-                    
-                    }
-                    textFormat: TextFormat.Plain
-                    visible: false
-                }
+            id: searcherPage
+            ControlDelegate {
+                id: controlDelegate1
+                source: "SearcherPage.qml"
+                delegateActive: (tabPane.activeTab == searcherTab)
+            }
+            
+            onCreationCompleted: {
             }
         }
     }
     Tab {
+        id:responderTab
         title: "Responder"
+        
         Page {
-            id: page2
-            property int count2: 0;
-            // to display price selected by the Slider
-            Container {
-                layout: AbsoluteLayout {
-                
-                }
-                Label {
-                    layoutProperties: AbsoluteLayoutProperties {
-                        positionX: 30
-                        positionY: 30
-                    }
-                    
-                    id: welcomeMsg1
-                    text: "Real-time video search system"
-                    textFormat: TextFormat.Plain
-                    textStyle.color: Color.DarkYellow
-                    textStyle.fontStyle: FontStyle.Default
-                    textStyle.fontWeight: FontWeight.Bold
-                
-                } 
-                
-                Label {
-                    layoutProperties: AbsoluteLayoutProperties {
-                        positionX: 30
-                        positionY: 1100
-                    }
-                    
-                    id: responderID
-                    textFormat: TextFormat.Plain
-                    textStyle.color: Color.DarkYellow
-                    textStyle.fontStyle: FontStyle.Default        
-                } 
-                
-                // Displying size message
-                Label {
-                    layoutProperties: AbsoluteLayoutProperties {
-                        positionX: 30
-                        positionY: 1050
-                    }
-                    
-                    id: size1Text
-                    text: appObject.size1
-                    preferredWidth: 900
-                    preferredHeight: 100
-                    textStyle.fontSize: FontSize.Small
-                    textStyle.fontStyle: FontStyle.Italic
-                
-                }
-                // Invisible Label to update search results on list view
-                Label {
-                    layoutProperties: AbsoluteLayoutProperties {
-                        positionX: 130
-                        positionY: 970
-                    }
-                    
-                    id: dummyTitle1
-                    text: count2 + ":" + appObject.query
-                    
-                    onTextChanged: {
-                        if (count2 == 5)
-                        {
-                            count2 = 0;
-                            theDataModel1.clear();
-                            theDataModel1.insert(0, ("Searcher ID     Video Title     Max Price"));
-                        
-                        }
-                        theDataModel1.append(appObject.query);
-                        count2++;
-                    
-                    }
-                    textFormat: TextFormat.Plain
-                    visible: false
-                }
-                
-                Button {
-                    layoutProperties: AbsoluteLayoutProperties {
-                        positionX: 400
-                        positionY: 140
-                    }
-                    preferredWidth: 250
-                    
-                    id: reset1
-                    text: "Clear Results"
-                    onClicked: {
-                        theDataModel1.clear();
-                        theDataModel1.insert(0, ("Searcher ID       Video Title       Max Price"));
-                    
-                    }
-                }
-                // Displaying search queries      
-                ListView {
-                    id: searchQueries
-                    
-                    layoutProperties: AbsoluteLayoutProperties {
-                        positionX: 20
-                        positionY: 240
-                    }
-                    
-                    dataModel: ArrayDataModel {
-                        id: theDataModel1
-                    }
-                    
-                    onCreationCompleted: {
-                        
-                        theDataModel1.insert(0, ("Searcher ID       Video Title      Max Price"));
-                        
-                        //quick hack to remove mysterious 0 on the list
-                        theDataModel1.removeAt(1);
-                    }
-                }
-                
- 
-                
-                
+            id: responderPage
+            ControlDelegate {
+                id: controlDelegate2
+                source: "ResponderPage.qml"
+                delegateActive: (tabPane.activeTab == responderTab)
             }
+            
+            onCreationCompleted: {
+            
+            }        
         }
     }
+
+    Tab {
+        id: viewTab
+        title: "View/Update"
+        
+        NavigationPane {
+            id: navPane
+            Page {
+                Container {
+                    Label {
+                        // Localized text with the dynamic translation and locale updates support
+                        text: qsTr("View and Update records") + Retranslate.onLocaleOrLanguageChanged
+                        textStyle.base: SystemDefaults.TextStyles.BodyText
+                    }
+                    
+                    ListView {
+                        id: listView1
+                        dataModel: dataModel
+                        
+                        onTriggered: {
+                            
+                            if (indexPath.length > 1) {
+                                
+                                //console.log(dataModel.data(indexPath));
+                                var chosenItem = dataModel.data(indexPath);
+                                
+                                var contentpage = itemPageDefinition.createObject();
+                                
+                                contentpage.itemPageTitle = chosenItem.atitle;
+                                contentpage.videoTitleText = chosenItem.atitle;
+                                contentpage.videoGenreText = chosenItem.genre;
+                                contentpage.videoReleaseDateText = chosenItem.dateOfRelease;
+                                contentpage.videoDirectorText = chosenItem.director;
+                                contentpage.videoPriceText = chosenItem.price;
+                                
+                                navPane.push(contentpage);
+                            }
+                        }
+                    
+                    } // Listview 1
+                    
+                    attachedObjects: [
+                        GroupDataModel {
+                            id: dataModel
+                            sortingKeys: ["title"]
+                        },
+                        DataSource {
+                            id: dataSource
+                            source: "video.xml"
+                            query: "/video/message/database/movie"
+                            
+                            
+                            onDataLoaded: {
+                                if (data[0] == undefined) {
+                                    // The data returned is not a list, just one QVariantMap.
+                                    // Use insert to add one element.
+                                    //console.log("Inserting one element");
+                                    dataModel.insert(data)
+                                } else {
+                                    //The data returned is a list. Use insertList.
+                                    console.log("Inserting list element of " + data.length + " items");
+                                    //console.log (data[1]);
+                                    dataModel.insertList(data);
+                                }
+                            }
+                        }
+                    ]
+                    
+                    // for listview1
+                    onCreationCompleted: { dataSource.load(); }   
+                } // Container
+            
+            } // Page 
+            
+            attachedObjects: [
+                ComponentDefinition {
+                    id: itemPageDefinition
+                    source: "ItemPage.qml"
+                }
+            ]
+            
+            onPopTransitionEnded: {
+                // Transition is done destroy the Page to free up memory.
+                page.destroy();
+                
+                // TODO Reload only when something changes 
+                
+                // Clear the Data Model
+                dataModel.clear();
+                // Reload the Data Source
+                dataSource.load();
+            } 
+        } // NavigationPane
+    } // View/ Update Tab
+    
+    Tab {
+        id: addTab
+        title: "Add New"
+        Page {
+            //! [1]
+            titleBar: TitleBar {
+                id: pageTitleBar
+                
+                // The 'Create/Save' action
+                acceptAction: ActionItem {
+                    title: ( qsTr ("Add" ))
+                    
+                    onTriggered: {
+                        // Call libxml2 to save updated data
+                        console.log("Adding new data to XML File");                  
+                        appObject.addNode(videoTitle.value,
+                        videoGenre.value, videoReleaseDate.value,
+                        videoDirector.value, videoPrice.value); 
+                        // TO DO:
+                        // # MAP DATA INPUT TO RESTRICTION FROM SCHEMA!
+                        
+                        //RELOAD THE DATA SOURCE
+                        dataModel.clear();
+                        dataSource.load();
+                        
+                        // Go to View Tab
+                        tabPane.activeTab = viewTab;
+                    }
+                }
+                
+                // The 'Cancel' action
+                dismissAction: ActionItem {
+                    title: qsTr ("Clear")
+                    
+                    onTriggered: {
+                        videoTitle.value = ""
+                        videoGenre.value = ""
+                        videoReleaseDate.value = ""
+                        videoDirector.value = ""
+                        videoPrice.value = ""
+                    }
+                
+                }
+            }
+            //![1]
+            Container {
+                ViewerField {
+                    id:videoTitle
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    title: qsTr("Video Title")
+                
+                
+                }
+                ViewerField {
+                    id:videoGenre
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    title: qsTr("Genre")
+                
+                }
+                ViewerField {
+                    id:videoReleaseDate
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    title: qsTr("Date of Release")
+                
+                }
+                ViewerField {
+                    id:videoDirector
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    title: qsTr("Director")
+                
+                }
+                ViewerField {
+                    id:videoPrice
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    title: qsTr("Price")
+                
+                }
+                
+                TextArea {
+                    text:"ToDo:
+                    Check data restriction as defined by the XML schema.
+                    e.g. Genre is a enumeration type so only accepts certain values
+                    "
+                }
+            
+            }
+        }
+    
+    
+    }
+
 }

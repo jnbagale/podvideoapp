@@ -105,8 +105,8 @@
     <asset path="library-dependencies/${CPUVARDIR}/libxml2.so" type="Qnx/Elf">lib/libxml2.so.11</asset>
    	<asset path="library-dependencies/${CPUVARDIR}/libzmq.so" type="Qnx/Elf">lib/libzmq.so.3</asset>
         
-    <!-- XML & SCHEMA files -->
-    <asset path="schemas/video.xml">video.xml</asset>
+    <!-- XML & SCHEMA files 
+    <asset path="assets/video.xml">video.xml</asset> --> 
     <asset path="schemas/video.xsd">video.xsd</asset>
     
     <asset path="schemas/packedobjectsDataTypes.xsd">packedobjectsDataTypes.xsd</asset>

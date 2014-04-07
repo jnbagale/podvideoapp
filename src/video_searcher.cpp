@@ -40,7 +40,7 @@ using namespace bb::cascades;
 
 /* global variables */
 #define XML_SCHEMA "app/native/video.xsd"
-#define XML_DATA "app/native/video.xml"
+#define XML_DATA "app/native/assets/video.xml"
 
 /* function prototypes */
 int read_response(ApplicationUI *app_object, xmlDocPtr doc_response);

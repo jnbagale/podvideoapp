@@ -35,8 +35,9 @@ extern "C" {
 #define NS_PREFIX "xs"
 #define NS_URL "http://www.w3.org/2001/XMLSchema"
 
-#define XML_DATA "app/native/video.xml"
 #define XML_SCHEMA "app/native/video.xsd"
+#define XML_DATA "app/native/assets/video.xml"
+
 
 /**
  * Use the PID to set the window group id.
@@ -147,7 +148,7 @@ int create_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, ch
 
 	///////////////////// Evaluating XPATH expression ///////////////////
 
-	sprintf(xpath_exp, "/video/message/database/movie[title='%s']/*", movie_title);
+	sprintf(xpath_exp, "/video/message/database/movie[atitle='%s']/*", movie_title);
 
 	/* Evaluate xpath expression */
 	result = xmlXPathEvalExpression((const xmlChar *)xpath_exp, xpathp);

@@ -24,8 +24,13 @@
 
 using namespace bb::cascades;
 
+// XML namespace and url for xpath
+#define NS_PREFIX "xs"
+#define NS_URL "http://www.w3.org/2001/XMLSchema"
+
 /* global variables */
 #define XML_SCHEMA "app/native/video.xsd"
+#define XML_DATA "app/native/assets/video.xml"
 
 ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
         		QObject(app)
@@ -245,4 +250,260 @@ void ApplicationUI::setSize1(QString str)
 	// name is same as HPP WRITE Q_PROPERTY statement
 	str_size1 = str;
 	emit size1Changed();
+}
+
+static inline const char *QStringToCharPtr(QString qString1)
+{
+	// Converting QString to char pointer
+	QByteArray byteArray = qString1.toUtf8();
+	const char *cString1 = byteArray.constData();
+
+	return cString1;
+}
+
+
+int ApplicationUI::deleteNode(QString originalTitle)
+{
+	int size;
+	char xpath_exp[1000];
+	xmlDocPtr doc;
+	xmlXPathContextPtr xpathp = NULL;
+	xmlXPathObjectPtr result = NULL;
+
+	///////////////////// Initialising XML document ///////////////////
+	qDebug() << "Deleting node from XML database: " << originalTitle;
+
+	xmlKeepBlanksDefault(0);
+	doc = xmlReadFile(XML_DATA, NULL, 0);
+
+	if (doc == NULL)
+	{
+		printf("could not parse file %s", XML_DATA);
+	}
+
+	///////////////////// Initialising XPATH ///////////////////
+
+	xpathp = xmlXPathNewContext(doc);
+	if (xpathp == NULL) {
+		printf("Error in xmlXPathNewContext.");
+		xmlXPathFreeContext(xpathp);
+		return -1;
+	}
+
+	if(xmlXPathRegisterNs(xpathp, (const xmlChar *)NS_PREFIX, (const xmlChar *)NS_URL) != 0)
+	{
+		printf("Error: unable to register NS.");
+		xmlXPathFreeContext(xpathp);
+		return -1;
+	}
+
+	///////////////////// Evaluating XPATH expression ///////////////////
+
+	sprintf(xpath_exp, "/video/message/database/movie[atitle='%s']/*", QStringToCharPtr(originalTitle));
+
+	/* Evaluate xpath expression */
+	result = xmlXPathEvalExpression((const xmlChar *)xpath_exp, xpathp);
+	if (result == NULL)
+	{
+		printf("Error in xmlXPathEvalExpression.");
+		xmlXPathFreeObject(result);
+		xmlXPathFreeContext(xpathp);
+		return -1;
+	}
+
+	///////////////////// Processing result ///////////////////
+
+	if(xmlXPathNodeSetIsEmpty(result->nodesetval))
+	{
+		xmlXPathFreeObject(result);
+		xmlXPathFreeContext(xpathp);
+		printf("the id does not exist on the database\n");
+		return -1;
+	}
+	else
+	{
+		size = result->nodesetval->nodeNr;
+		xmlNodePtr cur = result->nodesetval->nodeTab[0];
+
+		qDebug() << "Deleting movie node with :" << size << "child nodes";
+		// Unlink the node
+		xmlUnlinkNode(cur->parent);
+
+		// Free the unlinked node
+		xmlFree(cur->parent);
+
+
+	}
+
+	fflush(stdout);
+
+	// Save changes to file
+	xmlSaveFormatFileEnc(XML_DATA, doc, "UTF-8", 1);
+
+
+	return 0;
+}
+
+static inline int updateChildNode(xmlDocPtr doc, xmlNodePtr cur, QString node, QString data)
+{
+
+	if(!(xmlStrcmp(cur->name, (const xmlChar *)QStringToCharPtr(node))))
+	{
+		// Update the value
+		xmlNodeSetContent(cur, (const xmlChar *)QStringToCharPtr(data));
+
+		xmlChar *key;
+		key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+
+		xmlFree(key);
+	}
+
+	return 0;
+}
+
+int ApplicationUI::updateNode(QString originalTitle, QString videoTitle, QString videoGenre,
+		QString videoReleaseDate, QString videoDirector, QString videoPrice)
+{
+	int i;
+	int size;
+	char xpath_exp[1000];
+	xmlDocPtr doc;
+	xmlXPathContextPtr xpathp = NULL;
+	xmlXPathObjectPtr result = NULL;
+
+	///////////////////// Initialising XML document ///////////////////
+	qDebug() << originalTitle << videoTitle << videoGenre << videoReleaseDate << videoDirector << videoPrice;
+
+	xmlKeepBlanksDefault(0);
+	doc = xmlReadFile(XML_DATA, NULL, 0);
+	if (doc == NULL)
+	{
+		printf("could not parse file %s", XML_DATA);
+	}
+
+	///////////////////// Initialising XPATH ///////////////////
+
+	xpathp = xmlXPathNewContext(doc);
+	if (xpathp == NULL) {
+		printf("Error in xmlXPathNewContext.");
+		xmlXPathFreeContext(xpathp);
+		return -1;
+	}
+
+	if(xmlXPathRegisterNs(xpathp, (const xmlChar *)NS_PREFIX, (const xmlChar *)NS_URL) != 0)
+	{
+		printf("Error: unable to register NS.");
+		xmlXPathFreeContext(xpathp);
+		return -1;
+	}
+
+	///////////////////// Evaluating XPATH expression ///////////////////
+
+	sprintf(xpath_exp, "/video/message/database/movie[atitle='%s']/*", QStringToCharPtr(originalTitle));
+	qDebug() << "Xpath expression " << xpath_exp;
+
+	/* Evaluate xpath expression */
+	result = xmlXPathEvalExpression((const xmlChar *)xpath_exp, xpathp);
+	if (result == NULL)
+	{
+		printf("Error in xmlXPathEvalExpression.");
+		xmlXPathFreeObject(result);
+		xmlXPathFreeContext(xpathp);
+		return -1;
+	}
+
+
+	///////////////////// Processing result ///////////////////
+
+	if(xmlXPathNodeSetIsEmpty(result->nodesetval))
+	{
+		xmlXPathFreeObject(result);
+		xmlXPathFreeContext(xpathp);
+		printf("the id does not exist on the database\n");
+		return -1;
+	}
+	else
+	{
+		size = result->nodesetval->nodeNr;
+		xmlNodePtr cur = result->nodesetval->nodeTab[0];
+
+		for(i = 0; i < size; i++)
+		{
+			// atitle, genre ... are node names from the XML
+			updateChildNode(doc, cur, "atitle", videoTitle);
+			updateChildNode(doc, cur, "genre", videoGenre);
+			updateChildNode(doc, cur, "dateOfRelease", videoReleaseDate);
+			updateChildNode(doc, cur, "director", videoDirector);
+			updateChildNode(doc, cur, "price", videoPrice);
+
+			cur = cur->next;
+		}
+	}
+
+	// Dump to console
+	// xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
+
+	// Save changes to file
+	xmlSaveFormatFileEnc(XML_DATA, doc, "UTF-8", 1);
+
+	return 0;
+}
+
+static inline int addChildNode(xmlNodePtr movie_node, const char *node, QString qData)
+{
+	// QString to char pointer conversion
+	QByteArray byteArray = qData.toUtf8();
+	const char *data_string = byteArray.constData();
+
+	if (data_string == NULL) {
+		qDebug () << "Could not process the data value for: " << node;
+		return -1;
+	}
+
+	// Add the new node
+	xmlNewChild(movie_node , NULL, BAD_CAST node, (const xmlChar *) data_string);
+
+	return 0;
+}
+
+int ApplicationUI::addNode(QString videoTitle, QString videoGenre,
+		QString videoReleaseDate, QString videoDirector, QString videoPrice)
+{
+	xmlDocPtr doc;
+	xmlNodePtr video_node, database_node, movie_node;
+
+	qDebug() << videoTitle << videoGenre << videoReleaseDate << videoDirector << videoPrice;
+
+	xmlKeepBlanksDefault(0);
+
+	doc = xmlReadFile(XML_DATA, NULL, 0);
+	if (doc == NULL) {
+		printf("Failed to parse %s\n", XML_DATA);
+		return -1;
+	}
+
+	video_node = xmlDocGetRootElement(doc);
+
+	// Traversing to the database node
+
+	database_node = video_node->children->children; //video/message/database
+
+	// add item at database node
+	movie_node = xmlNewChild(database_node , NULL, BAD_CAST "movie", BAD_CAST NULL);
+
+	addChildNode(movie_node , "atitle",        videoTitle);
+	addChildNode(movie_node , "genre",         videoGenre);
+	addChildNode(movie_node , "dateOfRelease", videoReleaseDate);
+	addChildNode(movie_node , "director",      videoDirector);
+	addChildNode(movie_node , "price",         videoPrice);
+
+	// Save new node to File
+	xmlSaveFormatFileEnc(XML_DATA, doc, "UTF-8", 1);
+
+	// Dump to Console
+	xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
+
+	xmlFreeDoc(doc);
+
+	return 0;
 }

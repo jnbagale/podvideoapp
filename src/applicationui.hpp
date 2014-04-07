@@ -58,6 +58,13 @@ public:
     Q_INVOKABLE packedobjectsdObject *initialiseSearcher();
     Q_INVOKABLE int sendSearch(QString videoTitle, double maxPrice);
 
+    Q_INVOKABLE int updateNode(QString originalTitle, QString videoTitle,
+    		QString videoGenre, QString videoReleaseDate,
+    		QString videoDirector, QString videoPrice);
+    Q_INVOKABLE int addNode(QString videoTitle, QString videoGenre,
+    		QString videoReleaseDate, QString videoDirector, QString videoPrice);
+    Q_INVOKABLE int deleteNode(QString originalTitle);
+
 
 public Q_SLOTS:
 	// set current status of app
