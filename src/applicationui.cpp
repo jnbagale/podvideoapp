@@ -29,6 +29,8 @@ using namespace bb::cascades;
 #define NS_URL "http://www.w3.org/2001/XMLSchema"
 
 /* global variables */
+
+#define XML_EXPORT "file:///accounts/1000/shared/misc/video.xml"
 #define XML_SCHEMA "app/native/video.xsd"
 #define XML_DATA "app/native/assets/video.xml"
 
@@ -507,3 +509,21 @@ int ApplicationUI::addNode(QString videoTitle, QString videoGenre,
 
 	return 0;
 }
+
+int ApplicationUI::exportXML()
+{
+	xmlDocPtr doc = NULL;
+
+	xmlKeepBlanksDefault(0);
+
+	doc = xmlReadFile(XML_DATA, NULL, 0);
+	if (doc == NULL) {
+		printf("Failed to parse %s\n", XML_DATA);
+		return -1;
+	}
+
+	// Export to disk
+	return xmlSaveFormatFileEnc(XML_EXPORT, doc, "UTF-8", 1);
+}
+
+

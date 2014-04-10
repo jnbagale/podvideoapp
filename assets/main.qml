@@ -14,6 +14,7 @@ import bb.data 1.0
 import bb.cascades 1.2
 
 TabbedPane{
+    property string exportResult; // to be used with dialog box
     id: tabPane
     //showTabsOnActionBar: true
     
@@ -56,7 +57,7 @@ TabbedPane{
         }
     }
 
-    Tab {
+    Tab {   
         id: viewTab
         title: "View/Update"
         
@@ -120,19 +121,58 @@ TabbedPane{
                                     dataModel.insertList(data);
                                 }
                             }
-                        }
+                        },
+                        Dialog {
+                            id: myDialog
+                            
+                            Container {
+                                horizontalAlignment: HorizontalAlignment.Center
+                                verticalAlignment: VerticalAlignment.Center
+                                
+                                Button {
+                                    horizontalAlignment: HorizontalAlignment.Center
+                                    verticalAlignment: VerticalAlignment.Center
+                                    
+                                    text: exportResult
+                                    
+                                    onClicked: myDialog.close()
+                                }
+                            }
+                        }                       
                     ]
+                    
                     
                     // for listview1
                     onCreationCompleted: { dataSource.load(); }   
                 } // Container
-            
+                
+                actions: [
+                    ActionItem {
+                        title: "Export XML"
+                        ActionBar.placement: ActionBarPlacement.InOverflow
+                        onTriggered: {
+                            // Call libxml2 to export saved data
+                            var ret;
+                            console.log("Exporting XML File to 'file:///accounts/1000/shared/misc/'");             
+                            
+                            ret = appObject.exportXML();
+                            
+                            if(ret == -1) {
+                                exportResult = "Could not export XML data";
+                            }
+                            else {
+                                exportResult = "Exported XML data successfully";
+                            }
+                            myDialog.open();
+                        }
+                    }
+                ]
             } // Page 
             
             attachedObjects: [
                 ComponentDefinition {
                     id: itemPageDefinition
-                    source: "ItemPage.qml"
+                    source: "ItemDetailsPage.qml"
                 }
             ]
             

@@ -64,6 +64,7 @@ public:
     Q_INVOKABLE int addNode(QString videoTitle, QString videoGenre,
     		QString videoReleaseDate, QString videoDirector, QString videoPrice);
     Q_INVOKABLE int deleteNode(QString originalTitle);
+    Q_INVOKABLE int exportXML();
 
 
 public Q_SLOTS:
