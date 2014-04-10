@@ -34,25 +34,44 @@ Page {
             
             onTriggered: {
                 // Call libxml2 to save updated data
-                console.log("Saving changes to XML File");             
+                console.log("Updating changes to XML File");  
+                var ret;           
                 
-                appObject.updateNode(pageTitleBar.title, videoTitle.value,
+                ret = appObject.updateNode(pageTitleBar.title, videoTitle.value,
                 videoGenre.value, videoReleaseDate.value,
                 videoDirector.value, videoPrice.value);
                 
-                navPane.pop()
+                if(ret == -1) {
+                    myDialogbox2.dialogMessage = "Could not update XML node data";
+                }
+                else {
+                    myDialogbox2.dialogMessage = "Updated xml node data successfully";
+                }
+                
+                myDialogbox2.open();          
+                //navPane.pop()
             }
         }
         
-        // The 'Cancel' action
+        // The 'Delete' action
         dismissAction: ActionItem {
-            title: qsTr ("Delete")
-            
+            title: qsTr ("Delete")         
             
             onTriggered: {
                 console.log("Deleting node from XML File"); 
-                appObject.deleteNode(pageTitleBar.title);
-                navPane.pop()
+                
+                var ret;
+                ret = appObject.deleteNode(pageTitleBar.title);
+                
+                if(ret == -1) {
+                    myDialogbox2.dialogMessage = "Could not delete XML node data";
+                }
+                else {
+                    myDialogbox2.dialogMessage = "Deleted xml node data successfully";
+                }
+                
+                myDialogbox2.open();
+                //navPane.pop()
             }
         }
     }
@@ -97,5 +116,9 @@ Page {
         }
 
     }
-   
+    attachedObjects: [
+        DialogBox {
+            id:myDialogbox2
+        }    
+    ]
 }

@@ -337,13 +337,8 @@ int ApplicationUI::deleteNode(QString originalTitle)
 
 	}
 
-	fflush(stdout);
-
 	// Save changes to file
-	xmlSaveFormatFileEnc(XML_DATA, doc, "UTF-8", 1);
-
-
-	return 0;
+	return xmlSaveFormatFileEnc(XML_DATA, doc, "UTF-8", 1);
 }
 
 static inline int updateChildNode(xmlDocPtr doc, xmlNodePtr cur, QString node, QString data)
@@ -367,6 +362,7 @@ int ApplicationUI::updateNode(QString originalTitle, QString videoTitle, QString
 		QString videoReleaseDate, QString videoDirector, QString videoPrice)
 {
 	int i;
+	int ret;
 	int size;
 	char xpath_exp[1000];
 	xmlDocPtr doc;
@@ -446,9 +442,10 @@ int ApplicationUI::updateNode(QString originalTitle, QString videoTitle, QString
 	// xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
 
 	// Save changes to file
-	xmlSaveFormatFileEnc(XML_DATA, doc, "UTF-8", 1);
+	ret = xmlSaveFormatFileEnc(XML_DATA, doc, "UTF-8", 1);
+	xmlFreeDoc(doc);
 
-	return 0;
+	return ret;
 }
 
 static inline int addChildNode(xmlNodePtr movie_node, const char *node, QString qData)
@@ -471,6 +468,7 @@ static inline int addChildNode(xmlNodePtr movie_node, const char *node, QString 
 int ApplicationUI::addNode(QString videoTitle, QString videoGenre,
 		QString videoReleaseDate, QString videoDirector, QString videoPrice)
 {
+	int ret;
 	xmlDocPtr doc;
 	xmlNodePtr video_node, database_node, movie_node;
 
@@ -500,18 +498,19 @@ int ApplicationUI::addNode(QString videoTitle, QString videoGenre,
 	addChildNode(movie_node , "price",         videoPrice);
 
 	// Save new node to File
-	xmlSaveFormatFileEnc(XML_DATA, doc, "UTF-8", 1);
+	ret = xmlSaveFormatFileEnc(XML_DATA, doc, "UTF-8", 1);
 
 	// Dump to Console
-	xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
+	//xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
 
 	xmlFreeDoc(doc);
 
-	return 0;
+	return ret;
 }
 
 int ApplicationUI::exportXML()
 {
+	int ret;
 	xmlDocPtr doc = NULL;
 
 	xmlKeepBlanksDefault(0);
@@ -523,7 +522,10 @@ int ApplicationUI::exportXML()
 	}
 
 	// Export to disk
-	return xmlSaveFormatFileEnc(XML_EXPORT, doc, "UTF-8", 1);
+	ret = xmlSaveFormatFileEnc(XML_EXPORT, doc, "UTF-8", 1);
+	xmlFreeDoc(doc);
+
+	return ret;
 }
 
 

@@ -189,13 +189,22 @@ TabbedPane{
                     title: ( qsTr ("Add" ))
                     
                     onTriggered: {
+                        var ret;
                         // Call libxml2 to save updated data
                         console.log("Adding new data to XML File");                  
-                        appObject.addNode(videoTitle.value,
+                        ret = appObject.addNode(videoTitle.value,
                         videoGenre.value, videoReleaseDate.value,
                         videoDirector.value, videoPrice.value); 
                         // TO DO:
                         // # MAP DATA INPUT TO RESTRICTION FROM SCHEMA!
+                        if(ret == -1) {
+                            myDialogbox3.dialogMessage = "Could not add XML node data";
+                        }
+                        else {
+                            myDialogbox3.dialogMessage = "Added xml node data successfully";
+                        }
+                        
+                        myDialogbox3.open();
                         
                         //RELOAD THE DATA SOURCE
                         dataModel.clear();
@@ -260,7 +269,11 @@ TabbedPane{
                     e.g. Genre is a enumeration type so only accepts certain values
                     "
                 }
-            
+                attachedObjects: [
+                    DialogBox {
+                        id:myDialogbox3
+                    } 
+                ]
             }
         }
     
