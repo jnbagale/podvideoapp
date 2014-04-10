@@ -55,37 +55,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="203"/>
+        <location filename="../assets/main.qml" line="189"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="225"/>
+        <location filename="../assets/main.qml" line="211"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="242"/>
+        <location filename="../assets/main.qml" line="228"/>
         <source>Video Title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="249"/>
+        <location filename="../assets/main.qml" line="235"/>
         <source>Genre</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="255"/>
+        <location filename="../assets/main.qml" line="241"/>
         <source>Date of Release</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="261"/>
+        <location filename="../assets/main.qml" line="247"/>
         <source>Director</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="267"/>
+        <location filename="../assets/main.qml" line="253"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>

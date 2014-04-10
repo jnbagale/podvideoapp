@@ -122,22 +122,8 @@ TabbedPane{
                                 }
                             }
                         },
-                        Dialog {
-                            id: myDialog
-                            
-                            Container {
-                                horizontalAlignment: HorizontalAlignment.Center
-                                verticalAlignment: VerticalAlignment.Center
-                                
-                                Button {
-                                    horizontalAlignment: HorizontalAlignment.Center
-                                    verticalAlignment: VerticalAlignment.Center
-                                    
-                                    text: exportResult
-                                    
-                                    onClicked: myDialog.close()
-                                }
-                            }
+                        DialogBox {
+                           id:myDialogbox1
                         }                       
                     ]
                     
@@ -158,12 +144,12 @@ TabbedPane{
                             ret = appObject.exportXML();
                             
                             if(ret == -1) {
-                                exportResult = "Could not export XML data";
+                                myDialogbox1.dialogMessage = "Could not export XML data";
                             }
                             else {
-                                exportResult = "Exported XML data successfully";
+                                myDialogbox1.dialogMessage = "Exported XML data successfully";
                             }
-                            myDialog.open();
+                            myDialogbox1.open();
                         }
                     }
                 ]
