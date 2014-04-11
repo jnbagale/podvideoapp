@@ -93,7 +93,6 @@ TabbedPane{
                             
                             if (indexPath.length > 1) {
                                 
-                                //console.log(dataModel.data(indexPath));
                                 var chosenItem = dataModel.data(indexPath);
                                 
                                 var contentpage = itemPageDefinition.createObject();
@@ -167,7 +166,17 @@ TabbedPane{
                             }
                             myDialogbox1.open();
                         }
+                    },
+                    ActionItem {
+                    title: "Add Records"
+                    ActionBar.placement: ActionBarPlacement.InOverflow
+                    onTriggered: {
+                        var contentpage = addRecordsPageDefinition.createObject();
+                        navPane.push(contentpage);
+                        
                     }
+                    
+                }
                 ]
             } // Page 
             
@@ -175,7 +184,11 @@ TabbedPane{
                 ComponentDefinition {
                     id: itemPageDefinition
                     source: "ItemDetailsPage.qml"
-                }
+                },
+                ComponentDefinition {
+                    id: addRecordsPageDefinition
+                    source: "AddRecordsPage.qml"
+                }  
             ]
             
             onPopTransitionEnded: {
@@ -191,109 +204,6 @@ TabbedPane{
             } 
         } // NavigationPane
     } // View/ Update Tab
-    
-    Tab {
-        id: addTab
-        title: "Add New"
-        Page {
-            //! [1]
-            titleBar: TitleBar {
-                id: pageTitleBar
-                
-                // The 'Create/Save' action
-                acceptAction: ActionItem {
-                    title: ( qsTr ("Add" ))
-                    
-                    onTriggered: {
-                        var ret;
-                        // Call libxml2 to save updated data
-                        console.log("Adding new data to XML File");                  
-                        ret = appObject.addNode(videoTitle.value,
-                        videoGenre.value, videoReleaseDate.value,
-                        videoDirector.value, videoPrice.value); 
-                        // TO DO:
-                        // # MAP DATA INPUT TO RESTRICTION FROM SCHEMA!
-                        if(ret == -1) {
-                            myDialogbox3.dialogMessage = "Could not add XML node data";
-                        }
-                        else {
-                            myDialogbox3.dialogMessage = "Added xml node data successfully";
-                        }
-                        
-                        myDialogbox3.open();
-                        
-                        //RELOAD THE DATA SOURCE
-                        dataModel.clear();
-                        dataSource.load();
-                        
-                        // Go to View Tab
-                        tabPane.activeTab = viewTab;
-                    }
-                }
-                
-                // The 'Cancel' action
-                dismissAction: ActionItem {
-                    title: qsTr ("Clear")
-                    
-                    onTriggered: {
-                        videoTitle.value = ""
-                        videoGenre.value = ""
-                        videoReleaseDate.value = ""
-                        videoDirector.value = ""
-                        videoPrice.value = ""
-                    }
-                
-                }
-            }
-            //![1]
-            Container {
-                ViewerField {
-                    id:videoTitle
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    title: qsTr("Video Title")
-                
-                
-                }
-                ViewerField {
-                    id:videoGenre
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    title: qsTr("Genre")
-                
-                }
-                ViewerField {
-                    id:videoReleaseDate
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    title: qsTr("Date of Release")
-                
-                }
-                ViewerField {
-                    id:videoDirector
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    title: qsTr("Director")
-                
-                }
-                ViewerField {
-                    id:videoPrice
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    title: qsTr("Price")
-                
-                }
-                
-                TextArea {
-                    text:"ToDo:
-                    Check data restriction as defined by the XML schema.
-                    e.g. Genre is a enumeration type so only accepts certain values
-                    "
-                }
-                attachedObjects: [
-                    DialogBox {
-                        id:myDialogbox3
-                    } 
-                ]
-            }
-        }
-    
-    
-    }
+
 
 }

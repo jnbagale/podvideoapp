@@ -148,7 +148,7 @@ int create_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, ch
 
 	///////////////////// Evaluating XPATH expression ///////////////////
 
-	sprintf(xpath_exp, "/video/message/database/movie[atitle='%s']/*", movie_title);
+	sprintf(xpath_exp, "/video/message/database/movie[title='%s']/*", movie_title);
 
 	/* Evaluate xpath expression */
 	result = xmlXPathEvalExpression((const xmlChar *)xpath_exp, xpathp);

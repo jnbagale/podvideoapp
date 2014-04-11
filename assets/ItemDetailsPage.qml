@@ -108,12 +108,6 @@ Page {
             title: qsTr("Price")
             // value: to be set from main.qml
         }
-        
-        TextArea {
-            text:"To Do:
-            Check data restriction as defined by the XML schema.
-            e.g. Genre is a enumeration type so only accepts certain values"
-        }
 
     }
     attachedObjects: [

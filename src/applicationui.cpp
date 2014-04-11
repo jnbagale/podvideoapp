@@ -301,7 +301,7 @@ int ApplicationUI::deleteNode(QString originalTitle)
 
 	///////////////////// Evaluating XPATH expression ///////////////////
 
-	sprintf(xpath_exp, "/video/message/database/movie[atitle='%s']/*", QStringToCharPtr(originalTitle));
+	sprintf(xpath_exp, "/video/message/database/movie[title='%s']/*", QStringToCharPtr(originalTitle));
 
 	/* Evaluate xpath expression */
 	result = xmlXPathEvalExpression((const xmlChar *)xpath_exp, xpathp);
@@ -397,7 +397,7 @@ int ApplicationUI::updateNode(QString originalTitle, QString videoTitle, QString
 
 	///////////////////// Evaluating XPATH expression ///////////////////
 
-	sprintf(xpath_exp, "/video/message/database/movie[atitle='%s']/*", QStringToCharPtr(originalTitle));
+	sprintf(xpath_exp, "/video/message/database/movie[title='%s']/*", QStringToCharPtr(originalTitle));
 	qDebug() << "Xpath expression " << xpath_exp;
 
 	/* Evaluate xpath expression */
@@ -427,8 +427,8 @@ int ApplicationUI::updateNode(QString originalTitle, QString videoTitle, QString
 
 		for(i = 0; i < size; i++)
 		{
-			// atitle, genre ... are node names from the XML
-			updateChildNode(doc, cur, "atitle", videoTitle);
+			// title, genre ... are node names from the XML
+			updateChildNode(doc, cur, "title", videoTitle);
 			updateChildNode(doc, cur, "genre", videoGenre);
 			updateChildNode(doc, cur, "dateOfRelease", videoReleaseDate);
 			updateChildNode(doc, cur, "director", videoDirector);
@@ -491,7 +491,7 @@ int ApplicationUI::addNode(QString videoTitle, QString videoGenre,
 	// add item at database node
 	movie_node = xmlNewChild(database_node , NULL, BAD_CAST "movie", BAD_CAST NULL);
 
-	addChildNode(movie_node , "atitle",        videoTitle);
+	addChildNode(movie_node , "title",        videoTitle);
 	addChildNode(movie_node , "genre",         videoGenre);
 	addChildNode(movie_node , "dateOfRelease", videoReleaseDate);
 	addChildNode(movie_node , "director",      videoDirector);
