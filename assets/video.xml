@@ -3,14 +3,14 @@
   <message>
     <database>
         <movie>
-		  <atitle>skyfall</atitle>
+		  <title>skyfall</title>
 		  <genre>action</genre>
 		  <dateOfRelease>20121012</dateOfRelease>
 		  <director>Sam Mendes</director>
 		  <price>4.99</price>
       </movie>
       <movie>
-		<atitle>avatar</atitle>
+		<title>avatar</title>
 		<genre>sci-fi</genre>
 		<dateOfRelease>20111012</dateOfRelease>
 		<director>James Cameroon</director>

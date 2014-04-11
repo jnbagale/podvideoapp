@@ -59,7 +59,7 @@ TabbedPane{
 
     Tab {   
         id: viewTab
-        title: "View/Update"
+        title: "Records"
         
         NavigationPane {
             id: navPane
@@ -75,6 +75,20 @@ TabbedPane{
                         id: listView1
                         dataModel: dataModel
                         
+                        listItemComponents: [
+                            ListItemComponent {
+                                type: "item"
+                                
+                                // Use a standard list item to display the data in the data
+                                // model
+                                StandardListItem {
+                                    title: ListItemData.title
+                                    description: ListItemData.price
+                                    }
+                            }
+                        ]
+                        
+                        
                         onTriggered: {
                             
                             if (indexPath.length > 1) {
@@ -84,8 +98,8 @@ TabbedPane{
                                 
                                 var contentpage = itemPageDefinition.createObject();
                                 
-                                contentpage.itemPageTitle = chosenItem.atitle;
-                                contentpage.videoTitleText = chosenItem.atitle;
+                                contentpage.itemPageTitle = chosenItem.title;
+                                contentpage.videoTitleText = chosenItem.title;
                                 contentpage.videoGenreText = chosenItem.genre;
                                 contentpage.videoReleaseDateText = chosenItem.dateOfRelease;
                                 contentpage.videoDirectorText = chosenItem.director;
@@ -101,6 +115,8 @@ TabbedPane{
                         GroupDataModel {
                             id: dataModel
                             sortingKeys: ["title"]
+                            sortedAscending: true
+                            grouping: ItemGrouping.ByFirstChar
                         },
                         DataSource {
                             id: dataSource
@@ -112,7 +128,7 @@ TabbedPane{
                                 if (data[0] == undefined) {
                                     // The data returned is not a list, just one QVariantMap.
                                     // Use insert to add one element.
-                                    //console.log("Inserting one element");
+                                    console.log("Inserting one element");
                                     dataModel.insert(data)
                                 } else {
                                     //The data returned is a list. Use insertList.
@@ -134,10 +150,10 @@ TabbedPane{
                 
                 actions: [
                     ActionItem {
-                        title: "Export XML"
+                        title: "Export Records"
                         ActionBar.placement: ActionBarPlacement.InOverflow
                         onTriggered: {
-                            // Call libxml2 to export saved data
+                            // Call libxml2 to export saved XML data
                             var ret;
                             console.log("Exporting XML File to 'file:///accounts/1000/shared/misc/'");             
                             
