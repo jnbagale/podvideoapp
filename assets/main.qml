@@ -21,7 +21,7 @@ TabbedPane{
     onCreationCompleted: {
         tabPane.activeTab = searcherTab;
     }
-
+    
     
     Tab{
         id:searcherTab
@@ -33,9 +33,6 @@ TabbedPane{
                 id: controlDelegate1
                 source: "SearcherPage.qml"
                 delegateActive: (tabPane.activeTab == searcherTab)
-            }
-            
-            onCreationCompleted: {
             }
         }
     }
@@ -49,14 +46,10 @@ TabbedPane{
                 id: controlDelegate2
                 source: "ResponderPage.qml"
                 delegateActive: (tabPane.activeTab == responderTab)
-            }
-            
-            onCreationCompleted: {
-            
-            }        
+            }      
         }
     }
-
+    
     Tab {   
         id: viewTab
         title: "Records"
@@ -72,20 +65,86 @@ TabbedPane{
                     }
                     
                     ListView {
-                        id: listView1
+                        id: listViewRecords
                         dataModel: dataModel
+                        // Set the multiSelectAction property so that an action to enable
+                        // multiple selection mode appears in the context menu of each
+                        // list item when pressed for a longer period
+                        multiSelectAction: MultiSelectActionItem {
+                        }
                         
+                        multiSelectHandler {
+                            status: "None selected"
+                            actions: [
+                                // Add the actions that should appear on the context menu
+                                // when multiple selection mode is enabled
+                                
+                                DeleteActionItem {
+                                    title: "Delete"
+                                    onTriggered: {
+                                        console.log("Delete trigerred");  
+                                        var ret;
+                                        var selectedItems = listViewRecords.selectionList();
+                                        
+                                        for (var count = 0; count < selectedItems.length; count++) {
+                                            var currentItem = dataModel.data(selectedItems[count]);
+                                            console.log("Deleting record for" + currentItem.title);
+                                            
+                                            ret = appObject.deleteNode(currentItem.title, currentItem.title,
+                                            currentItem.genre, currentItem.dateOfRelease,
+                                            currentItem.director, currentItem.price);
+                                            
+                                            if(ret == -1) {
+                                                console.log("Could not delete XML node data");
+                                            }
+                                            else {
+                                                console.log( "Deleted xml node data successfully");
+                                            }
+                                        } 
+                                        dataModel.clear(); // Clear the Data Model           
+                                        dataSource.load();  // Reload the Data Source   
+                                    }
+                                }
+                            ]
+                            
+                            // When multiple selection mode is enabled or disabled, update
+                            // the label accordingly
+                            onActiveChanged: {
+                                if (active == true) {
+                                    console.log("Multiple selection mode is enabled.");
+                                } else {
+                                    console.log("Multiple selection mode is disabled");
+                                }
+                            }
+                        }  
+                        
+                        // When a list item is selected or deselected, update the status text
+                        // to reflect the number of items that are currently selected
+                        onSelectionChanged: {
+                            if (selectionList().length > 1) {
+                                multiSelectHandler.status = selectionList().length +
+                                " items selected";
+                            } else if (selectionList().length == 1) {
+                                multiSelectHandler.status = "1 item selected";
+                            } else {
+                                multiSelectHandler.status = "None selected";
+                            }
+                        }
                         listItemComponents: [
                             ListItemComponent {
                                 type: "item"
                                 
-                                // Use a standard list item to display the data in the data
-                                // model
+                                // Use a standard list item to display the data in the data model                   
                                 StandardListItem {
                                     title: ListItemData.title
                                     description: ListItemData.price
-                                    }
+                                    contextActions: [
+                                        ActionSet {
+                                        }
+                                    ]
+                                } 
                             }
+                        
                         ]
                         
                         
@@ -108,7 +167,7 @@ TabbedPane{
                             }
                         }
                     
-                    } // Listview 1
+                    } // ListviewRecords
                     
                     attachedObjects: [
                         GroupDataModel {
@@ -138,12 +197,12 @@ TabbedPane{
                             }
                         },
                         DialogBox {
-                           id:myDialogbox1
+                            id:myDialogbox1
                         }                       
                     ]
                     
                     
-                    // for listview1
+                    // for listviewRecords
                     onCreationCompleted: { dataSource.load(); }   
                 } // Container
                 
@@ -168,16 +227,32 @@ TabbedPane{
                         }
                     },
                     ActionItem {
-                    title: "Add Records"
-                    ActionBar.placement: ActionBarPlacement.InOverflow
-                    onTriggered: {
-                        var contentpage = addRecordsPageDefinition.createObject();
-                        navPane.push(contentpage);
+                        title: "Add Records"
+                        ActionBar.placement: ActionBarPlacement.InOverflow
+                        onTriggered: {
+                            var contentpage = addRecordsPageDefinition.createObject();
+                            navPane.push(contentpage);
                         
-                    }
+                        }
                     
-                }
-                ]
+                    },
+                    ActionItem {
+                        title: "Refresh"
+                        ActionBar.placement: ActionBarPlacement.InOverflow
+                        onTriggered: {
+                            
+                            dataModel.clear(); // Clear the Data Model                           
+                            dataSource.load(); // Reload the Data Source
+                        }
+                    
+                    },
+                    MultiSelectActionItem {
+                        multiSelectHandler: listViewRecords.multiSelectHandler
+                        onTriggered: {
+                            listViewRecords.multiSelectHandler.active = true;
+                        }
+                    }
+                ]  
             } // Page 
             
             attachedObjects: [
@@ -197,10 +272,9 @@ TabbedPane{
                 
                 // TODO Reload only when something changes 
                 
-                // Clear the Data Model
-                dataModel.clear();
-                // Reload the Data Source
-                dataSource.load();
+                
+                dataModel.clear(); // Clear the Data Model           
+                dataSource.load();  // Reload the Data Source
             } 
         } // NavigationPane
     } // View/ Update Tab

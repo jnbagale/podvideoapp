@@ -53,25 +53,13 @@ Page {
             }
         }
         
-        // The 'Delete' action
+        // The 'cancel' action
         dismissAction: ActionItem {
-            title: qsTr ("Delete")         
+            title: qsTr ("Cancel")         
             
             onTriggered: {
-                console.log("Deleting node from XML File"); 
-                
-                var ret;
-                ret = appObject.deleteNode(pageTitleBar.title);
-                
-                if(ret == -1) {
-                    myDialogbox2.dialogMessage = "Could not delete XML node data";
-                }
-                else {
-                    myDialogbox2.dialogMessage = "Deleted xml node data successfully";
-                }
-                
-                myDialogbox2.open();
-                //navPane.pop()
+            
+                navPane.pop()
             }
         }
     }

@@ -48,31 +48,31 @@
     </message>
     <message>
         <location filename="../assets/ItemDetailsPage.qml" line="58"/>
-        <source>Delete</source>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ItemDetailsPage.qml" line="84"/>
+        <location filename="../assets/ItemDetailsPage.qml" line="72"/>
         <source>Video Title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ItemDetailsPage.qml" line="90"/>
+        <location filename="../assets/ItemDetailsPage.qml" line="78"/>
         <source>Genre</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ItemDetailsPage.qml" line="96"/>
+        <location filename="../assets/ItemDetailsPage.qml" line="84"/>
         <source>Date of Release</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ItemDetailsPage.qml" line="102"/>
+        <location filename="../assets/ItemDetailsPage.qml" line="90"/>
         <source>Director</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ItemDetailsPage.qml" line="108"/>
+        <location filename="../assets/ItemDetailsPage.qml" line="96"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
@@ -88,7 +88,7 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../assets/main.qml" line="70"/>
+        <location filename="../assets/main.qml" line="63"/>
         <source>View and Update records</source>
         <translation type="unfinished"></translation>
     </message>

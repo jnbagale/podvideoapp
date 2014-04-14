@@ -106,6 +106,16 @@ lupdate_inclusion {
              $$quote($$BASEDIR/../src/*.cc) \
              $$quote($$BASEDIR/../src/*.cpp) \
              $$quote($$BASEDIR/../src/*.cxx) \
+             $$quote($$BASEDIR/../src/packedobjects/*.c) \
+             $$quote($$BASEDIR/../src/packedobjects/*.c++) \
+             $$quote($$BASEDIR/../src/packedobjects/*.cc) \
+             $$quote($$BASEDIR/../src/packedobjects/*.cpp) \
+             $$quote($$BASEDIR/../src/packedobjects/*.cxx) \
+             $$quote($$BASEDIR/../src/packedobjectsd/*.c) \
+             $$quote($$BASEDIR/../src/packedobjectsd/*.c++) \
+             $$quote($$BASEDIR/../src/packedobjectsd/*.cc) \
+             $$quote($$BASEDIR/../src/packedobjectsd/*.cpp) \
+             $$quote($$BASEDIR/../src/packedobjectsd/*.cxx) \
              $$quote($$BASEDIR/../assets/*.qml) \
              $$quote($$BASEDIR/../assets/*.js) \
              $$quote($$BASEDIR/../assets/*.qs)
