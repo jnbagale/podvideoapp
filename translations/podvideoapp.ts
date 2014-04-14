@@ -9,32 +9,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AddRecordsPage.qml" line="36"/>
+        <location filename="../assets/AddRecordsPage.qml" line="37"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AddRecordsPage.qml" line="53"/>
+        <location filename="../assets/AddRecordsPage.qml" line="55"/>
         <source>Video Title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AddRecordsPage.qml" line="60"/>
+        <location filename="../assets/AddRecordsPage.qml" line="62"/>
         <source>Genre</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AddRecordsPage.qml" line="66"/>
+        <location filename="../assets/AddRecordsPage.qml" line="68"/>
         <source>Date of Release</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AddRecordsPage.qml" line="72"/>
+        <location filename="../assets/AddRecordsPage.qml" line="74"/>
         <source>Director</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AddRecordsPage.qml" line="78"/>
+        <location filename="../assets/AddRecordsPage.qml" line="80"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
@@ -47,32 +47,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ItemDetailsPage.qml" line="58"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/ItemDetailsPage.qml" line="72"/>
+        <location filename="../assets/ItemDetailsPage.qml" line="63"/>
         <source>Video Title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ItemDetailsPage.qml" line="78"/>
+        <location filename="../assets/ItemDetailsPage.qml" line="69"/>
         <source>Genre</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ItemDetailsPage.qml" line="84"/>
+        <location filename="../assets/ItemDetailsPage.qml" line="75"/>
         <source>Date of Release</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ItemDetailsPage.qml" line="90"/>
+        <location filename="../assets/ItemDetailsPage.qml" line="81"/>
         <source>Director</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ItemDetailsPage.qml" line="96"/>
+        <location filename="../assets/ItemDetailsPage.qml" line="87"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>

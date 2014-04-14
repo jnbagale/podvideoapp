@@ -8,6 +8,7 @@ Page {
         // The 'Create/Save' action
         acceptAction: ActionItem {
             title: ( qsTr ("Add" ))
+            imageSource: "asset:///images/create.png"
             
             onTriggered: {
                 var ret;
@@ -34,6 +35,7 @@ Page {
         dismissAction: ActionItem {
             id:clearAction
             title: qsTr ("Clear")
+            imageSource: "asset:///images/spinner.png"
             
             onTriggered: {
                 videoTitle.value = ""

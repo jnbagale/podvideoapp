@@ -31,6 +31,7 @@ Page {
         // The 'Create/Save' action
         acceptAction: ActionItem {
             title: ( qsTr ("Update" ))
+            imageSource: "asset:///images/update.png"
             
             onTriggered: {
                 // Call libxml2 to save updated data
@@ -50,16 +51,6 @@ Page {
                 
                 myDialogbox2.open();          
                 //navPane.pop()
-            }
-        }
-        
-        // The 'cancel' action
-        dismissAction: ActionItem {
-            title: qsTr ("Cancel")         
-            
-            onTriggered: {
-            
-                navPane.pop()
             }
         }
     }
