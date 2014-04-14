@@ -101,26 +101,26 @@ CONFIG += precompile_header
 PRECOMPILED_HEADER =  $$quote($$BASEDIR/precompiled.h)
 
 lupdate_inclusion {
-    SOURCES +=  $$quote($$BASEDIR/../src/*.c) \
+    SOURCES +=  $$quote($$BASEDIR/../images/*.c) \
+             $$quote($$BASEDIR/../images/*.c++) \
+             $$quote($$BASEDIR/../images/*.cc) \
+             $$quote($$BASEDIR/../images/*.cpp) \
+             $$quote($$BASEDIR/../images/*.cxx) \
+             $$quote($$BASEDIR/../src/*.c) \
              $$quote($$BASEDIR/../src/*.c++) \
              $$quote($$BASEDIR/../src/*.cc) \
              $$quote($$BASEDIR/../src/*.cpp) \
              $$quote($$BASEDIR/../src/*.cxx) \
-             $$quote($$BASEDIR/../src/packedobjects/*.c) \
-             $$quote($$BASEDIR/../src/packedobjects/*.c++) \
-             $$quote($$BASEDIR/../src/packedobjects/*.cc) \
-             $$quote($$BASEDIR/../src/packedobjects/*.cpp) \
-             $$quote($$BASEDIR/../src/packedobjects/*.cxx) \
-             $$quote($$BASEDIR/../src/packedobjectsd/*.c) \
-             $$quote($$BASEDIR/../src/packedobjectsd/*.c++) \
-             $$quote($$BASEDIR/../src/packedobjectsd/*.cc) \
-             $$quote($$BASEDIR/../src/packedobjectsd/*.cpp) \
-             $$quote($$BASEDIR/../src/packedobjectsd/*.cxx) \
              $$quote($$BASEDIR/../assets/*.qml) \
              $$quote($$BASEDIR/../assets/*.js) \
              $$quote($$BASEDIR/../assets/*.qs)
 
-    HEADERS +=  $$quote($$BASEDIR/../src/*.h) \
+    HEADERS +=  $$quote($$BASEDIR/../images/*.h) \
+             $$quote($$BASEDIR/../images/*.h++) \
+             $$quote($$BASEDIR/../images/*.hh) \
+             $$quote($$BASEDIR/../images/*.hpp) \
+             $$quote($$BASEDIR/../images/*.hxx) \
+             $$quote($$BASEDIR/../src/*.h) \
              $$quote($$BASEDIR/../src/*.h++) \
              $$quote($$BASEDIR/../src/*.hh) \
              $$quote($$BASEDIR/../src/*.hpp) \

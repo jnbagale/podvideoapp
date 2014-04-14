@@ -56,6 +56,7 @@ TabbedPane{
         
         NavigationPane {
             id: navPane
+            
             Page {
                 Container {
                     Label {
@@ -71,7 +72,7 @@ TabbedPane{
                         // multiple selection mode appears in the context menu of each
                         // list item when pressed for a longer period
                         multiSelectAction: MultiSelectActionItem {
-                        }
+                        } // opens multi select menu on a long press
                         
                         multiSelectHandler {
                             status: "None selected"
@@ -203,12 +204,16 @@ TabbedPane{
                     
                     
                     // for listviewRecords
-                    onCreationCompleted: { dataSource.load(); }   
+                    onCreationCompleted: {
+                        dataSource.load(); 
+                        }   
                 } // Container
                 
                 actions: [
+                    
                     ActionItem {
                         title: "Export Records"
+                        imageSource: "asset:///images/share.png"
                         ActionBar.placement: ActionBarPlacement.InOverflow
                         onTriggered: {
                             // Call libxml2 to export saved XML data
@@ -228,6 +233,7 @@ TabbedPane{
                     },
                     ActionItem {
                         title: "Add Records"
+                        imageSource: "asset:///images/create.png"
                         ActionBar.placement: ActionBarPlacement.InOverflow
                         onTriggered: {
                             var contentpage = addRecordsPageDefinition.createObject();
@@ -238,11 +244,12 @@ TabbedPane{
                     },
                     ActionItem {
                         title: "Refresh"
+                        imageSource: "asset:///images/refresh.png"
                         ActionBar.placement: ActionBarPlacement.InOverflow
                         onTriggered: {
-                            
-                            dataModel.clear(); // Clear the Data Model                           
-                            dataSource.load(); // Reload the Data Source
+                            dataModel.clear(); // Clear the Data Model  
+                            dataSource.load(); //  Reload the Data Source  
+
                         }
                     
                     },
@@ -270,13 +277,16 @@ TabbedPane{
                 // Transition is done destroy the Page to free up memory.
                 page.destroy();
                 
-                // TODO Reload only when something changes 
-                
-                
-                dataModel.clear(); // Clear the Data Model           
-                dataSource.load();  // Reload the Data Source
-            } 
+                // TODO Reload only when something changes               
+                refreshDataModel();
+            }
+            function refreshDataModel() {
+                dataModel.clear(); // Clear the Data Model  
+                dataSource.load(); //  Reload the Data Source  
+            }
+             
         } // NavigationPane
+
     } // View/ Update Tab
 
 
