@@ -2,7 +2,6 @@ import bb.cascades 1.2
 
 
 Container {
-    property alias responderidText: responderID.text
     property int count2: 0;
     layout: AbsoluteLayout {
     
@@ -31,7 +30,9 @@ Container {
         id: responderID
         textFormat: TextFormat.Plain
         textStyle.color: Color.DarkYellow
-        textStyle.fontStyle: FontStyle.Default        
+        textStyle.fontStyle: FontStyle.Default     
+        text:appObject.getResponderID();   
+        
     } 
     
     // Displying size message

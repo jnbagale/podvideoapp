@@ -43,6 +43,8 @@ public:
     // De- Constructor
     virtual ~ApplicationUI() { }
 
+    QString searcher_ID;
+    QString responder_ID;
     string video_title;
     double max_price;
     packedobjectsdObject *pod_object1;
@@ -54,6 +56,9 @@ public:
     Q_PROPERTY(QString size READ size WRITE setSize NOTIFY sizeChanged)
     Q_PROPERTY(QString query READ query WRITE setQuery NOTIFY queryChanged)
     Q_PROPERTY(QString size1 READ size1 WRITE setSize1 NOTIFY size1Changed)
+
+    Q_INVOKABLE QString getSearcherID();
+    Q_INVOKABLE QString getResponderID();
 
     Q_INVOKABLE packedobjectsdObject *initialiseSearcher();
     Q_INVOKABLE int sendSearch(QString videoTitle, double maxPrice);

@@ -75,7 +75,7 @@
 <context>
     <name>SearcherPage</name>
     <message>
-        <location filename="../assets/SearcherPage.qml" line="88"/>
+        <location filename="../assets/SearcherPage.qml" line="87"/>
         <source>Sending search reuqest...</source>
         <translation type="unfinished"></translation>
     </message>

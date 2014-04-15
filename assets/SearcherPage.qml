@@ -2,7 +2,6 @@ import bb.cascades 1.2
 
 
 Container {
-    property alias searcheridText: searcherID.text
     property int count1: 0;
     layout: AbsoluteLayout {
     
@@ -137,7 +136,8 @@ Container {
             id: searcherID
             textFormat: TextFormat.Plain
             textStyle.color: Color.DarkYellow
-            textStyle.fontStyle: FontStyle.Default        
+            textStyle.fontStyle: FontStyle.Default   
+            text:appObject.getSearcherID();  
         } 
         
         // Displying status message

@@ -70,20 +70,16 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 	pod_object2 = this->initialiseSearcher();
 
 	//set the value of searcher's unique id
-	QString s_id_string = QString::number(pod_object2->unique_id, 10);
-
-	qDebug() << "Searcher ID:- " << s_id_string << endl;
-	root->setProperty("searcheridText", QVariant ("ID" + s_id_string));
+	this->searcher_ID = "ID: " + QString::number(pod_object2->unique_id, 10);
+	qDebug() << "Searcher ID:- " << this->searcher_ID << endl;
 
 	// Initialise video responder
 
 	pod_obj_responder = _initialiseResponder();
 
 	//set the value of responder's unique id
-	QString r_id_string = QString::number(pod_obj_responder->unique_id, 10);
-
-	qDebug() << "Responder ID:- " << r_id_string << endl;
-	root->setProperty("responderidText", QVariant ("ID" + r_id_string));
+	this->responder_ID = "ID: " + QString::number(pod_obj_responder->unique_id, 10);
+	qDebug() << "Responder ID:- " << this->responder_ID << endl;
 
 	if(pod_object2 !=NULL) {
 
@@ -122,6 +118,16 @@ void ApplicationUI::onSystemLanguageChanged()
 	if (m_pTranslator->load(file_name, "app/native/qm")) {
 		QCoreApplication::instance()->installTranslator(m_pTranslator);
 	}
+}
+
+QString ApplicationUI::getSearcherID()
+{
+	return this->searcher_ID;
+}
+
+QString ApplicationUI::getResponderID()
+{
+	return this->responder_ID;
 }
 
 packedobjectsdObject * ApplicationUI::initialiseSearcher()
