@@ -58,6 +58,7 @@ TabbedPane{
             id: navPane
             
             Page {
+
                 Container {
                     Label {
                         // Localized text with the dynamic translation and locale updates support
@@ -73,6 +74,11 @@ TabbedPane{
                         // list item when pressed for a longer period
                         multiSelectAction: MultiSelectActionItem {
                         } // opens multi select menu on a long press
+                        
+                        function refreshDataModel(){
+                            dataModel.clear();
+                            dataSource.load();
+                        }
                         
                         multiSelectHandler {
                             status: "None selected"
@@ -102,8 +108,7 @@ TabbedPane{
                                                 console.log( "Deleted xml node data successfully");
                                             }
                                         } 
-                                        dataModel.clear(); // Clear the Data Model           
-                                        dataSource.load();  // Reload the Data Source   
+                                       listViewRecords.refreshDataModel(); // reload data model
                                     }
                                 }
                             ]
@@ -247,8 +252,7 @@ TabbedPane{
                         imageSource: "asset:///images/refresh.png"
                         ActionBar.placement: ActionBarPlacement.InOverflow
                         onTriggered: {
-                            dataModel.clear(); // Clear the Data Model  
-                            dataSource.load(); //  Reload the Data Source  
+                            listViewRecords.refreshDataModel();// reload the data model 
 
                         }
                     
@@ -278,13 +282,8 @@ TabbedPane{
                 page.destroy();
                 
                 // TODO Reload only when something changes               
-                refreshDataModel();
-            }
-            function refreshDataModel() {
-                dataModel.clear(); // Clear the Data Model  
-                dataSource.load(); //  Reload the Data Source  
-            }
-             
+                listViewRecords.refreshDataModel(); // reload the data model
+            }           
         } // NavigationPane
 
     } // View/ Update Tab
