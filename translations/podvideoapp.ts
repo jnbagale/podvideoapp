@@ -83,7 +83,7 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../assets/main.qml" line="64"/>
+        <location filename="../assets/main.qml" line="67"/>
         <source>View and Update records</source>
         <translation type="unfinished"></translation>
     </message>

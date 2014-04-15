@@ -16,8 +16,7 @@ import bb.cascades 1.2
 TabbedPane{
     property string exportResult; // to be used with dialog box
     id: tabPane
-    //showTabsOnActionBar: true
-    
+        
     onCreationCompleted: {
         tabPane.activeTab = searcherTab;
     }
@@ -26,6 +25,7 @@ TabbedPane{
     Tab{
         id:searcherTab
         title: "Searcher"
+        imageSource: "asset:///images/search.png"
         // The first page, which appears at startup 
         Page {
             id: searcherPage
@@ -39,6 +39,7 @@ TabbedPane{
     Tab {
         id:responderTab
         title: "Responder"
+        imageSource: "asset:///images/responder.png"
         
         Page {
             id: responderPage
@@ -53,6 +54,7 @@ TabbedPane{
     Tab {   
         id: viewTab
         title: "Records"
+        imageSource: "asset:///images/database.png"
         
         NavigationPane {
             id: navPane
@@ -242,8 +244,7 @@ TabbedPane{
                         ActionBar.placement: ActionBarPlacement.InOverflow
                         onTriggered: {
                             var contentpage = addRecordsPageDefinition.createObject();
-                            navPane.push(contentpage);
-                        
+                            navPane.push(contentpage);                        
                         }
                     
                     },
@@ -253,7 +254,6 @@ TabbedPane{
                         ActionBar.placement: ActionBarPlacement.InOverflow
                         onTriggered: {
                             listViewRecords.refreshDataModel();// reload the data model 
-
                         }
                     
                     },

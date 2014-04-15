@@ -101,25 +101,38 @@ CONFIG += precompile_header
 PRECOMPILED_HEADER =  $$quote($$BASEDIR/precompiled.h)
 
 lupdate_inclusion {
-    SOURCES +=  $$quote($$BASEDIR/../images/*.c) \
-             $$quote($$BASEDIR/../images/*.c++) \
-             $$quote($$BASEDIR/../images/*.cc) \
-             $$quote($$BASEDIR/../images/*.cpp) \
-             $$quote($$BASEDIR/../images/*.cxx) \
+    SOURCES +=  $$quote($$BASEDIR/../assets/images/*.c) \
+             $$quote($$BASEDIR/../assets/images/*.c++) \
+             $$quote($$BASEDIR/../assets/images/*.cc) \
+             $$quote($$BASEDIR/../assets/images/*.cpp) \
+             $$quote($$BASEDIR/../assets/images/*.cxx) \
              $$quote($$BASEDIR/../src/*.c) \
              $$quote($$BASEDIR/../src/*.c++) \
              $$quote($$BASEDIR/../src/*.cc) \
              $$quote($$BASEDIR/../src/*.cpp) \
              $$quote($$BASEDIR/../src/*.cxx) \
+             $$quote($$BASEDIR/../src/packedobjects/*.c) \
+             $$quote($$BASEDIR/../src/packedobjects/*.c++) \
+             $$quote($$BASEDIR/../src/packedobjects/*.cc) \
+             $$quote($$BASEDIR/../src/packedobjects/*.cpp) \
+             $$quote($$BASEDIR/../src/packedobjects/*.cxx) \
+             $$quote($$BASEDIR/../src/packedobjectsd/*.c) \
+             $$quote($$BASEDIR/../src/packedobjectsd/*.c++) \
+             $$quote($$BASEDIR/../src/packedobjectsd/*.cc) \
+             $$quote($$BASEDIR/../src/packedobjectsd/*.cpp) \
+             $$quote($$BASEDIR/../src/packedobjectsd/*.cxx) \
              $$quote($$BASEDIR/../assets/*.qml) \
              $$quote($$BASEDIR/../assets/*.js) \
-             $$quote($$BASEDIR/../assets/*.qs)
+             $$quote($$BASEDIR/../assets/*.qs) \
+             $$quote($$BASEDIR/../assets/images/*.qml) \
+             $$quote($$BASEDIR/../assets/images/*.js) \
+             $$quote($$BASEDIR/../assets/images/*.qs)
 
-    HEADERS +=  $$quote($$BASEDIR/../images/*.h) \
-             $$quote($$BASEDIR/../images/*.h++) \
-             $$quote($$BASEDIR/../images/*.hh) \
-             $$quote($$BASEDIR/../images/*.hpp) \
-             $$quote($$BASEDIR/../images/*.hxx) \
+    HEADERS +=  $$quote($$BASEDIR/../assets/images/*.h) \
+             $$quote($$BASEDIR/../assets/images/*.h++) \
+             $$quote($$BASEDIR/../assets/images/*.hh) \
+             $$quote($$BASEDIR/../assets/images/*.hpp) \
+             $$quote($$BASEDIR/../assets/images/*.hxx) \
              $$quote($$BASEDIR/../src/*.h) \
              $$quote($$BASEDIR/../src/*.h++) \
              $$quote($$BASEDIR/../src/*.hh) \
