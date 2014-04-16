@@ -111,7 +111,7 @@ int addSearchResult(string responderID, string videoTitle, string videoPrice, st
 	ret = xmlSaveFormatFileEnc(XML_RESPONSE, doc, "UTF-8", 1);
 
 	// Dump to Console
-	xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
+	//xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
 
 	xmlFreeDoc(doc);
 
@@ -285,8 +285,6 @@ xmlDocPtr create_search(packedobjectsdObject *pod_obj, char *movie_title, double
 	xmlDocPtr doc_search = NULL;
 	xmlNodePtr video_node = NULL, message_node = NULL, search_node = NULL;
 
-	LIBXML_TEST_VERSION;
-
 	// converting price from double to string
 	snprintf(maxPrice, 32, "%g", max_price);
 
@@ -307,8 +305,7 @@ xmlDocPtr create_search(packedobjectsdObject *pod_obj, char *movie_title, double
 	xmlNewChild(search_node, NULL, BAD_CAST "movie-title", BAD_CAST movie_title);
 	xmlNewChild(search_node, NULL, BAD_CAST "max-price", BAD_CAST maxPrice);
 
-	xml_dump_doc(doc_search);
-	// xmlFreeDoc(doc_search);
+	//xml_dump_doc(doc_search);
 	return doc_search;
 }
 

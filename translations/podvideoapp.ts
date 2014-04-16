@@ -73,10 +73,38 @@
     </message>
 </context>
 <context>
-    <name>main</name>
+    <name>RecordsPage</name>
     <message>
-        <location filename="../assets/main.qml" line="67"/>
+        <location filename="../assets/RecordsPage.qml" line="12"/>
         <source>View and Update records</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SearchResponsePage</name>
+    <message>
+        <location filename="../assets/SearchResponsePage.qml" line="37"/>
+        <source>Video Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/SearchResponsePage.qml" line="43"/>
+        <source>Genre</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/SearchResponsePage.qml" line="49"/>
+        <source>Date of Release</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/SearchResponsePage.qml" line="55"/>
+        <source>Director</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/SearchResponsePage.qml" line="61"/>
+        <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
