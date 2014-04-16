@@ -1,5 +1,5 @@
+import bb.data 1.0
 import bb.cascades 1.2
-
 
 Container {
     property int count1: 0;
@@ -84,7 +84,7 @@ Container {
             id: search
             text: "search"
             onClicked: {
-                appObject.status = qsTr("Sending search reuqest...");
+                console.log("Sending search reuqest...");
                 appObject.sendSearch(videoTitleText.searchTitle.toLowerCase(), price.maxPrice); 
             }
         }
@@ -99,8 +99,8 @@ Container {
             id: reset
             text: "Clear Results"
             onClicked: {
-                theDataModel.clear();
-                theDataModel.insert(0, ("Responder ID       Video Title         Price"));
+                dataModel.clear();
+                //theDataModel.insert(0, ("Responder ID       Video Title         Price"));
             
             }
         }
@@ -108,24 +108,89 @@ Container {
         // Displaying search results      
         ListView {
             id: searchResults
+            dataModel: dataModel
             
             layoutProperties: AbsoluteLayoutProperties {
                 positionX: 20
                 positionY: 440
             }
+            listItemComponents: [
+                ListItemComponent {
+                    type: "item"
+                    
+                    // Use a standard list item to display the data in the data model                   
+                    StandardListItem {
+                        title: ListItemData.title
+                        description: qsTr(ListItemData.price)
+                        
+                        contextActions: [
+                            ActionSet {
+                            }
+                        ]
+                    } 
+                }
             
-            dataModel: ArrayDataModel {
-                id: theDataModel
+            ]
+            //TODO: Open new pane for displaying more details
+            onTriggered: {
+                
+                if (indexPath.length > 1) {
+                    
+                    var chosenItem = dataModel.data(indexPath);
+                    
+                    var contentpage = itemPageDefinition.createObject();
+                    
+                    contentpage.itemPageTitle = chosenItem.title;
+                    contentpage.videoTitleText = chosenItem.title;
+                    contentpage.videoGenreText = chosenItem.genre;
+                    contentpage.videoReleaseDateText = chosenItem.dateOfRelease;
+                    contentpage.videoDirectorText = chosenItem.director;
+                    contentpage.videoPriceText = chosenItem.price;
+                    
+                    navPane.push(contentpage);
+                }
             }
             
             onCreationCompleted: {
-                
-                theDataModel.insert(0, ("Responder ID       Video Title         Price"));
-                
-                //quick hack to remove mysterious 0 on the list
-                theDataModel.removeAt(1);
+                appObject.searchResponseChanged.connect(onCPPresponseChanged)
             }
-        }
+            
+            function onCPPresponseChanged()
+            {
+                dataModel.clear();
+                dataSource.load();
+            }
+            
+      
+        } // ListView
+        attachedObjects: [
+            GroupDataModel {
+                id: dataModel
+                sortingKeys: ["title"]
+                sortedAscending: true
+                grouping: ItemGrouping.ByFirstChar
+            },
+            DataSource {
+                id: dataSource
+                source: "response.xml"
+                query: "/video/message/response/movie"
+                
+                
+                onDataLoaded: {
+                    if (data[0] == undefined) {
+                        // The data returned is not a list, just one QVariantMap.
+                        // Use insert to add one element.
+                        console.log("Inserting one element");
+                        dataModel.insert(data)
+                    } else {
+                        //The data returned is a list. Use insertList.
+                        console.log("Inserting list element of " + data.length + " items");
+                        //console.log (data[1]);
+                        dataModel.insertList(data);
+                    }
+                }
+            }
+        ]
         
         Label {
             layoutProperties: AbsoluteLayoutProperties {
@@ -139,22 +204,6 @@ Container {
             textStyle.fontStyle: FontStyle.Default   
             text:appObject.getSearcherID();  
         } 
-        
-        // Displying status message
-        Label {
-            layoutProperties: AbsoluteLayoutProperties {
-                positionX: 300
-                positionY: 1100
-            }
-            
-            id: statusText
-            text: "status:- " + appObject.status
-            preferredWidth: 800
-            preferredHeight: 100
-            textStyle.fontSize: FontSize.Small
-            textStyle.fontStyle: FontStyle.Italic
-        
-        }
         
         // Displying size message
         Label {
@@ -171,30 +220,5 @@ Container {
             textStyle.fontStyle: FontStyle.Italic
         
         }
-        
-        // Invisible Label to update search results on list view
-        Label {
-            layoutProperties: AbsoluteLayoutProperties {
-                positionX: 130
-                positionY: 1170
-            }
-            
-            id: dummyTitle
-            text: count1 + ":" + appObject.title
-            
-            onTextChanged: {
-                if (count1 == 5)
-                {
-                    count1 = 0;
-                    theDataModel.clear();
-                    theDataModel.insert(0, ("Responder ID       Video Title         Price"));
-                
-                }
-                theDataModel.append(appObject.title);
-                count1++;
-            
-            }
-            textFormat: TextFormat.Plain
-            visible: false
-        }
-    }
+
+}

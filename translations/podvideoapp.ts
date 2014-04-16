@@ -73,14 +73,6 @@
     </message>
 </context>
 <context>
-    <name>SearcherPage</name>
-    <message>
-        <location filename="../assets/SearcherPage.qml" line="87"/>
-        <source>Sending search reuqest...</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>main</name>
     <message>
         <location filename="../assets/main.qml" line="67"/>

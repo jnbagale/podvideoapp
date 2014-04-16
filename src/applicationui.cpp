@@ -104,7 +104,6 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 	}
 	else {
 		cout << "failed to initialise properly! Please check network status"<<endl;
-		this->setStatus(QString ("failed to initialise properly!"));
 	}
 
 }
@@ -132,16 +131,13 @@ QString ApplicationUI::getResponderID()
 
 packedobjectsdObject * ApplicationUI::initialiseSearcher()
 {
-	this->setStatus(QString ("Initialising..."));
-	//pod_object1 = _initialiseSearcher();
-
 	// Initialise packedobjectsd
 	if((pod_object1 = init_packedobjectsd(XML_SCHEMA, SEARCHER)) == NULL) {
 		printf("failed to initialise libpackedobjectsd\n");
 	}
 
 	if(pod_object1 !=NULL) {
-		this->setStatus(QString ("Initialisation complete."));
+		qDebug()<<"Initialisation complete.";
 	}
 
 	return pod_object1;
@@ -162,7 +158,7 @@ int ApplicationUI::sendSearch(QString videoTitle, double maxPrice)
 
 			_sendSearch(this, pod_object1, doc_search);
 
-		this->setStatus(QString ("Search request sent.."));
+		qDebug()<<"Search request sent...";
 		return 1;
 	}
 
@@ -177,8 +173,7 @@ ReceiveThread::ReceiveThread(ApplicationUI *app_object, packedobjectsdObject *po
 
 void ReceiveThread::process()
 {
-	//qDebug("Hello QThread!");
-	app_object1->setStatus(QString ("Ready to receive .."));
+	qDebug()<<"Ready to receive ...";
 	_receiveResponse(app_object1, pod_object3);
 	emit finished();
 }
@@ -194,36 +189,11 @@ ResponderThread::ResponderThread(ApplicationUI *app_object, packedobjectsdObject
 void ResponderThread::run_responder()
 {
 	//qDebug("Hello QThread!");
-	app_object2->setStatus(QString ("Responder ready .."));
+	qDebug()<<"Responder ready ...";
 	start_responder(pod_object4, app_object2, pod_resp_obj);
 	emit finished();
 }
 // Various functions to pass signals to QML
-
-QString ApplicationUI::status()
-{
-	return str_status;
-}
-
-void ApplicationUI::setStatus(QString str)
-{
-	// name is same as HPP WRITE Q_PROPERTY statement
-	str_status = str;
-	emit statusChanged();
-}
-
-QString ApplicationUI::title()
-{
-	return str_title;
-}
-
-void ApplicationUI::setTitle(QString str)
-{
-	// name is same as HPP WRITE Q_PROPERTY statement
-	str_title = str;
-	emit titleChanged();
-}
-
 QString ApplicationUI::size()
 {
 	return str_size;
@@ -260,6 +230,10 @@ void ApplicationUI::setSize1(QString str)
 	emit size1Changed();
 }
 
+void ApplicationUI::newSearchResponse()
+{
+	emit searchResponseChanged();
+}
 static inline const char *QStringToCharPtr(QString qString1)
 {
 	// Converting QString to char pointer

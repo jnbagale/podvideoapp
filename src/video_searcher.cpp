@@ -41,6 +41,7 @@ using namespace bb::cascades;
 /* global variables */
 #define XML_SCHEMA "app/native/video.xsd"
 #define XML_DATA "app/native/assets/video.xml"
+#define XML_RESPONSE "app/native/assets/response.xml"
 
 /* function prototypes */
 int read_response(ApplicationUI *app_object, xmlDocPtr doc_response);
@@ -48,16 +49,88 @@ int read_response(ApplicationUI *app_object, xmlDocPtr doc_response);
 /* function definitions */
 
 //////////////////////// RECEIVING SEARCH RESPONSE BACK //////////////////////////
+int resetSearchResult()
+{
+	int ret;
+	xmlDocPtr doc;
+	xmlNodePtr video_node, message_node, response_node;
 
+	xmlKeepBlanksDefault(0);
+
+	doc = xmlNewDoc(BAD_CAST "1.0");
+
+	/* create pod node as root node */
+	video_node = xmlNewNode(NULL, BAD_CAST "video");
+	xmlDocSetRootElement(doc, video_node);
+
+	message_node = xmlNewChild(video_node, NULL, BAD_CAST "message", BAD_CAST NULL);
+	response_node = xmlNewChild(message_node, NULL, BAD_CAST "response", BAD_CAST NULL);
+
+	// Save blank XML RESPONSE to File
+	ret = xmlSaveFormatFileEnc(XML_RESPONSE, doc, "UTF-8", 1);
+
+	// Dump to Console
+	//xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
+
+	xmlFreeDoc(doc);
+	return ret;
+}
+
+int addSearchResult(string responderID, string videoTitle, string videoPrice, string videoGenre,
+		 string videoReleaseDate, string videoDirector)
+{
+	int ret;
+	xmlDocPtr doc;
+	xmlNodePtr video_node, response_node, movie_node;
+
+	xmlKeepBlanksDefault(0);
+
+	doc = xmlReadFile(XML_RESPONSE, NULL, 0);
+	if (doc == NULL) {
+		printf("Failed to parse %s\n", XML_RESPONSE);
+		return -1;
+	}
+
+	video_node = xmlDocGetRootElement(doc);
+
+	// Traversing to the database node
+
+	response_node = video_node->children->children; //video/message/response
+
+	// add item at database node
+	movie_node = xmlNewChild(response_node , NULL, BAD_CAST "movie", BAD_CAST NULL);
+
+	xmlNewChild(movie_node , NULL, BAD_CAST "responderID",  BAD_CAST responderID.c_str());
+	xmlNewChild(movie_node , NULL, BAD_CAST "title",         BAD_CAST videoTitle.c_str());
+	xmlNewChild(movie_node , NULL, BAD_CAST "price",        BAD_CAST videoPrice.c_str());
+	xmlNewChild(movie_node , NULL, BAD_CAST "genre",         BAD_CAST videoGenre.c_str());
+	xmlNewChild(movie_node , NULL, BAD_CAST "dateOfRelease",BAD_CAST videoReleaseDate.c_str());
+	xmlNewChild(movie_node , NULL, BAD_CAST "director",     BAD_CAST videoDirector.c_str());
+
+	// Save new node to File
+	ret = xmlSaveFormatFileEnc(XML_RESPONSE, doc, "UTF-8", 1);
+
+	// Dump to Console
+	xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
+
+	xmlFreeDoc(doc);
+
+	return ret;
+}
 
 int read_response(ApplicationUI *app_object, xmlDocPtr doc_response)
 {
 	/* Declare variables */
 	int i;
+	int ret;
 	int size;
-	double movie_price = 0.0;
 	char *responder_id = NULL;
 	char *movie_title = NULL;
+	char *movie_price = NULL;
+	char *movie_genre = NULL;
+	char *movie_release_date = NULL;
+	char *movie_director = NULL;
+
 	char xpath_exp[1000];
 	xmlXPathContextPtr xpathp = NULL;
 	xmlXPathObjectPtr result = NULL;
@@ -123,21 +196,45 @@ int read_response(ApplicationUI *app_object, xmlDocPtr doc_response)
 			{
 				xmlChar *key;
 				key = xmlNodeListGetString(doc_response, cur->xmlChildrenNode, 1);
-				movie_price = atof((char *)key);
+				movie_price = strdup((char *)key);
+				xmlFree(key);
+			}
+			if(!(xmlStrcmp(cur->name, (const xmlChar *)"genre")))
+			{
+				xmlChar *key;
+				key = xmlNodeListGetString(doc_response, cur->xmlChildrenNode, 1);
+				movie_genre = strdup((char *)key);
+				xmlFree(key);
+			}
+			if(!(xmlStrcmp(cur->name, (const xmlChar *)"dateOfRelease")))
+			{
+				xmlChar *key;
+				key = xmlNodeListGetString(doc_response, cur->xmlChildrenNode, 1);
+				movie_release_date = strdup((char *)key);
+				xmlFree(key);
+			}
+			if(!(xmlStrcmp(cur->name, (const xmlChar *)"director")))
+			{
+				xmlChar *key;
+				key = xmlNodeListGetString(doc_response, cur->xmlChildrenNode, 1);
+				movie_director = strdup((char *)key);
 				xmlFree(key);
 			}
 
 			cur = cur->next;
 		}
-		char temp_string[200];
-		sprintf(temp_string, "%s    %s    %g", responder_id, movie_title, movie_price);
 		printf("\n********** search result details ***********\n");
 		printf("Responder ID: %s \n", responder_id);
 		printf("Movie title: %s \n", movie_title);
-		printf("Movie price: %g\n", movie_price);
+		printf("Movie price: %s\n", movie_price);
 
-		// set label on qml to the search result
-		app_object->setTitle((QString) temp_string);
+		// Add new result to the search.xml
+		ret = addSearchResult(responder_id, movie_title, movie_price, movie_genre, movie_release_date, movie_director);
+		// app_object->setTitle((QString) temp_string);
+
+		if(ret!= 1) {
+		app_object->newSearchResponse();
+		}
 	}
 	///////////////////// Freeing ///////////////////
 
@@ -238,6 +335,8 @@ int _sendSearch(ApplicationUI *app_object, packedobjectsdObject *pod_object1, xm
 
 	printf("search request of %d bytes sent to responders...\n", pod_object1->bytes_sent - 1);
 
+	// reset previous search history
+	resetSearchResult();
 	return 1;
 }
 
