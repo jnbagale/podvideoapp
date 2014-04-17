@@ -100,19 +100,25 @@ NavigationPane {
                 id: reset
                 text: "Clear Results"
                 onClicked: {
-                    dataModel.clear();            
+                    searcherDataModel.clear();            
                 }
             }
             
             // Displaying search results      
             ListView {
                 id: searchResults
-                dataModel: dataModel
+                dataModel: searcherDataModel
                 
                 layoutProperties: AbsoluteLayoutProperties {
                     positionX: 20
                     positionY: 440
                 }
+                
+                function refreshDataModel(){
+                   searcherDataModel.clear();
+                    dataSource.load();
+                }
+                
                 listItemComponents: [
                     ListItemComponent {
                         type: "item"
@@ -130,12 +136,11 @@ NavigationPane {
                     }
                 
                 ]
-                //TODO: Open new pane for displaying more details
                 onTriggered: {
                     
                     if (indexPath.length > 1) {
                         
-                        var chosenItem = dataModel.data(indexPath);
+                        var chosenItem = searcherDataModel.data(indexPath);
                         
                         var contentpage = responsePageDefinition.createObject();
                         
@@ -156,8 +161,7 @@ NavigationPane {
                 
                 function onCPPresponseChanged()
                 {
-                    dataModel.clear();
-                    dataSource.load();
+                    refreshDataModel();
                 }
             
             
@@ -195,7 +199,7 @@ NavigationPane {
             
             attachedObjects: [
                 GroupDataModel {
-                    id: dataModel
+                    id: searcherDataModel
                     sortingKeys: ["title"]
                     sortedAscending: true
                     grouping: ItemGrouping.ByFirstChar
@@ -211,12 +215,12 @@ NavigationPane {
                             // The data returned is not a list, just one QVariantMap.
                             // Use insert to add one element.
                             console.log("Inserting one element");
-                            dataModel.insert(data)
+                            searcherDataModel.insert(data)
                         } else {
                             //The data returned is a list. Use insertList.
                             console.log("Inserting list element of " + data.length + " items");
                             //console.log (data[1]);
-                            dataModel.insertList(data);
+                            searcherDataModel.insertList(data);
                         }
                     }
                 },
