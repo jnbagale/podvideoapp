@@ -41,7 +41,7 @@ TabbedPane{
         title: "Responder"
         imageSource: "asset:///images/responder.png"
         
-        delegateActivationPolicy: TabDelegateActivationPolicy.ActivateWhenSelected
+        delegateActivationPolicy: TabDelegateActivationPolicy.ActivateImmediately
         
         delegate: Delegate {
             id: responderDelegate
