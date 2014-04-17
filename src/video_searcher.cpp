@@ -20,16 +20,6 @@
 // A simple program to broadcast video search to connected clients.
 // Clients interested in the video then respond to this searcher
 
-extern "C" {
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <packedobjectsd/packedobjectsd.h>
-}
-
-#include <QString>
-
 #include "video_searcher.h"
 
 // XML namespace and url for xpath

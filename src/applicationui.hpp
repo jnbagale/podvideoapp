@@ -4,13 +4,29 @@
 #include <QObject>
 #include <QThread>
 #include <QString>
+
 #include <iostream>
 #include <string>
 
 
 extern "C" {
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+//#include <fcntl.h>
 #include <packedobjectsd/packedobjectsd.h>
 }
+
+// XML namespace and url for xpath
+#define NS_PREFIX "xs"
+#define NS_URL "http://www.w3.org/2001/XMLSchema"
+
+// XML file and schema location
+
+#define XML_EXPORT "file:///accounts/1000/shared/misc/video.xml"
+#define XML_SCHEMA "app/native/video.xsd"
+#define XML_DATA "app/native/assets/video.xml"
 
 using namespace std;
 

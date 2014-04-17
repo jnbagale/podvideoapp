@@ -20,23 +20,7 @@
  * limitations under the License.
  */
 
-extern "C" {
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <fcntl.h>
-#include <packedobjectsd/packedobjectsd.h>
-}
-
 #include "video_responder.h"
-
-// XML namespace and url for xpath
-#define NS_PREFIX "xs"
-#define NS_URL "http://www.w3.org/2001/XMLSchema"
-
-#define XML_SCHEMA "app/native/video.xsd"
-#define XML_DATA "app/native/assets/video.xml"
 
 
 /**

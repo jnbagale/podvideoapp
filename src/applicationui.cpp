@@ -24,15 +24,6 @@
 
 using namespace bb::cascades;
 
-// XML namespace and url for xpath
-#define NS_PREFIX "xs"
-#define NS_URL "http://www.w3.org/2001/XMLSchema"
-
-/* global variables */
-
-#define XML_EXPORT "file:///accounts/1000/shared/misc/video.xml"
-#define XML_SCHEMA "app/native/video.xsd"
-#define XML_DATA "app/native/assets/video.xml"
 
 ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
         		QObject(app)
