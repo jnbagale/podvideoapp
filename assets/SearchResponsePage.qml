@@ -18,6 +18,7 @@ import bb.cascades 1.2
 
 Page {
     property alias searchResponsePageTitle: pageTitleBar.title
+    property alias responderIDText: responderID.value
     property alias videoTitleText: videoTitle.value
     property alias videoGenreText: videoGenre.value
     property alias videoReleaseDateText: videoReleaseDate.value
@@ -31,6 +32,12 @@ Page {
     //![1]
     
     Container {
+        ViewerField {
+            id:responderID
+            horizontalAlignment: HorizontalAlignment.Fill
+            title: qsTr("Responder ID")
+            // value: to be set from main.qml
+        }
         ViewerField {
             id:videoTitle
             horizontalAlignment: HorizontalAlignment.Fill

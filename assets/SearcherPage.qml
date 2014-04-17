@@ -3,7 +3,6 @@ import bb.cascades 1.2
 
 NavigationPane {
     id: searcherNav
-    property int count1: 0;
     Page{
         Container {
             layout: AbsoluteLayout {
@@ -11,12 +10,11 @@ NavigationPane {
             }
             
             Label {
+                id: welcomeMsg
                 layoutProperties: AbsoluteLayoutProperties {
                     positionX: 30
                     positionY: 30
-                }
-                
-                id: welcomeMsg
+                }                
                 text: "Real-time video search system"
                 textFormat: TextFormat.Plain
                 textStyle.color: Color.DarkYellow
@@ -27,12 +25,12 @@ NavigationPane {
             
             // to input title to search
             TextField {
+                id: videoTitleText
                 layoutProperties: AbsoluteLayoutProperties {
                     positionX: 50
                     positionY: 100
                 }
                 
-                id: videoTitleText
                 hintText: "Enter title to search here"
                 maximumLength: 30
                 verticalAlignment: VerticalAlignment.Bottom
@@ -47,22 +45,20 @@ NavigationPane {
             
             // to display price selected by the Slider
             Label {
+                id: selectedPrice
                 layoutProperties: AbsoluteLayoutProperties {
                     positionX: 50
                     positionY: 200
                 }
-                
-                id: selectedPrice
             }   
             
             // select price to search for the above entered video title
             Slider {
+                id: price
                 layoutProperties: AbsoluteLayoutProperties {
                     positionX: 50
                     positionY: 270
-                }
-                
-                id: price
+                }                               
                 value: 1.0
                 fromValue: 0.5
                 toValue: 10.0
@@ -145,6 +141,7 @@ NavigationPane {
                         var contentpage = responsePageDefinition.createObject();
                         
                         contentpage.searchResponsePageTitle = chosenItem.title;
+                        contentpage.responderIDText = chosenItem.responderID;
                         contentpage.videoTitleText = chosenItem.title;
                         contentpage.videoGenreText = chosenItem.genre;
                         contentpage.videoReleaseDateText = chosenItem.dateOfRelease;
