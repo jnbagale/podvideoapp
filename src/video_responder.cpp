@@ -44,14 +44,15 @@ extern "C" {
  */
 
 /* function prototypes */
-void send_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, char *movie_title, double price, char *genre, char *dateofrelease, char *director);
+int send_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, char *movie_title, double price, char *genre, char *dateofrelease, char *director);
 int create_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, char *movie_title, double max_price);
 int process_search(ApplicationUI *app_object, packedobjectsdObject *pod_obj_searcher, packedobjectsdObject *pod_obj, xmlDocPtr search);
 
 /* function definitions */
-void send_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, char *movie_title, double price, char *genre, char *dateofrelease, char *director)
+int send_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, char *movie_title, double price, char *genre, char *dateofrelease, char *director)
 {
 	/* Declare variables */
+	int ret;
 	int xml_size;
 	int po_xml_size;
 	char size_str[200];
@@ -89,14 +90,14 @@ void send_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, cha
 	/* send the response doc to the searcher */
 	if(packedobjectsd_send_response(pod_obj, doc_response) == -1){
 		printf("message could not be sent\n");
-		exit(EXIT_FAILURE);
+		return -1;
 	}
 
 	xml_size = xml_doc_size(doc_response);
 	printf("size of search XML %d\n", xml_size);
 	po_xml_size = pod_obj->bytes_sent - 1;
 
-	sprintf(size_str, "Size of Response XML %d. Size PO Data %d", xml_size, po_xml_size);
+	sprintf(size_str, "Size of Response XML %d. Size of PO Data %d", xml_size, po_xml_size);
 
 	app_object->setSize1(QString(size_str));
 
@@ -104,12 +105,14 @@ void send_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, cha
 	//xml_dump_doc(doc_response);
 
 	xmlFreeDoc(doc_response);
+	return 0;
 }
 
 int create_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, char *movie_title, double max_price)
 {
 	/* Declare variables */
 	int i;
+	int ret;
 	int size;
 	double price = 0.0;
 	char *title = NULL;
@@ -124,7 +127,6 @@ int create_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, ch
 
 	if((doc_database = xml_new_doc(XML_DATA)) == NULL) {
 		printf("did not find database.xml file");
-		exit(EXIT_FAILURE);
 	}
 
 	xmlXPathContextPtr xpathp = NULL;
@@ -215,7 +217,7 @@ int create_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, ch
 			///////////////////// Sending  search response ///////////////////
 
 			/* send response to searcher */
-			send_response(app_object, pod_obj, movie_title, price, genre, dateofrelease, director);
+			ret = send_response(app_object, pod_obj, movie_title, price, genre, dateofrelease, director);
 		}
 		else {
 			printf("the movie exists on the database but does not match price limit\n");
@@ -226,7 +228,7 @@ int create_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, ch
 
 	free(title);
 	xmlFreeDoc(doc_database);
-	return 1;
+	return ret;
 }
 
 int process_search(ApplicationUI *app_object, packedobjectsdObject *pod_obj_searcher, packedobjectsdObject *pod_obj, xmlDocPtr doc_search)
@@ -365,7 +367,7 @@ int start_responder(packedobjectsdObject *pod_obj_searcher, ApplicationUI *app_o
 		printf("waiting for new search broadcast\n");
 		if((doc_search = packedobjectsd_receive_search(pod_obj)) == NULL) {
 			printf("message could not be received\n");
-			//exit(EXIT_FAILURE);
+			return -1;
 		}
 
 		printf("\nnew search broadcast received... \n");
