@@ -33,8 +33,16 @@ NavigationPane {
                 textFormat: TextFormat.Plain
                 textStyle.color: Color.DarkYellow
                 textStyle.fontStyle: FontStyle.Default     
-                text:appObject.getResponderID();   
-            
+                
+                
+                onCreationCompleted: {
+                    appObject.responderIDChanged.connect(onCPPresponderIDChanged)
+                }
+                
+                function onCPPresponderIDChanged()
+                {
+                    responderID.text = appObject.getResponderID();  
+                }
             } 
             
             // Displying size message
@@ -44,15 +52,14 @@ NavigationPane {
                     positionY: 1050
                 }
                 
-                id: size1Text
-                text: appObject.size1
+                id: responseSizeText
+                text: appObject.responseSize
                 preferredWidth: 900
                 preferredHeight: 100
                 textStyle.fontSize: FontSize.Small
                 textStyle.fontStyle: FontStyle.Italic
-            
-            }
-            
+
+            }            
             
             Button {
                 layoutProperties: AbsoluteLayoutProperties {

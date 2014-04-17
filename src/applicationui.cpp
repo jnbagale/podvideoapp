@@ -29,7 +29,6 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 	podObjSearcher = NULL;
 	podObjResponder = NULL;
 
-
 	// prepare the localization
 	m_pTranslator = new QTranslator(this);
 	m_pLocaleHandler = new LocaleHandler(this);
@@ -61,6 +60,7 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 	//set the value of searcher's unique id
 	this->searcher_ID = "ID: " + QString::number(podObjSearcher->unique_id, 10);
 	qDebug() << "Searcher ID:- " << this->searcher_ID << endl;
+	emit this->searcherIDChanged();
 
 	// Initialise video responder
 
@@ -69,6 +69,7 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 	//set the value of responder's unique id
 	this->responder_ID = "ID: " + QString::number(podObjResponder->unique_id, 10);
 	qDebug() << "Responder ID:- " << this->responder_ID << endl;
+	emit this->responderIDChanged();
 
 	if(podObjSearcher != NULL) {
 
@@ -190,28 +191,33 @@ void ResponderThread::run_responder()
 	emit finished();
 }
 // Various functions to pass signals to QML
-QString ApplicationUI::size()
+QString ApplicationUI::querySize()
 {
-	return str_size;
+	return str_querySize;
 }
 
-void ApplicationUI::setSize(QString str)
+void ApplicationUI::setquerySize(QString str)
 {
 	// name is same as HPP WRITE Q_PROPERTY statement
-	str_size = str;
-	emit sizeChanged();
+	str_querySize = str;
+	emit querySizeChanged();
 }
 
-QString ApplicationUI::size1()
+QString ApplicationUI::responseSize()
 {
-	return str_size1;
+	return str_responseSize;
 }
 
-void ApplicationUI::setSize1(QString str)
+void ApplicationUI::setresponseSize(QString str)
 {
 	// name is same as HPP WRITE Q_PROPERTY statement
-	str_size1 = str;
-	emit size1Changed();
+	str_responseSize = str;
+	emit responseSizeChanged();
+}
+
+void ApplicationUI::setRecord()
+{
+	emit recordChanged();
 }
 
 void ApplicationUI::setQuery()
@@ -222,11 +228,6 @@ void ApplicationUI::setQuery()
 void ApplicationUI::setSearchResponse()
 {
 	emit searchResponseChanged();
-}
-
-void ApplicationUI::setRecord()
-{
-	emit recordChanged();
 }
 
 static inline const char *QStringToCharPtr(QString qString1)

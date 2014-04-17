@@ -305,7 +305,7 @@ int _sendSearch(ApplicationUI *app_object, packedobjectsdObject *pod_object1, xm
 	po_xml_size = pod_object1->bytes_sent - 1;
 	sprintf(size_str, "Size of Search XML %d. Size PO Data %d", xml_size, po_xml_size);
 
-	app_object->setSize(QString(size_str));
+	app_object->setquerySize(QString(size_str));
 
 	printf("search request of %d bytes sent to responders...\n", pod_object1->bytes_sent - 1);
 

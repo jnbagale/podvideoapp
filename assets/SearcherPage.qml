@@ -81,7 +81,7 @@ NavigationPane {
                 id: search
                 text: "search"
                 onClicked: {
-                    console.log("Sending search reuqest...");
+                    console.log("Sending search request...");
                     appObject.sendSearch(videoTitleText.searchTitle.toLowerCase(), price.maxPrice); 
                 }
             }
@@ -176,7 +176,14 @@ NavigationPane {
                 textFormat: TextFormat.Plain
                 textStyle.color: Color.DarkYellow
                 textStyle.fontStyle: FontStyle.Default   
-                text:appObject.getSearcherID();  
+                onCreationCompleted: {
+                    appObject.responderIDChanged.connect(onCPPresponderIDChanged)
+                }
+                
+                function onCPPresponderIDChanged()
+                {
+                    searcherID.text = appObject.getSearcherID();   
+                }
             } 
             
             // Displying size message
@@ -187,7 +194,7 @@ NavigationPane {
                 }
                 
                 id: sizeText
-                text: appObject.size
+                text: appObject.querySize
                 preferredWidth: 900
                 preferredHeight: 100
                 textStyle.fontSize: FontSize.Small

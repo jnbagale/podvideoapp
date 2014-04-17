@@ -73,7 +73,6 @@ public:
 
     Q_INVOKABLE QString getSearcherID();
     Q_INVOKABLE QString getResponderID();
-
     Q_INVOKABLE int sendSearch(QString videoTitle, double maxPrice);
     Q_INVOKABLE int updateNode(QString originalTitle, QString videoTitle,
     		QString videoGenre, QString videoReleaseDate,
@@ -83,18 +82,18 @@ public:
     Q_INVOKABLE int deleteNode(QString originalTitle);
     Q_INVOKABLE int exportXML();
 
-    Q_PROPERTY(QString size READ size WRITE setSize NOTIFY sizeChanged)
-    Q_PROPERTY(QString size1 READ size1 WRITE setSize1 NOTIFY size1Changed)
+    Q_PROPERTY(QString querySize READ querySize WRITE setquerySize NOTIFY querySizeChanged)
+    Q_PROPERTY(QString responseSize READ responseSize WRITE setresponseSize NOTIFY responseSizeChanged)
 
 public Q_SLOTS:
 
     // get latest search xml size
-    QString size();
-    void setSize(QString str);
+    QString querySize();
+    void setquerySize(QString str);
 
     // get latest response xml size
-    QString size1();
-    void setSize1(QString str);
+    QString responseSize();
+    void setresponseSize(QString str);
 
     void setSearchResponse();
     void setRecord();
@@ -102,16 +101,17 @@ public Q_SLOTS:
 
 
     Q_SIGNALS:
-    void sizeChanged();
+    void querySizeChanged();
+    void responseSizeChanged();
     void queryChanged();
-    void size1Changed();
-    void searchResponseChanged();
     void recordChanged();
+    void searchResponseChanged();
+    void responderIDChanged();
+    void searcherIDChanged();
 
 private:
-    QString str_size;
-    QString str_query;
-    QString str_size1;
+    QString str_querySize;
+    QString str_responseSize;
 
 private slots:
     void onSystemLanguageChanged();

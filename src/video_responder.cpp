@@ -149,7 +149,7 @@ int send_response(ApplicationUI *app_Object, packedobjectsdObject *podObj_Respon
 
 	sprintf(size_str, "Size of Response XML %d. Size of PO Data %d", xml_size, po_xml_size);
 
-	app_Object->setSize1(QString(size_str));
+	app_Object->setresponseSize(QString(size_str));
 
 	qDebug()<<"response sent to the searcher..." << endl;
 	//xml_dump_doc(doc_response);
