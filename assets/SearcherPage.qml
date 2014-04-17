@@ -96,7 +96,8 @@ NavigationPane {
                 id: reset
                 text: "Clear Results"
                 onClicked: {
-                    searcherDataModel.clear();            
+                    searcherDataModel.clear();    
+                    //TODO: Reset the XML file        
                 }
             }
             

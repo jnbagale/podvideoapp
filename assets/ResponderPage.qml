@@ -64,8 +64,8 @@ NavigationPane {
                 id: reset1
                 text: "Clear Results"
                 onClicked: {
-                    theDataModel1.clear();
-                
+                    queryDataModel.clear();
+                    //TODO: Reset the XML file 
                 }
             }
             // Displaying search queries      
@@ -104,7 +104,7 @@ NavigationPane {
                     
                     if (indexPath.length > 1) {
                         
-                        var chosenItem = searcherDataModel.data(indexPath);
+                        var chosenItem = queryDataModel.data(indexPath);
                         
                         var contentpage = responsePageDefinition.createObject();
                         
@@ -147,12 +147,12 @@ NavigationPane {
                             // The data returned is not a list, just one QVariantMap.
                             // Use insert to add one element.
                             console.log("Inserting one element");
-                            searcherDataModel.insert(data)
+                            queryDataModel.insert(data)
                         } else {
                             //The data returned is a list. Use insertList.
                             console.log("Inserting list element of " + data.length + " items");
                             //console.log (data[1]);
-                            searcherDataModel.insertList(data);
+                            queryDataModel.insertList(data);
                         }
                     }
                 },

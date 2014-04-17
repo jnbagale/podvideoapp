@@ -33,6 +33,73 @@ int create_response(ApplicationUI *app_Object, packedobjectsdObject *podObj_Resp
 int process_search(ApplicationUI *app_Object, packedobjectsdObject *podObj_Searcher, packedobjectsdObject *podObj_Responder, xmlDocPtr search);
 
 /* function definitions */
+
+int resetQuery()
+{
+	int ret;
+	xmlDocPtr doc;
+	xmlNodePtr video_node, message_node;
+
+	xmlKeepBlanksDefault(0);
+
+	doc = xmlNewDoc(BAD_CAST "1.0");
+
+	/* create pod node as root node */
+	video_node = xmlNewNode(NULL, BAD_CAST "video");
+	xmlDocSetRootElement(doc, video_node);
+
+	message_node = xmlNewChild(video_node, NULL, BAD_CAST "message", BAD_CAST NULL);
+	xmlNewChild(message_node, NULL, BAD_CAST "query", BAD_CAST NULL);
+
+	// Save blank XML RESPONSE to File
+	ret = xmlSaveFormatFileEnc(XML_RESPONSE, doc, "UTF-8", 1);
+
+	// Dump to Console
+	xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
+
+	xmlFreeDoc(doc);
+	return ret;
+}
+
+int addSearchResult(string searcherID, string videoTitle, string videoPrice)
+{
+	int ret;
+	xmlDocPtr doc;
+	xmlNodePtr video_node, query_node, movie_node;
+
+	xmlKeepBlanksDefault(0);
+
+	doc = xmlReadFile(XML_QUERY, NULL, 0);
+	if (doc == NULL) {
+		printf("Failed to parse %s\n", XML_QUERY);
+		return -1;
+	}
+
+	video_node = xmlDocGetRootElement(doc);
+
+	// Traversing to the database node
+
+	query_node = video_node->children->children; //video/message/query
+
+	// add item at database node
+	movie_node = xmlNewChild(query_node , NULL, BAD_CAST "movie", BAD_CAST NULL);
+
+	xmlNewChild(movie_node , NULL, BAD_CAST "searcherID",  BAD_CAST searcherID.c_str());
+	xmlNewChild(movie_node , NULL, BAD_CAST "title",       BAD_CAST videoTitle.c_str());
+	xmlNewChild(movie_node , NULL, BAD_CAST "price",       BAD_CAST videoPrice.c_str());
+
+	// Save new node to File
+	ret = xmlSaveFormatFileEnc(XML_QUERY, doc, "UTF-8", 1);
+
+	// Dump to Console
+	//xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
+
+	xmlFreeDoc(doc);
+
+	return ret;
+}
+
+
 int send_response(ApplicationUI *app_Object, packedobjectsdObject *podObj_Responder, char *movie_title, double price, char *genre, char *dateofrelease, char *director)
 {
 	// Declare variables
@@ -197,7 +264,7 @@ int create_response(ApplicationUI *app_Object, packedobjectsdObject *podObj_Resp
 		if(price <= max_price) {
 			qDebug() << "the movie exists on the database and matches price limit" << endl;
 			///////////////////// Sending  search response ///////////////////
-			fflush(stdout);
+			//fflush(stdout);
 
 			/* send response to searcher */
 			ret = send_response(app_Object, podObj_Responder, movie_title, price, genre, dateofrelease, director);
@@ -302,7 +369,7 @@ int process_search(ApplicationUI *app_Object, packedobjectsdObject *podObj_Searc
 	}
 	else {
 		///////////////////// Checking on database ///////////////////
-		fflush(stdout);
+		//fflush(stdout);
 		/* checking if search broadcast matches record on the database */
 		ret = create_response(app_Object, podObj_Responder, movie_title, max_price);
 
@@ -311,6 +378,16 @@ int process_search(ApplicationUI *app_Object, packedobjectsdObject *podObj_Searc
 		sprintf(temp_string, "%lu    %s    %g", podObj_Responder->last_searcher, movie_title, max_price);
 
 		// set label on qml to the search result
+
+		char id_string[200];
+		char price_string[200];
+
+		sprintf(id_string, "%lu", podObj_Responder->last_searcher);
+		sprintf(price_string, "%g", max_price);
+
+		qDebug() << id_string << movie_title << price_string;
+		addSearchResult(id_string, movie_title, price_string);
+
 		app_Object->setQuery();
 
 	}
