@@ -28,15 +28,14 @@
  */
 
 /* function prototypes */
-int send_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, char *movie_title, double price, char *genre, char *dateofrelease, char *director);
-int create_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, char *movie_title, double max_price);
-int process_search(ApplicationUI *app_object, packedobjectsdObject *pod_obj_searcher, packedobjectsdObject *pod_obj, xmlDocPtr search);
+int send_response(ApplicationUI *app_Object, packedobjectsdObject *podObj_Responder, char *movie_title, double price, char *genre, char *dateofrelease, char *director);
+int create_response(ApplicationUI *app_Object, packedobjectsdObject *podObj_Responder, char *movie_title, double max_price);
+int process_search(ApplicationUI *app_Object, packedobjectsdObject *podObj_Searcher, packedobjectsdObject *podObj_Responder, xmlDocPtr search);
 
 /* function definitions */
-int send_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, char *movie_title, double price, char *genre, char *dateofrelease, char *director)
+int send_response(ApplicationUI *app_Object, packedobjectsdObject *podObj_Responder, char *movie_title, double price, char *genre, char *dateofrelease, char *director)
 {
-	/* Declare variables */
-	int ret;
+	// Declare variables
 	int xml_size;
 	int po_xml_size;
 	char size_str[200];
@@ -60,7 +59,7 @@ int send_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, char
 
 	/* create child elements to hold data */
 	sprintf(price_string,"%g", price);
-	sprintf(id_string,"%lu", pod_obj->unique_id);
+	sprintf(id_string,"%lu", podObj_Responder->unique_id);
 	xmlNewChild(response_node, NULL, BAD_CAST "responder-id", BAD_CAST id_string);
 	xmlNewChild(response_node, NULL, BAD_CAST "movie-title", BAD_CAST movie_title);
 	xmlNewChild(response_node, NULL, BAD_CAST "price", BAD_CAST price_string);
@@ -72,27 +71,27 @@ int send_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, char
 	//xml_dump_doc(doc_response);
 
 	/* send the response doc to the searcher */
-	if(packedobjectsd_send_response(pod_obj, doc_response) == -1){
+	if(packedobjectsd_send_response(podObj_Responder, doc_response) == -1){
 		printf("message could not be sent\n");
 		return -1;
 	}
 
 	xml_size = xml_doc_size(doc_response);
 	printf("size of search XML %d\n", xml_size);
-	po_xml_size = pod_obj->bytes_sent - 1;
+	po_xml_size = podObj_Responder->bytes_sent - 1;
 
 	sprintf(size_str, "Size of Response XML %d. Size of PO Data %d", xml_size, po_xml_size);
 
-	app_object->setSize1(QString(size_str));
+	app_Object->setSize1(QString(size_str));
 
-	printf("response sent to the searcher...\n");
+	qDebug()<<"response sent to the searcher..." << endl;
 	//xml_dump_doc(doc_response);
 
 	xmlFreeDoc(doc_response);
 	return 0;
 }
 
-int create_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, char *movie_title, double max_price)
+int create_response(ApplicationUI *app_Object, packedobjectsdObject *podObj_Responder, char *movie_title, double max_price)
 {
 	/* Declare variables */
 	int i;
@@ -196,15 +195,14 @@ int create_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, ch
 		/* compare max price from search with price from database */
 
 		if(price <= max_price) {
-			printf("the movie exists on the database and matches price limit\n");
-
+			qDebug() << "the movie exists on the database and matches price limit" << endl;
 			///////////////////// Sending  search response ///////////////////
 
 			/* send response to searcher */
-			ret = send_response(app_object, pod_obj, movie_title, price, genre, dateofrelease, director);
+			ret = send_response(app_Object, podObj_Responder, movie_title, price, genre, dateofrelease, director);
 		}
 		else {
-			printf("the movie exists on the database but does not match price limit\n");
+			qDebug() << "the movie exists on the database but does not match price limit" << endl;
 		}
 	}
 
@@ -215,7 +213,7 @@ int create_response(ApplicationUI *app_object, packedobjectsdObject *pod_obj, ch
 	return ret;
 }
 
-int process_search(ApplicationUI *app_object, packedobjectsdObject *pod_obj_searcher, packedobjectsdObject *pod_obj, xmlDocPtr doc_search)
+int process_search(ApplicationUI *app_Object, packedobjectsdObject *podObj_Searcher, packedobjectsdObject *podObj_Responder, xmlDocPtr doc_search)
 {
 	/* Declare variables */
 	int i;
@@ -293,11 +291,11 @@ int process_search(ApplicationUI *app_object, packedobjectsdObject *pod_obj_sear
 	printf("\n************** search request details **************\n");
 	printf("Movie title: %s \n", movie_title);
 	printf("Maximum price: %g\n", max_price);
-	printf("Searcher's id:- %lu\n\n", pod_obj->last_searcher);
+	printf("Searcher's id:- %lu\n\n", podObj_Responder->last_searcher);
 
 	// Compare the id with local SEARCHER ID and ignore
 
-	if(pod_obj_searcher->unique_id == pod_obj->last_searcher) {
+	if(podObj_Searcher->unique_id == podObj_Responder->last_searcher) {
 		printf("This is a local searcher request so ignoring this request!\n");
 		ret = 1;
 	}
@@ -305,14 +303,14 @@ int process_search(ApplicationUI *app_object, packedobjectsdObject *pod_obj_sear
 		///////////////////// Checking on database ///////////////////
 
 		/* checking if search broadcast matches record on the database */
-		ret = create_response(app_object, pod_obj, movie_title, max_price);
+		ret = create_response(app_Object, podObj_Responder, movie_title, max_price);
 
 		// Update search queries on GUI
 		char temp_string[200];
-		sprintf(temp_string, "%lu    %s    %g", pod_obj->last_searcher, movie_title, max_price);
+		sprintf(temp_string, "%lu    %s    %g", podObj_Responder->last_searcher, movie_title, max_price);
 
 		// set label on qml to the search result
-		app_object->setQuery((QString) temp_string);
+		app_Object->setQuery((QString) temp_string);
 
 	}
 	///////////////////// Freeing ///////////////////
@@ -324,23 +322,9 @@ int process_search(ApplicationUI *app_object, packedobjectsdObject *pod_obj_sear
 	return ret;
 }
 
-packedobjectsdObject *_initialiseResponder()
-{
-	packedobjectsdObject *pod_obj = NULL;
 
-	printf("///////////////////// VIDEO RESPONDER  /////////////////// \n");
-	////////////////////// Initialising    ///////////////////
 
-	// Initialise packedobjectsd
-	if((pod_obj = init_packedobjectsd(XML_SCHEMA, RESPONDER)) == NULL) {
-		printf("failed to initialise libpackedobjectsd\n");
-		return NULL;
-	}
-
-	return pod_obj;
-}
-
-int start_responder(packedobjectsdObject *pod_obj_searcher, ApplicationUI *app_object, packedobjectsdObject *pod_obj)
+int start_responder(ApplicationUI *app_Object, packedobjectsdObject *podObj_Searcher, packedobjectsdObject *podObj_Responder)
 {
 	/* Declare variables */
 	xmlDocPtr doc_search = NULL;
@@ -349,7 +333,7 @@ int start_responder(packedobjectsdObject *pod_obj_searcher, ApplicationUI *app_o
 	while (1) {
 		/* waiting for search broadcast */
 		printf("waiting for new search broadcast\n");
-		if((doc_search = packedobjectsd_receive_search(pod_obj)) == NULL) {
+		if((doc_search = packedobjectsd_receive_search(podObj_Responder)) == NULL) {
 			printf("message could not be received\n");
 			return -1;
 		}
@@ -360,7 +344,7 @@ int start_responder(packedobjectsdObject *pod_obj_searcher, ApplicationUI *app_o
 		///////////////////// Processing search broadcast ///////////////////
 
 		/* process search broadcast to retrieve search details */
-		process_search(app_object, pod_obj_searcher, pod_obj, doc_search);
+		process_search(app_Object, podObj_Searcher, podObj_Responder, doc_search);
 		xmlFreeDoc(doc_search);
 
 	}
@@ -368,7 +352,7 @@ int start_responder(packedobjectsdObject *pod_obj_searcher, ApplicationUI *app_o
 	///////// Freeing ///////////////////
 
 	/* free memory created by packedobjectsd but we should never reach here! */
-	free_packedobjectsd(pod_obj);
+	free_packedobjectsd(podObj_Responder);
 
 	return 0;
 }

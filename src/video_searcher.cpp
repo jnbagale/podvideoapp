@@ -22,16 +22,6 @@
 
 #include "video_searcher.h"
 
-// XML namespace and url for xpath
-#define NS_PREFIX "xs"
-#define NS_URL "http://www.w3.org/2001/XMLSchema"
-
-using namespace bb::cascades;
-
-/* global variables */
-#define XML_SCHEMA "app/native/video.xsd"
-#define XML_DATA "app/native/assets/video.xml"
-#define XML_RESPONSE "app/native/assets/response.xml"
 
 /* function prototypes */
 int read_response(ApplicationUI *app_object, xmlDocPtr doc_response);

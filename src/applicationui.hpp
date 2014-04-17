@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QThread>
 #include <QString>
+#include <QDebug>
 
 #include <iostream>
 #include <string>
@@ -27,6 +28,7 @@ extern "C" {
 #define XML_EXPORT "file:///accounts/1000/shared/misc/video.xml"
 #define XML_SCHEMA "app/native/video.xsd"
 #define XML_DATA "app/native/assets/video.xml"
+#define XML_RESPONSE "app/native/assets/response.xml"
 
 using namespace std;
 
@@ -58,24 +60,20 @@ public:
     // De- Constructor
     virtual ~ApplicationUI() { }
 
+    double max_price;
+    string video_title;
     QString searcher_ID;
     QString responder_ID;
-    string video_title;
-    double max_price;
-    packedobjectsdObject *pod_object1;
-    packedobjectsdObject *pod_object2;
+    packedobjectsdObject *podObjSearcher;
+    packedobjectsdObject *podObjResponder;
 
-
-    Q_PROPERTY(QString size READ size WRITE setSize NOTIFY sizeChanged)
-    Q_PROPERTY(QString query READ query WRITE setQuery NOTIFY queryChanged)
-    Q_PROPERTY(QString size1 READ size1 WRITE setSize1 NOTIFY size1Changed)
+    packedobjectsdObject *initialiseSearcher();
+    packedobjectsdObject *initialiseResponder();
 
     Q_INVOKABLE QString getSearcherID();
     Q_INVOKABLE QString getResponderID();
 
-    Q_INVOKABLE packedobjectsdObject *initialiseSearcher();
     Q_INVOKABLE int sendSearch(QString videoTitle, double maxPrice);
-
     Q_INVOKABLE int updateNode(QString originalTitle, QString videoTitle,
     		QString videoGenre, QString videoReleaseDate,
     		QString videoDirector, QString videoPrice);
@@ -84,8 +82,11 @@ public:
     Q_INVOKABLE int deleteNode(QString originalTitle);
     Q_INVOKABLE int exportXML();
 
+    Q_PROPERTY(QString size READ size WRITE setSize NOTIFY sizeChanged)
+    Q_PROPERTY(QString query READ query WRITE setQuery NOTIFY queryChanged)
+    Q_PROPERTY(QString size1 READ size1 WRITE setSize1 NOTIFY size1Changed)
 
-public slots:
+public Q_SLOTS:
 
     // get latest search xml size
     QString size();
@@ -101,7 +102,7 @@ public slots:
     void setSearchResponse();
     void setRecord();
 
-    signals:
+    Q_SIGNALS:
     void sizeChanged();
     void queryChanged();
     void size1Changed();
@@ -124,9 +125,9 @@ class ReceiveThread : public QThread
  {
      Q_OBJECT
 public:
-     ApplicationUI *app_object1;
-     packedobjectsdObject *pod_object3;
-     ReceiveThread(ApplicationUI *app_object, packedobjectsdObject *pod_object2);
+     ApplicationUI *app_Object;
+     packedobjectsdObject *podObj_Searcher;
+     ReceiveThread(ApplicationUI *app_object, packedobjectsdObject *podObjSearcher);
 
 public slots:
      void process();
@@ -136,10 +137,10 @@ class ResponderThread : public QThread
  {
      Q_OBJECT
 public:
-     ApplicationUI *app_object2;
-     packedobjectsdObject *pod_object4;
-     packedobjectsdObject *pod_resp_obj;
-     ResponderThread(ApplicationUI *app_object, packedobjectsdObject *pod_object2, packedobjectsdObject *pod_obj_responder);
+     ApplicationUI *app_Object;
+     packedobjectsdObject *podObj_Searcher;
+     packedobjectsdObject *podObj_Responder;
+     ResponderThread(ApplicationUI *appObject, packedobjectsdObject *podObjSearcher, packedobjectsdObject *podObjResponder);
 
 
 public slots:

@@ -20,16 +20,14 @@
 #include <bb/cascades/LocaleHandler>
 #include <bb/cascades/ArrayDataModel>
 
-#include <QString>
-
 using namespace bb::cascades;
 
 
 ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
         		QObject(app)
 {
-	packedobjectsdObject *pod_object2 = NULL;
-	packedobjectsdObject *pod_obj_responder = NULL;
+	podObjSearcher = NULL;
+	podObjResponder = NULL;
 
 
 	// prepare the localization
@@ -58,45 +56,39 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 	app->setScene(root);
 
 	// Initialise video searcher
-	pod_object2 = this->initialiseSearcher();
+	podObjSearcher = this->initialiseSearcher();
 
 	//set the value of searcher's unique id
-	this->searcher_ID = "ID: " + QString::number(pod_object2->unique_id, 10);
+	this->searcher_ID = "ID: " + QString::number(podObjSearcher->unique_id, 10);
 	qDebug() << "Searcher ID:- " << this->searcher_ID << endl;
 
 	// Initialise video responder
 
-	pod_obj_responder = _initialiseResponder();
+	podObjResponder = initialiseResponder();
 
 	//set the value of responder's unique id
-	this->responder_ID = "ID: " + QString::number(pod_obj_responder->unique_id, 10);
+	this->responder_ID = "ID: " + QString::number(podObjResponder->unique_id, 10);
 	qDebug() << "Responder ID:- " << this->responder_ID << endl;
 
-	if(pod_object2 !=NULL) {
+	if(podObjSearcher != NULL) {
 
-		// creating a QThread to run video receiver to get search results
-
+		// creating a QThread to run video searcher to receive search responses
 		QThread* thread = new QThread;
-		ReceiveThread* rt1= new ReceiveThread(this, pod_object2);
+		ReceiveThread* rt1= new ReceiveThread(this, podObjSearcher);
 
 		rt1->moveToThread(thread);
 		connect(thread, SIGNAL(started()), rt1, SLOT(process()));
 		thread->start();
 
 		// creating QThread to run video responder to process search requests
-
 		QThread* thread_responder = new QThread;
-		ResponderThread* rt_responder= new ResponderThread(this, pod_object2, pod_obj_responder);
+		ResponderThread* rt_responder= new ResponderThread(this, podObjSearcher, podObjResponder);
 
 		rt_responder->moveToThread(thread_responder);
 		connect(thread_responder, SIGNAL(started()), rt_responder, SLOT(run_responder()));
 		thread_responder->start();
 
 	}
-	else {
-		cout << "failed to initialise properly! Please check network status"<<endl;
-	}
-
 }
 
 void ApplicationUI::onSystemLanguageChanged()
@@ -120,18 +112,32 @@ QString ApplicationUI::getResponderID()
 	return this->responder_ID;
 }
 
-packedobjectsdObject * ApplicationUI::initialiseSearcher()
+packedobjectsdObject* ApplicationUI::initialiseSearcher()
 {
-	// Initialise packedobjectsd
-	if((pod_object1 = init_packedobjectsd(XML_SCHEMA, SEARCHER)) == NULL) {
-		printf("failed to initialise libpackedobjectsd\n");
+	// Initialise packedobjectsd searcher
+	if((podObjSearcher = init_packedobjectsd(XML_SCHEMA, SEARCHER)) == NULL) {
+		qWarning() <<"failed to initialise libpackedobjectsd searcher";
+		return NULL;
 	}
 
-	if(pod_object1 !=NULL) {
-		qDebug()<<"Initialisation complete.";
+	if(podObjSearcher != NULL) {
+		qDebug()<<" Searcher initialisation complete.";
 	}
 
-	return pod_object1;
+	return podObjSearcher;
+}
+
+packedobjectsdObject* ApplicationUI::initialiseResponder()
+{
+	////////////////////// Initialising    ///////////////////
+
+	// Initialise packedobjectsd responder
+	if((podObjResponder = init_packedobjectsd(XML_SCHEMA, RESPONDER)) == NULL) {
+		qWarning() <<"failed to initialise libpackedobjectsd";
+		return NULL;
+	}
+
+	return podObjResponder;
 }
 
 int ApplicationUI::sendSearch(QString videoTitle, double maxPrice)
@@ -143,11 +149,11 @@ int ApplicationUI::sendSearch(QString videoTitle, double maxPrice)
 	QByteArray ba = videoTitle.toLocal8Bit();
 	char *title_str = ba.data();
 
-	doc_search = create_search(pod_object1, title_str, maxPrice);
+	doc_search = create_search(podObjSearcher, title_str, maxPrice);
 
 	if(doc_search != NULL) {
 
-			_sendSearch(this, pod_object1, doc_search);
+			_sendSearch(this, podObjSearcher, doc_search);
 
 		qDebug()<<"Search request sent...";
 		return 1;
@@ -156,32 +162,31 @@ int ApplicationUI::sendSearch(QString videoTitle, double maxPrice)
 	return -1;
 }
 
-ReceiveThread::ReceiveThread(ApplicationUI *app_object, packedobjectsdObject *pod_object2)
+ReceiveThread::ReceiveThread(ApplicationUI *appObject, packedobjectsdObject *podObjSearcher)
 {
-	app_object1 = app_object;
-	pod_object3 = pod_object2;
+	app_Object = appObject;
+	podObj_Searcher = podObjSearcher;
 }
 
 void ReceiveThread::process()
 {
 	qDebug()<<"Ready to receive ...";
-	_receiveResponse(app_object1, pod_object3);
+	_receiveResponse(app_Object, podObj_Searcher);
 	emit finished();
 }
 
-ResponderThread::ResponderThread(ApplicationUI *app_object, packedobjectsdObject *pod_object2, packedobjectsdObject *pod_obj_responder)
+ResponderThread::ResponderThread(ApplicationUI *appObject, packedobjectsdObject *podObjSearcher, packedobjectsdObject *podObjResponder)
 {
-	app_object2 = app_object;
-	pod_object4 = pod_object2;
-	pod_resp_obj = pod_obj_responder;
+	app_Object = appObject;
+	podObj_Searcher = podObjSearcher;
+	podObj_Responder = podObjResponder;
 
 }
 
 void ResponderThread::run_responder()
 {
-	//qDebug("Hello QThread!");
 	qDebug()<<"Responder ready ...";
-	start_responder(pod_object4, app_object2, pod_resp_obj);
+	start_responder(app_Object, podObj_Searcher, podObj_Responder);
 	emit finished();
 }
 // Various functions to pass signals to QML
