@@ -96,8 +96,8 @@ NavigationPane {
                 id: reset
                 text: "Clear Results"
                 onClicked: {
-                    searcherDataModel.clear();    
-                    //TODO: Reset the XML file        
+                    appObject.resetResponseXML(); 
+                    searchResults.refreshDataModel();
                 }
             }
             
@@ -109,11 +109,6 @@ NavigationPane {
                 layoutProperties: AbsoluteLayoutProperties {
                     positionX: 20
                     positionY: 440
-                }
-                
-                function refreshDataModel(){
-                   searcherDataModel.clear();
-                    dataSource.load();
                 }
                 
                 listItemComponents: [
@@ -161,7 +156,11 @@ NavigationPane {
                 {
                     refreshDataModel();
                 }
-            
+                
+                function refreshDataModel(){
+                    searcherDataModel.clear();
+                    dataSource.load();
+                }
             
             } // ListView
             

@@ -29,7 +29,7 @@ int read_response(ApplicationUI *app_object, xmlDocPtr doc_response);
 /* function definitions */
 
 //////////////////////// RECEIVING SEARCH RESPONSE BACK //////////////////////////
-int resetSearchResult()
+int resetResponse()
 {
 	int ret;
 	xmlDocPtr doc;
@@ -310,7 +310,7 @@ int _sendSearch(ApplicationUI *app_object, packedobjectsdObject *pod_object1, xm
 	printf("search request of %d bytes sent to responders...\n", pod_object1->bytes_sent - 1);
 
 	// reset previous search history
-	resetSearchResult();
+	resetResponse();
 	return 0;
 }
 

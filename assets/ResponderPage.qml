@@ -71,8 +71,8 @@ NavigationPane {
                 id: reset1
                 text: "Clear Results"
                 onClicked: {
-                    queryDataModel.clear();
-                    //TODO: Reset the XML file 
+                    appObject.resetQueryXML(); 
+                    searchQueries.refreshDataModel();
                 }
             }
             // Displaying search queries      
@@ -83,11 +83,6 @@ NavigationPane {
                 layoutProperties: AbsoluteLayoutProperties {
                     positionX: 20
                     positionY: 440
-                }
-                
-                function refreshDataModel(){
-                    queryDataModel.clear();
-                    dataSource.load();
                 }
                 
                 listItemComponents: [
@@ -126,13 +121,18 @@ NavigationPane {
                 
                 onCreationCompleted: {
                     appObject.queryChanged.connect(onCPPqueryChanged)
+                    appObject.resetQueryXML();
                 }
                 
                 function onCPPqueryChanged()
                 {
                     refreshDataModel();
                 }
-            
+                
+                function refreshDataModel(){
+                    queryDataModel.clear();
+                    dataSource.load();
+                }
             
             } // ListView
             

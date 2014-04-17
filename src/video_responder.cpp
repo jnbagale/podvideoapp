@@ -52,10 +52,10 @@ int resetQuery()
 	xmlNewChild(message_node, NULL, BAD_CAST "query", BAD_CAST NULL);
 
 	// Save blank XML RESPONSE to File
-	ret = xmlSaveFormatFileEnc(XML_RESPONSE, doc, "UTF-8", 1);
+	ret = xmlSaveFormatFileEnc(XML_QUERY, doc, "UTF-8", 1);
 
 	// Dump to Console
-	xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
+	// xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
 
 	xmlFreeDoc(doc);
 	return ret;
@@ -127,6 +127,7 @@ int send_response(ApplicationUI *app_Object, packedobjectsdObject *podObj_Respon
 	/* create child elements to hold data */
 	sprintf(price_string,"%g", price);
 	sprintf(id_string,"%lu", podObj_Responder->unique_id);
+
 	xmlNewChild(response_node, NULL, BAD_CAST "responder-id", BAD_CAST id_string);
 	xmlNewChild(response_node, NULL, BAD_CAST "movie-title", BAD_CAST movie_title);
 	xmlNewChild(response_node, NULL, BAD_CAST "price", BAD_CAST price_string);

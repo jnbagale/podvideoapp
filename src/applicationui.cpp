@@ -239,6 +239,15 @@ static inline const char *QStringToCharPtr(QString qString1)
 	return cString1;
 }
 
+int ApplicationUI::resetQueryXML()
+{
+	return resetQuery();
+}
+
+int ApplicationUI::resetResponseXML()
+{
+	return resetResponse();
+}
 
 int ApplicationUI::deleteNode(QString originalTitle)
 {

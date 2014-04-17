@@ -81,6 +81,8 @@ public:
     		QString videoReleaseDate, QString videoDirector, QString videoPrice);
     Q_INVOKABLE int deleteNode(QString originalTitle);
     Q_INVOKABLE int exportXML();
+    Q_INVOKABLE int resetQueryXML();
+    Q_INVOKABLE int resetResponseXML();
 
     Q_PROPERTY(QString querySize READ querySize WRITE setquerySize NOTIFY querySizeChanged)
     Q_PROPERTY(QString responseSize READ responseSize WRITE setresponseSize NOTIFY responseSizeChanged)

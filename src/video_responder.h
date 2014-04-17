@@ -10,6 +10,6 @@
 #include "applicationui.hpp"
 
 int start_responder(ApplicationUI *app_Object, packedobjectsdObject *podObj_Searcher,  packedobjectsdObject *podObj_Responder);
-
+int resetQuery();
 
 #endif /* VIDEO_RESPONDER_H_ */
