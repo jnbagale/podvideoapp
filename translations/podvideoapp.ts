@@ -75,7 +75,7 @@
 <context>
     <name>RecordsPage</name>
     <message>
-        <location filename="../assets/RecordsPage.qml" line="12"/>
+        <location filename="../assets/RecordsPage.qml" line="11"/>
         <source>View and Update records</source>
         <translation type="unfinished"></translation>
     </message>

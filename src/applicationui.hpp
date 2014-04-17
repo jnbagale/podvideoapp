@@ -82,15 +82,15 @@ public slots:
     // get latest response xml size
     QString size1();
     void setSize1(QString str);
-    void newSearchResponse();
+    void setSearchResponse();
+    void setRecord();
 
     signals:
-    void statusChanged();
-    void titleChanged();
     void sizeChanged();
     void queryChanged();
     void size1Changed();
     void searchResponseChanged();
+    void recordChanged();
 
 private:
     QString str_size;

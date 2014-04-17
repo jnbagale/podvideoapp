@@ -1,8 +1,8 @@
 import bb.cascades 1.2
 
 Page { 
+    property int count2: 0;
     Container {
-        property int count2: 0;
         layout: AbsoluteLayout {
         
         }

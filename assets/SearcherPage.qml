@@ -3,9 +3,9 @@ import bb.cascades 1.2
 
 NavigationPane {
     id: searcherNav
+    property int count1: 0;
     Page{
         Container {
-            property int count1: 0;
             layout: AbsoluteLayout {
             
             }

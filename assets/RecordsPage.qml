@@ -2,8 +2,7 @@ import bb.data 1.0
 import bb.cascades 1.2
 
 NavigationPane {
-    id: navPane
-    
+    id: recordsNavPane
     Page {
         
         Container {
@@ -15,7 +14,7 @@ NavigationPane {
             
             ListView {
                 id: listViewRecords
-                dataModel: dataModel
+                dataModel: recordsDataModel
                 // Set the multiSelectAction property so that an action to enable
                 // multiple selection mode appears in the context menu of each
                 // list item when pressed for a longer period
@@ -23,7 +22,7 @@ NavigationPane {
                 } // opens multi select menu on a long press
                 
                 function refreshDataModel(){
-                    dataModel.clear();
+                    recordsDataModel.clear();
                     dataSource.load();
                 }
                 
@@ -41,7 +40,7 @@ NavigationPane {
                                 var selectedItems = listViewRecords.selectionList();
                                 
                                 for (var count = 0; count < selectedItems.length; count++) {
-                                    var currentItem = dataModel.data(selectedItems[count]);
+                                    var currentItem = recordsDataModel.data(selectedItems[count]);
                                     console.log("Deleting record for" + currentItem.title);
                                     
                                     ret = appObject.deleteNode(currentItem.title, currentItem.title,
@@ -105,7 +104,7 @@ NavigationPane {
                     
                     if (indexPath.length > 1) {
                         
-                        var chosenItem = dataModel.data(indexPath);
+                        var chosenItem = recordsDataModel.data(indexPath);
                         
                         var contentpage = itemPageDefinition.createObject();
                         
@@ -116,15 +115,24 @@ NavigationPane {
                         contentpage.videoDirectorText = chosenItem.director;
                         contentpage.videoPriceText = chosenItem.price;
                         
-                        navPane.push(contentpage);
+                        recordsNavPane.push(contentpage);
                     }
                 }
+                onCreationCompleted: {
+                    appObject.recordChanged.connect(onCPPrecordChanged)
+                }
+                
+                function onCPPrecordChanged()
+                {
+                   refreshDataModel();
+                }
+                
             
             } // ListviewRecords
             
             attachedObjects: [
                 GroupDataModel {
-                    id: dataModel
+                    id: recordsDataModel
                     sortingKeys: ["title"]
                     sortedAscending: true
                     grouping: ItemGrouping.ByFirstChar
@@ -140,12 +148,12 @@ NavigationPane {
                             // The data returned is not a list, just one QVariantMap.
                             // Use insert to add one element.
                             console.log("Inserting one element");
-                            dataModel.insert(data)
+                            recordsDataModel.insert(data)
                         } else {
                             //The data returned is a list. Use insertList.
                             console.log("Inserting list element of " + data.length + " items");
                             //console.log (data[1]);
-                            dataModel.insertList(data);
+                            recordsDataModel.insertList(data);
                         }
                     }
                 },
@@ -189,7 +197,7 @@ NavigationPane {
                 ActionBar.placement: ActionBarPlacement.InOverflow
                 onTriggered: {
                     var contentpage = addRecordsPageDefinition.createObject();
-                    navPane.push(contentpage);                        
+                    recordsNavPane.push(contentpage);                        
                 }
             
             },
@@ -225,8 +233,5 @@ NavigationPane {
     onPopTransitionEnded: {
         // Transition is done destroy the Page to free up memory.
         page.destroy();
-        
-        // TODO Reload only when something changes               
-        listViewRecords.refreshDataModel(); // reload the data model
     }           
 } // NavigationPane

@@ -14,9 +14,9 @@ Page {
                 var ret;
                 // Call libxml2 to save updated data
                 console.log("Adding new data to XML File");                  
-                ret = appObject.addNode(videoTitle.value,
-                videoGenre.value, videoReleaseDate.value,
-                videoDirector.value, videoPrice.value); 
+                ret = appObject.addNode(videoTitle.value.toLowerCase(),
+                videoGenre.value.toLowerCase(), videoReleaseDate.value,
+                videoDirector.value.toLowerCase(), videoPrice.value); 
                 // TO DO:
                 // # MAP DATA INPUT TO RESTRICTION FROM SCHEMA!
                 if(ret == -1) {

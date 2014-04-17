@@ -230,10 +230,16 @@ void ApplicationUI::setSize1(QString str)
 	emit size1Changed();
 }
 
-void ApplicationUI::newSearchResponse()
+void ApplicationUI::setSearchResponse()
 {
 	emit searchResponseChanged();
 }
+
+void ApplicationUI::setRecord()
+{
+	emit recordChanged();
+}
+
 static inline const char *QStringToCharPtr(QString qString1)
 {
 	// Converting QString to char pointer
@@ -350,7 +356,7 @@ int ApplicationUI::updateNode(QString originalTitle, QString videoTitle, QString
 	xmlXPathObjectPtr result = NULL;
 
 	///////////////////// Initialising XML document ///////////////////
-	qDebug() << originalTitle << videoTitle << videoGenre << videoReleaseDate << videoDirector << videoPrice;
+	qDebug() << "New Data "<< originalTitle << videoTitle << videoGenre << videoReleaseDate << videoDirector << videoPrice;
 
 	xmlKeepBlanksDefault(0);
 	doc = xmlReadFile(XML_DATA, NULL, 0);
@@ -378,7 +384,7 @@ int ApplicationUI::updateNode(QString originalTitle, QString videoTitle, QString
 	///////////////////// Evaluating XPATH expression ///////////////////
 
 	sprintf(xpath_exp, "/video/message/database/movie[title='%s']/*", QStringToCharPtr(originalTitle));
-	qDebug() << "Xpath expression " << xpath_exp;
+	//qDebug() << "Xpath expression " << xpath_exp;
 
 	/* Evaluate xpath expression */
 	result = xmlXPathEvalExpression((const xmlChar *)xpath_exp, xpathp);
@@ -425,6 +431,7 @@ int ApplicationUI::updateNode(QString originalTitle, QString videoTitle, QString
 	ret = xmlSaveFormatFileEnc(XML_DATA, doc, "UTF-8", 1);
 	xmlFreeDoc(doc);
 
+	this->recordChanged(); // send signal to QML to refresh the data model
 	return ret;
 }
 
@@ -482,9 +489,9 @@ int ApplicationUI::addNode(QString videoTitle, QString videoGenre,
 
 	// Dump to Console
 	//xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
+	this->recordChanged(); // send signal to QML to refresh the data model
 
 	xmlFreeDoc(doc);
-
 	return ret;
 }
 

@@ -38,9 +38,9 @@ Page {
                 console.log("Updating changes to XML File");  
                 var ret;           
                 
-                ret = appObject.updateNode(pageTitleBar.title, videoTitle.value,
-                videoGenre.value, videoReleaseDate.value,
-                videoDirector.value, videoPrice.value);
+                ret = appObject.updateNode(pageTitleBar.title, videoTitle.value.toLowerCase(),
+                videoGenre.value.toLowerCase(), videoReleaseDate.value,
+                videoDirector.value.toLowerCase(), videoPrice.value);
                 
                 if(ret == -1) {
                     myDialogbox2.dialogMessage = "Could not update XML node data";
@@ -50,7 +50,7 @@ Page {
                 }
                 
                 myDialogbox2.open();          
-                //navPane.pop()
+                //recordsNavPane.pop()
             }
         }
     }

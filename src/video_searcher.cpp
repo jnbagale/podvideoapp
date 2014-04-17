@@ -233,7 +233,7 @@ int read_response(ApplicationUI *app_object, xmlDocPtr doc_response)
 		// app_object->setTitle((QString) temp_string);
 
 		if(ret!= 1) {
-		app_object->newSearchResponse();
+		app_object->setSearchResponse(); // Triggers searchResponseChanged() signal
 		}
 	}
 	///////////////////// Freeing ///////////////////

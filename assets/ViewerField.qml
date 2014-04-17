@@ -51,5 +51,9 @@ Container {
             base: SystemDefaults.TextStyles.BodyText
             color: Color.Black
         }
+        
+        input {
+            flags: TextInputFlag.AutoCapitalizationOff
+        }
     }
 }
