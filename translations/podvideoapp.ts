@@ -40,34 +40,34 @@
     </message>
 </context>
 <context>
-    <name>ItemDetailsPage</name>
+    <name>RecordDetailsPage</name>
     <message>
-        <location filename="../assets/ItemDetailsPage.qml" line="33"/>
+        <location filename="../assets/RecordDetailsPage.qml" line="33"/>
         <source>Update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ItemDetailsPage.qml" line="63"/>
+        <location filename="../assets/RecordDetailsPage.qml" line="63"/>
         <source>Video Title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ItemDetailsPage.qml" line="69"/>
+        <location filename="../assets/RecordDetailsPage.qml" line="69"/>
         <source>Genre</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ItemDetailsPage.qml" line="75"/>
+        <location filename="../assets/RecordDetailsPage.qml" line="75"/>
         <source>Date of Release</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ItemDetailsPage.qml" line="81"/>
+        <location filename="../assets/RecordDetailsPage.qml" line="81"/>
         <source>Director</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/ItemDetailsPage.qml" line="87"/>
+        <location filename="../assets/RecordDetailsPage.qml" line="87"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>

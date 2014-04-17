@@ -106,7 +106,7 @@ NavigationPane {
                         
                         var chosenItem = recordsDataModel.data(indexPath);
                         
-                        var contentpage = itemPageDefinition.createObject();
+                        var contentpage = recordDetailPageDefinition.createObject();
                         
                         contentpage.itemPageTitle = chosenItem.title;
                         contentpage.videoTitleText = chosenItem.title;
@@ -221,8 +221,8 @@ NavigationPane {
     
     attachedObjects: [
         ComponentDefinition {
-            id: itemPageDefinition
-            source: "ItemDetailsPage.qml"
+            id: recordDetailPageDefinition
+            source: "RecordDetailsPage.qml"
         },
         ComponentDefinition {
             id: addRecordsPageDefinition
