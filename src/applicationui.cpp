@@ -149,7 +149,7 @@ int ApplicationUI::sendSearch(QString videoTitle, double maxPrice)
 	QByteArray ba = videoTitle.toLocal8Bit();
 	char *title_str = ba.data();
 
-	doc_search = create_search(podObjSearcher, title_str, maxPrice);
+	doc_search = create_search(title_str, maxPrice);
 
 	if(doc_search != NULL) {
 
@@ -170,7 +170,7 @@ ReceiveThread::ReceiveThread(ApplicationUI *appObject, packedobjectsdObject *pod
 
 void ReceiveThread::process()
 {
-	qDebug()<<"Ready to receive ...";
+	qDebug()<<"Ready to receive search responses ...";
 	_receiveResponse(app_Object, podObj_Searcher);
 	emit finished();
 }
@@ -185,7 +185,7 @@ ResponderThread::ResponderThread(ApplicationUI *appObject, packedobjectsdObject 
 
 void ResponderThread::run_responder()
 {
-	qDebug()<<"Responder ready ...";
+	qDebug()<<"Ready to receive search queries ...";
 	start_responder(app_Object, podObj_Searcher, podObj_Responder);
 	emit finished();
 }
@@ -202,18 +202,6 @@ void ApplicationUI::setSize(QString str)
 	emit sizeChanged();
 }
 
-QString ApplicationUI::query()
-{
-	return str_query;
-}
-
-void ApplicationUI::setQuery(QString str)
-{
-	// name is same as HPP WRITE Q_PROPERTY statement
-	str_query = str;
-	emit queryChanged();
-}
-
 QString ApplicationUI::size1()
 {
 	return str_size1;
@@ -224,6 +212,11 @@ void ApplicationUI::setSize1(QString str)
 	// name is same as HPP WRITE Q_PROPERTY statement
 	str_size1 = str;
 	emit size1Changed();
+}
+
+void ApplicationUI::setQuery()
+{
+	emit queryChanged();
 }
 
 void ApplicationUI::setSearchResponse()

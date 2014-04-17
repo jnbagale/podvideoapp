@@ -12,8 +12,8 @@
 
 
 packedobjectsdObject *_initialiseSearcher();
-int _sendSearch(ApplicationUI *app_object, packedobjectsdObject *pod_object1, xmlDocPtr doc_search);
-xmlDocPtr create_search(packedobjectsdObject *pod_obj, char *movie_title, double max_price);
-packedobjectsdObject *_receiveResponse(ApplicationUI *app_object, packedobjectsdObject *pod_obj);
+int _sendSearch(ApplicationUI *appObject, packedobjectsdObject *podObjSearcher, xmlDocPtr doc_search);
+xmlDocPtr create_search(char *movie_title, double max_price);
+packedobjectsdObject *_receiveResponse(ApplicationUI *app_Object, packedobjectsdObject *podObj_Searcher);
 
 #endif /* VIDEO_SEARCHER_H_ */

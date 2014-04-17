@@ -33,7 +33,7 @@ int resetSearchResult()
 {
 	int ret;
 	xmlDocPtr doc;
-	xmlNodePtr video_node, message_node, response_node;
+	xmlNodePtr video_node, message_node;
 
 	xmlKeepBlanksDefault(0);
 
@@ -44,7 +44,7 @@ int resetSearchResult()
 	xmlDocSetRootElement(doc, video_node);
 
 	message_node = xmlNewChild(video_node, NULL, BAD_CAST "message", BAD_CAST NULL);
-	response_node = xmlNewChild(message_node, NULL, BAD_CAST "response", BAD_CAST NULL);
+	xmlNewChild(message_node, NULL, BAD_CAST "response", BAD_CAST NULL);
 
 	// Save blank XML RESPONSE to File
 	ret = xmlSaveFormatFileEnc(XML_RESPONSE, doc, "UTF-8", 1);
@@ -224,7 +224,7 @@ int read_response(ApplicationUI *app_object, xmlDocPtr doc_response)
 	return 1;
 }
 
-packedobjectsdObject *_receiveResponse(ApplicationUI *app_object, packedobjectsdObject *pod_obj)
+packedobjectsdObject *_receiveResponse(ApplicationUI *app_Object, packedobjectsdObject *podObj_Searcher)
 {
 	int ret;
 	xmlDocPtr doc_response = NULL;
@@ -232,16 +232,14 @@ packedobjectsdObject *_receiveResponse(ApplicationUI *app_object, packedobjectsd
 	///////////////////// Receiving search response ///////////////////
 	while(1)
 	{
-		if((doc_response = packedobjectsd_receive_response(pod_obj)) == NULL) {
+		if((doc_response = packedobjectsd_receive_response(podObj_Searcher)) == NULL) {
 			printf("message could not be received\n");
-			//exit(EXIT_FAILURE);
 		}
 
 		printf("\nnew search response received... \n");
-		//root->setProperty("tempText", "receive a response.");
 
 		/* process the received response XML */
-		if((ret = read_response(app_object, doc_response)) != 1) {
+		if((ret = read_response(app_Object, doc_response)) != 1) {
 			//xml_dump_doc(doc_response);
 			printf("search response could not be processed \n");
 		}
@@ -250,7 +248,7 @@ packedobjectsdObject *_receiveResponse(ApplicationUI *app_object, packedobjectsd
 		usleep(1000);
 	}
 
-	return pod_obj;
+	return podObj_Searcher;
 }
 
 
@@ -258,7 +256,7 @@ packedobjectsdObject *_receiveResponse(ApplicationUI *app_object, packedobjectsd
 //////////////////////// SENDING SEARCH //////////////////////////
 
 
-xmlDocPtr create_search(packedobjectsdObject *pod_obj, char *movie_title, double max_price)
+xmlDocPtr create_search(char *movie_title, double max_price)
 {
 	/* Declare variables */
 	char maxPrice[32];
@@ -292,7 +290,6 @@ xmlDocPtr create_search(packedobjectsdObject *pod_obj, char *movie_title, double
 int _sendSearch(ApplicationUI *app_object, packedobjectsdObject *pod_object1, xmlDocPtr doc_search)
 {
 	///////////////////// Sending search request ///////////////////
-	int ret;
 	int xml_size;
 	int po_xml_size;
 	char size_str[200];
@@ -314,7 +311,7 @@ int _sendSearch(ApplicationUI *app_object, packedobjectsdObject *pod_object1, xm
 
 	// reset previous search history
 	resetSearchResult();
-	return 1;
+	return 0;
 }
 
 packedobjectsdObject *_initialiseSearcher()

@@ -40,6 +40,24 @@
     </message>
 </context>
 <context>
+    <name>QueryPage</name>
+    <message>
+        <location filename="../assets/QueryPage.qml" line="35"/>
+        <source>Responder ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/QueryPage.qml" line="41"/>
+        <source>Video Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/QueryPage.qml" line="47"/>
+        <source>Maximum Price</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RecordDetailsPage</name>
     <message>
         <location filename="../assets/RecordDetailsPage.qml" line="33"/>
@@ -83,27 +101,32 @@
 <context>
     <name>SearchResponsePage</name>
     <message>
-        <location filename="../assets/SearchResponsePage.qml" line="37"/>
+        <location filename="../assets/SearchResponsePage.qml" line="38"/>
+        <source>Responder ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/SearchResponsePage.qml" line="44"/>
         <source>Video Title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/SearchResponsePage.qml" line="43"/>
+        <location filename="../assets/SearchResponsePage.qml" line="50"/>
         <source>Genre</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/SearchResponsePage.qml" line="49"/>
+        <location filename="../assets/SearchResponsePage.qml" line="56"/>
         <source>Date of Release</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/SearchResponsePage.qml" line="55"/>
+        <location filename="../assets/SearchResponsePage.qml" line="62"/>
         <source>Director</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/SearchResponsePage.qml" line="61"/>
+        <location filename="../assets/SearchResponsePage.qml" line="68"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>

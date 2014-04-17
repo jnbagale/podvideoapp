@@ -9,7 +9,6 @@
 
 #include "applicationui.hpp"
 
-packedobjectsdObject *_initialiseResponder();
 int start_responder(ApplicationUI *app_Object, packedobjectsdObject *podObj_Searcher,  packedobjectsdObject *podObj_Responder);
 
 

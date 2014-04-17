@@ -29,6 +29,7 @@ extern "C" {
 #define XML_SCHEMA "app/native/video.xsd"
 #define XML_DATA "app/native/assets/video.xml"
 #define XML_RESPONSE "app/native/assets/response.xml"
+#define XML_QUERY "app/native/assets/query.xml"
 
 using namespace std;
 
@@ -83,7 +84,6 @@ public:
     Q_INVOKABLE int exportXML();
 
     Q_PROPERTY(QString size READ size WRITE setSize NOTIFY sizeChanged)
-    Q_PROPERTY(QString query READ query WRITE setQuery NOTIFY queryChanged)
     Q_PROPERTY(QString size1 READ size1 WRITE setSize1 NOTIFY size1Changed)
 
 public Q_SLOTS:
@@ -92,15 +92,14 @@ public Q_SLOTS:
     QString size();
     void setSize(QString str);
 
-    // get latest search queries
-    QString query();
-    void setQuery(QString str);
-
     // get latest response xml size
     QString size1();
     void setSize1(QString str);
+
     void setSearchResponse();
     void setRecord();
+    void setQuery();
+
 
     Q_SIGNALS:
     void sizeChanged();

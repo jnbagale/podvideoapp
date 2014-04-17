@@ -197,6 +197,7 @@ int create_response(ApplicationUI *app_Object, packedobjectsdObject *podObj_Resp
 		if(price <= max_price) {
 			qDebug() << "the movie exists on the database and matches price limit" << endl;
 			///////////////////// Sending  search response ///////////////////
+			fflush(stdout);
 
 			/* send response to searcher */
 			ret = send_response(app_Object, podObj_Responder, movie_title, price, genre, dateofrelease, director);
@@ -301,7 +302,7 @@ int process_search(ApplicationUI *app_Object, packedobjectsdObject *podObj_Searc
 	}
 	else {
 		///////////////////// Checking on database ///////////////////
-
+		fflush(stdout);
 		/* checking if search broadcast matches record on the database */
 		ret = create_response(app_Object, podObj_Responder, movie_title, max_price);
 
@@ -310,7 +311,7 @@ int process_search(ApplicationUI *app_Object, packedobjectsdObject *podObj_Searc
 		sprintf(temp_string, "%lu    %s    %g", podObj_Responder->last_searcher, movie_title, max_price);
 
 		// set label on qml to the search result
-		app_Object->setQuery((QString) temp_string);
+		app_Object->setQuery();
 
 	}
 	///////////////////// Freeing ///////////////////
