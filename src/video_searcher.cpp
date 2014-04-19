@@ -91,8 +91,7 @@ int addSearchResult(string responderID, string videoTitle, string videoPrice, st
 	ret = xmlSaveFormatFileEnc(XML_RESPONSE, doc, "UTF-8", 1);
 
 	// Dump to Console
-	xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
-	fflush(stdout);
+	//xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
 	xmlFreeDoc(doc);
 
 	return ret;
@@ -208,7 +207,6 @@ int read_response(ApplicationUI *app_object, xmlDocPtr doc_response)
 
 		// Add new result to the search.xml
 		ret = addSearchResult(responder_id, movie_title, movie_price, movie_genre, movie_release_date, movie_director);
-		// app_object->setTitle((QString) temp_string);
 
 		if(ret!= 1) {
 		app_object->setSearchResponse(); // Triggers searchResponseChanged() signal

@@ -57,22 +57,11 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 	// Initialise video searcher
 	podObjSearcher = this->initialiseSearcher();
 
-	//set the value of searcher's unique id
-	this->searcher_ID = "ID: " + QString::number(podObjSearcher->unique_id, 10);
-	qDebug() << "Searcher ID:- " << this->searcher_ID << endl;
-	emit this->searcherIDChanged();
-
 	// Initialise video responder
-
 	podObjResponder = initialiseResponder();
 
-	//set the value of responder's unique id
-	this->responder_ID = "ID: " + QString::number(podObjResponder->unique_id, 10);
-	qDebug() << "Responder ID:- " << this->responder_ID << endl;
-	emit this->responderIDChanged();
 
 	if(podObjSearcher != NULL) {
-
 		// creating a QThread to run video searcher to receive search responses
 		QThread* thread = new QThread;
 		ReceiveThread* rt1= new ReceiveThread(this, podObjSearcher);
@@ -80,7 +69,8 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 		rt1->moveToThread(thread);
 		connect(thread, SIGNAL(started()), rt1, SLOT(process()));
 		thread->start();
-
+	}
+	if(podObjResponder != NULL) {
 		// creating QThread to run video responder to process search requests
 		QThread* thread_responder = new QThread;
 		ResponderThread* rt_responder= new ResponderThread(this, podObjSearcher, podObjResponder);
@@ -88,7 +78,6 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 		rt_responder->moveToThread(thread_responder);
 		connect(thread_responder, SIGNAL(started()), rt_responder, SLOT(run_responder()));
 		thread_responder->start();
-
 	}
 }
 
@@ -116,27 +105,41 @@ QString ApplicationUI::getResponderID()
 packedobjectsdObject* ApplicationUI::initialiseSearcher()
 {
 	// Initialise packedobjectsd searcher
+	QString sid;
 	if((podObjSearcher = init_packedobjectsd(XML_SCHEMA, SEARCHER)) == NULL) {
 		qWarning() <<"failed to initialise libpackedobjectsd searcher";
-		return NULL;
+		sid = "ID: Not Connected";
+	}
+	else {
+		qDebug()<<" Searcher initialisation complete.";
+		qDebug() << "Searcher ID:- " << this->searcher_ID << endl;
+		sid = "ID: " + QString::number(podObjSearcher->unique_id, 10);
 	}
 
-	if(podObjSearcher != NULL) {
-		qDebug()<<" Searcher initialisation complete.";
-	}
+	//set the value of searcher's unique id
+	this->searcher_ID = sid;
+	emit this->searcherIDChanged();
 
 	return podObjSearcher;
 }
 
 packedobjectsdObject* ApplicationUI::initialiseResponder()
 {
-	////////////////////// Initialising    ///////////////////
-
+	QString rid;
 	// Initialise packedobjectsd responder
 	if((podObjResponder = init_packedobjectsd(XML_SCHEMA, RESPONDER)) == NULL) {
-		qWarning() <<"failed to initialise libpackedobjectsd";
-		return NULL;
+		qWarning() <<"failed to initialise libpackedobjectsd responder";
+		rid = "ID: Not Connected";
 	}
+	else {
+		qDebug()<<" Responder initialisation complete.";
+		qDebug() << "Responder ID:- " << this->responder_ID << endl;
+		rid = "ID: " + QString::number(podObjResponder->unique_id, 10);
+	}
+
+	//set the value of responder's unique id
+	this->responder_ID = rid;
+	emit this->responderIDChanged();
 
 	return podObjResponder;
 }
