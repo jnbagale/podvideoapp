@@ -91,8 +91,8 @@ int addSearchResult(string responderID, string videoTitle, string videoPrice, st
 	ret = xmlSaveFormatFileEnc(XML_RESPONSE, doc, "UTF-8", 1);
 
 	// Dump to Console
-	//xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
-
+	xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
+	fflush(stdout);
 	xmlFreeDoc(doc);
 
 	return ret;
@@ -203,10 +203,8 @@ int read_response(ApplicationUI *app_object, xmlDocPtr doc_response)
 
 			cur = cur->next;
 		}
-		printf("\n********** search result details ***********\n");
-		printf("Responder ID: %s \n", responder_id);
-		printf("Movie title: %s \n", movie_title);
-		printf("Movie price: %s\n", movie_price);
+		qDebug() << "********** search result details ***********";
+		qDebug() <<"Responder ID:" << responder_id << "Title" << movie_title << "Price" << movie_price;
 
 		// Add new result to the search.xml
 		ret = addSearchResult(responder_id, movie_title, movie_price, movie_genre, movie_release_date, movie_director);

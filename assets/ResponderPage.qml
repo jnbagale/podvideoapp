@@ -108,7 +108,7 @@ NavigationPane {
                         
                         var chosenItem = queryDataModel.data(indexPath);
                         
-                        var contentpage = responsePageDefinition.createObject();
+                        var contentpage = queryPageDefinition.createObject();
                         
                         contentpage.queryPageTitle = chosenItem.title;
                         contentpage.searcherIDText = chosenItem.searcherID;
