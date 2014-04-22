@@ -131,4 +131,17 @@
         <translation type="unfinished"></translation>
     </message>
 </context>
+<context>
+    <name>SearcherPage</name>
+    <message>
+        <location filename="../assets/SearcherPage.qml" line="240"/>
+        <source>PackedobjectsD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/SearcherPage.qml" line="241"/>
+        <source>New Search response received</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

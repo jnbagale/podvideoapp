@@ -1,4 +1,5 @@
 import bb.data 1.0
+import bb.platform 1.2
 import bb.cascades 1.2
 
 NavigationPane {
@@ -155,6 +156,7 @@ NavigationPane {
                 function onCPPresponseChanged()
                 {
                     refreshDataModel();
+                    notification.notify();
                 }
                 
                 function refreshDataModel(){
@@ -231,7 +233,14 @@ NavigationPane {
                 ComponentDefinition {
                     id: responsePageDefinition
                     source: "SearchResponsePage.qml"
-                }       
+                },
+                Notification {
+                    id: notification
+                    title: qsTr ("PackedobjectsD")
+                    body: qsTr ("New Search response received")
+                    //soundUrl: _publicDir + ".wav"
+                }   
+                    
             ]
         }
     }
