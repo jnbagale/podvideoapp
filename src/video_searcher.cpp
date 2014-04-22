@@ -208,8 +208,8 @@ int read_response(ApplicationUI *app_object, xmlDocPtr doc_response)
 		// Add new result to the search.xml
 		ret = addSearchResult(responder_id, movie_title, movie_price, movie_genre, movie_release_date, movie_director);
 
-		if(ret!= 1) {
-		app_object->setSearchResponse(); // Triggers searchResponseChanged() signal
+		if(ret!= -1) {
+			app_object->setSearchResponse(); // Triggers searchResponseChanged() signal
 		}
 	}
 	///////////////////// Freeing ///////////////////
@@ -233,6 +233,7 @@ packedobjectsdObject *_receiveResponse(ApplicationUI *app_Object, packedobjectsd
 		}
 
 		qDebug() << "new search response received...";
+		qDebug() << "Size of PO data" << podObj_Searcher->bytes_received << "Sized of Processed XML" << xml_doc_size(doc_response);
 
 		/* process the received response XML */
 		if((ret = read_response(app_Object, doc_response)) != 1) {

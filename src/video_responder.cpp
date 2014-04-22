@@ -386,9 +386,11 @@ int process_search(ApplicationUI *app_Object, packedobjectsdObject *podObj_Searc
 		sprintf(price_string, "%g", max_price);
 
 		qDebug() << id_string << movie_title << price_string;
-		addSearchResult(id_string, movie_title, price_string);
+		ret = addSearchResult(id_string, movie_title, price_string);
 
-		app_Object->setQuery();
+		if (ret != -1) {
+			app_Object->setQuery();
+		}
 
 	}
 	///////////////////// Freeing ///////////////////
@@ -399,7 +401,6 @@ int process_search(ApplicationUI *app_Object, packedobjectsdObject *podObj_Searc
 
 	return ret;
 }
-
 
 
 int start_responder(ApplicationUI *app_Object, packedobjectsdObject *podObj_Searcher, packedobjectsdObject *podObj_Responder)
@@ -417,7 +418,7 @@ int start_responder(ApplicationUI *app_Object, packedobjectsdObject *podObj_Sear
 		}
 
 		qDebug() << "new search broadcast received... ";
-
+		qDebug() << "Size of PO data" << podObj_Responder->bytes_received << "Sized of Processed XML" << xml_doc_size(doc_search);
 
 		///////////////////// Processing search broadcast ///////////////////
 
