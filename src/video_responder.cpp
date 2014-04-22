@@ -71,7 +71,7 @@ int addSearchResult(string searcherID, string videoTitle, string videoPrice)
 
 	doc = xmlReadFile(XML_QUERY, NULL, 0);
 	if (doc == NULL) {
-		printf("Failed to parse %s\n", XML_QUERY);
+		qDebug() << "Failed to parse " << XML_QUERY;
 		return -1;
 	}
 
@@ -173,11 +173,11 @@ int create_response(ApplicationUI *app_Object, packedobjectsdObject *podObj_Resp
 	char xpath_exp[1000];
 	xmlDocPtr doc_database = NULL;
 
-	printf("checking in video database...\n");
+	qDebug() << "checking in video database...";
 	///////////////////// Initialising XML document ///////////////////
 
 	if((doc_database = xml_new_doc(XML_DATA)) == NULL) {
-		printf("did not find database.xml file");
+		qDebug() << "did not find database.xml file";
 	}
 
 	xmlXPathContextPtr xpathp = NULL;
@@ -188,13 +188,13 @@ int create_response(ApplicationUI *app_Object, packedobjectsdObject *podObj_Resp
 	/* setup xpath context */
 	xpathp = xmlXPathNewContext(doc_database);
 	if (xpathp == NULL) {
-		printf("Error in xmlXPathNewContext.");
+		qDebug() << "Error in xmlXPathNewContext!";
 		xmlXPathFreeContext(xpathp);
 		return -1;
 	}
 
 	if(xmlXPathRegisterNs(xpathp, (const xmlChar *)NS_PREFIX, (const xmlChar *)NS_URL) != 0) {
-		printf("Error: unable to register NS.");
+		qDebug() << "Error: unable to register NS!";
 		xmlXPathFreeContext(xpathp);
 		return -1;
 	}
@@ -206,7 +206,7 @@ int create_response(ApplicationUI *app_Object, packedobjectsdObject *podObj_Resp
 	/* Evaluate xpath expression */
 	result = xmlXPathEvalExpression((const xmlChar *)xpath_exp, xpathp);
 	if (result == NULL) {
-		printf("Error in xmlXPathEvalExpression.");
+		qDebug() << "Error in xmlXPathEvalExpression!";
 		xmlXPathFreeObject(result);
 		xmlXPathFreeContext(xpathp);
 		return -1;
@@ -218,7 +218,7 @@ int create_response(ApplicationUI *app_Object, packedobjectsdObject *podObj_Resp
 	if(xmlXPathNodeSetIsEmpty(result->nodesetval)) {
 		xmlXPathFreeObject(result);
 		xmlXPathFreeContext(xpathp);
-		printf("the movie does not exist on the database\n");
+		qDebug() << "the movie does not exist on the database";
 		return -1;
 	}
 	else {
@@ -299,13 +299,13 @@ int process_search(ApplicationUI *app_Object, packedobjectsdObject *podObj_Searc
 	/* setup xpath context */
 	xpathp = xmlXPathNewContext(doc_search);
 	if (xpathp == NULL) {
-		printf("Error in xmlXPathNewContext.");
+		qDebug() << "Error in xmlXPathNewContext!";
 		xmlXPathFreeContext(xpathp);
 		return -1;
 	}
 
 	if(xmlXPathRegisterNs(xpathp, (const xmlChar *)NS_PREFIX, (const xmlChar *)NS_URL) != 0) {
-		printf("Error: unable to register NS.");
+		qDebug() << "Error: unable to register NS!";
 		xmlXPathFreeContext(xpathp);
 		return -1;
 	}
@@ -316,7 +316,7 @@ int process_search(ApplicationUI *app_Object, packedobjectsdObject *podObj_Searc
 
 	result = xmlXPathEvalExpression((const xmlChar *)xpath_exp, xpathp);
 	if (result == NULL) {
-		printf("Error in xmlXPathEvalExpression.");
+		qDebug() << "Error in xmlXPathEvalExpression!";
 		xmlXPathFreeObject(result);
 		xmlXPathFreeContext(xpathp);
 		return -1;
@@ -328,7 +328,7 @@ int process_search(ApplicationUI *app_Object, packedobjectsdObject *podObj_Searc
 	if(xmlXPathNodeSetIsEmpty(result->nodesetval)) {
 		xmlXPathFreeObject(result);
 		xmlXPathFreeContext(xpathp);
-		printf("the search request is not in valid format\n");
+		qDebug() << "the search request is not in valid format";
 		return -1;
 	}
 	else {
@@ -352,20 +352,19 @@ int process_search(ApplicationUI *app_Object, packedobjectsdObject *podObj_Searc
 				max_price = atof((char *)key);
 				xmlFree(key);
 			}
-			//printf("cur- name %s \n", cur->name);
 			cur = cur->next;
 		}
 	}
 
-	printf("\n************** search request details **************\n");
-	printf("Movie title: %s \n", movie_title);
-	printf("Maximum price: %g\n", max_price);
-	printf("Searcher's id:- %lu\n\n", podObj_Responder->last_searcher);
+	qDebug() << "************** search request details **************";
+	qDebug() << "Movie title: " << movie_title;
+	qDebug() << "Maximum price: " << max_price;
+	qDebug() << "Searcher's id: " << podObj_Responder->last_searcher;
 
 	// Compare the id with local SEARCHER ID and ignore
 
 	if(podObj_Searcher->unique_id == podObj_Responder->last_searcher) {
-		printf("This is a local searcher request so ignoring this request!\n");
+		qDebug() << "This is a local searcher request so ignoring this request!";
 		ret = 1;
 	}
 	else {
@@ -411,13 +410,13 @@ int start_responder(ApplicationUI *app_Object, packedobjectsdObject *podObj_Sear
 
 	while (1) {
 		/* waiting for search broadcast */
-		printf("waiting for new search broadcast\n");
+		qDebug() << "waiting for new search broadcast...";
 		if((doc_search = packedobjectsd_receive_search(podObj_Responder)) == NULL) {
-			printf("message could not be received\n");
+			qDebug() << "message could not be received";
 			return -1;
 		}
 
-		printf("\nnew search broadcast received... \n");
+		qDebug() << "new search broadcast received... ";
 
 
 		///////////////////// Processing search broadcast ///////////////////

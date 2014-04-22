@@ -67,7 +67,7 @@ int addSearchResult(string responderID, string videoTitle, string videoPrice, st
 
 	doc = xmlReadFile(XML_RESPONSE, NULL, 0);
 	if (doc == NULL) {
-		printf("Failed to parse %s\n", XML_RESPONSE);
+		qDebug() << "Failed to parse " << XML_RESPONSE;
 		return -1;
 	}
 
@@ -119,13 +119,13 @@ int read_response(ApplicationUI *app_object, xmlDocPtr doc_response)
 	/* setup xpath context */
 	xpathp = xmlXPathNewContext(doc_response);
 	if (xpathp == NULL) {
-		printf("Error in xmlXPathNewContext.");
+		qDebug() << "Error in xmlXPathNewContext.";
 		xmlXPathFreeContext(xpathp);
 		return -1;
 	}
 
 	if(xmlXPathRegisterNs(xpathp, (const xmlChar *)NS_PREFIX, (const xmlChar *)NS_URL) != 0) {
-		printf("Error: unable to register NS.");
+		qDebug() << "Error: unable to register NS.";
 		xmlXPathFreeContext(xpathp);
 		return -1;
 	}
@@ -136,7 +136,7 @@ int read_response(ApplicationUI *app_object, xmlDocPtr doc_response)
 
 	result = xmlXPathEvalExpression((const xmlChar*)xpath_exp, xpathp);
 	if (result == NULL) {
-		printf("Error in xmlXPathEvalExpression.");
+		qDebug() << "Error in xmlXPathEvalExpression.";
 		xmlXPathFreeObject(result);
 		xmlXPathFreeContext(xpathp);
 		return -1;
@@ -148,7 +148,7 @@ int read_response(ApplicationUI *app_object, xmlDocPtr doc_response)
 	if(xmlXPathNodeSetIsEmpty(result->nodesetval)) {
 		xmlXPathFreeObject(result);
 		xmlXPathFreeContext(xpathp);
-		printf("the response data is not in valid format\n");
+		qDebug() << "the response data is not in valid format";
 		return -1;
 	}
 	else {
@@ -229,15 +229,15 @@ packedobjectsdObject *_receiveResponse(ApplicationUI *app_Object, packedobjectsd
 	while(1)
 	{
 		if((doc_response = packedobjectsd_receive_response(podObj_Searcher)) == NULL) {
-			printf("message could not be received\n");
+			qDebug() << "message could not be received";
 		}
 
-		printf("\nnew search response received... \n");
+		qDebug() << "new search response received...";
 
 		/* process the received response XML */
 		if((ret = read_response(app_Object, doc_response)) != 1) {
 			//xml_dump_doc(doc_response);
-			printf("search response could not be processed \n");
+			qDebug() << "search response could not be processed ";
 		}
 
 		xmlFreeDoc(doc_response);
@@ -293,7 +293,7 @@ int _sendSearch(ApplicationUI *app_object, packedobjectsdObject *pod_object1, xm
 	xml_size = xml_doc_size(doc_search);
 
 	if(packedobjectsd_send_search(pod_object1, doc_search) == -1){
-		printf("message could not be sent\n");
+		qDebug() << "message could not be sent";
 		return -1;
 	}
 
@@ -303,8 +303,6 @@ int _sendSearch(ApplicationUI *app_object, packedobjectsdObject *pod_object1, xm
 	sprintf(size_str, "Size of Search XML %d. Size PO Data %d", xml_size, po_xml_size);
 
 	app_object->setquerySize(QString(size_str));
-
-	printf("search request of %d bytes sent to responders...\n", pod_object1->bytes_sent - 1);
 
 	// reset previous search history
 	resetResponse();
