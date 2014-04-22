@@ -106,7 +106,7 @@ packedobjectsdObject* ApplicationUI::initialiseSearcher()
 {
 	// Initialise packedobjectsd searcher
 	QString sid;
-	if((podObjSearcher = init_packedobjectsd(XML_SCHEMA, SEARCHER, 0)) == NULL) {
+	if((podObjSearcher = init_packedobjectsd(XML_SCHEMA, SEARCHER, NO_COMPRESSION)) == NULL) {
 		qWarning() <<"failed to initialise libpackedobjectsd searcher";
 		sid = "ID: Not Connected";
 	}
@@ -127,7 +127,7 @@ packedobjectsdObject* ApplicationUI::initialiseResponder()
 {
 	QString rid;
 	// Initialise packedobjectsd responder
-	if((podObjResponder = init_packedobjectsd(XML_SCHEMA, RESPONDER, NO_COMPRESSION)) == NULL) {
+	if((podObjResponder = init_packedobjectsd(XML_SCHEMA, RESPONDER, 0)) == NULL) {
 		qWarning() <<"failed to initialise libpackedobjectsd responder";
 		rid = "ID: Not Connected";
 	}

@@ -30,8 +30,8 @@ Q_DECL_EXPORT int main(int argc, char **argv)
     // is loaded and the application scene is set.
     new ApplicationUI(&app);
 
-    /* Set stdout buffer to flush per line... FOR TESTING PURPOSE ONLY... */
-    setvbuf(stdout, NULL, _IOLBF, 0);
+    // Set stdout buffer to flush per line... FOR TESTING PURPOSE ONLY...
+    //setvbuf(stdout, NULL, _IOLBF, 0);
 
     // Enter the application main event loop.
     return Application::exec();

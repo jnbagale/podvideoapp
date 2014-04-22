@@ -153,7 +153,7 @@ int send_response(ApplicationUI *app_Object, packedobjectsdObject *podObj_Respon
 	app_Object->setresponseSize(QString(size_str));
 
 	qDebug()<<"response sent to the searcher..." << endl;
-	//xml_dump_doc(doc_response);
+	//xml_dump_doc(doc_response); fflush(stdout);
 
 	xmlFreeDoc(doc_response);
 	return 0;
