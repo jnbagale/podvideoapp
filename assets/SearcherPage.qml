@@ -155,6 +155,7 @@ NavigationPane {
                 
                 function onCPPresponseChanged()
                 {
+                    notification.deleteFromInbox();
                     refreshDataModel();
                     notification.notify();
                 }
