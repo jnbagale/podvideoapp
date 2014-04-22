@@ -100,10 +100,10 @@
     
     <!-- Shared library objects -->
     
-    <asset path="library-dependencies/${CPUVARDIR}/libpackedobjectsd.so" type="Qnx/Elf">lib/libpackedobjectsd.so.0</asset>
-    <asset path="library-dependencies/${CPUVARDIR}/libpackedobjects.so" type="Qnx/Elf">lib/libpackedobjects.so.0</asset>
-    <asset path="library-dependencies/${CPUVARDIR}/libxml2.so" type="Qnx/Elf">lib/libxml2.so.11</asset>
-   	<asset path="library-dependencies/${CPUVARDIR}/libzmq.so" type="Qnx/Elf">lib/libzmq.so.3</asset>
+    <asset path="library-dependencies/${CPUVARDIR}/libpackedobjectsd.so.0" type="Qnx/Elf">lib/libpackedobjectsd.so.0</asset>
+    <asset path="library-dependencies/${CPUVARDIR}/libpackedobjects.so.0" type="Qnx/Elf">lib/libpackedobjects.so.0</asset>
+    <asset path="library-dependencies/${CPUVARDIR}/libxml2.so.11" type="Qnx/Elf">lib/libxml2.so.11</asset>
+   	<asset path="library-dependencies/${CPUVARDIR}/libzmq.so.3" type="Qnx/Elf">lib/libzmq.so.3</asset>
         
     <!-- XML & SCHEMA files 
     <asset path="assets/video.xml">video.xml</asset> --> 

@@ -106,18 +106,18 @@ packedobjectsdObject* ApplicationUI::initialiseSearcher()
 {
 	// Initialise packedobjectsd searcher
 	QString sid;
-	if((podObjSearcher = init_packedobjectsd(XML_SCHEMA, SEARCHER)) == NULL) {
+	if((podObjSearcher = init_packedobjectsd(XML_SCHEMA, SEARCHER, 0)) == NULL) {
 		qWarning() <<"failed to initialise libpackedobjectsd searcher";
 		sid = "ID: Not Connected";
 	}
 	else {
 		qDebug()<<" Searcher initialisation complete.";
-		qDebug() << "Searcher ID:- " << this->searcher_ID << endl;
 		sid = "ID: " + QString::number(podObjSearcher->unique_id, 10);
 	}
 
 	//set the value of searcher's unique id
 	this->searcher_ID = sid;
+	qDebug() << "Searcher ID:- " << sid << endl;
 	emit this->searcherIDChanged();
 
 	return podObjSearcher;
@@ -127,18 +127,19 @@ packedobjectsdObject* ApplicationUI::initialiseResponder()
 {
 	QString rid;
 	// Initialise packedobjectsd responder
-	if((podObjResponder = init_packedobjectsd(XML_SCHEMA, RESPONDER)) == NULL) {
+	if((podObjResponder = init_packedobjectsd(XML_SCHEMA, RESPONDER, NO_COMPRESSION)) == NULL) {
 		qWarning() <<"failed to initialise libpackedobjectsd responder";
 		rid = "ID: Not Connected";
 	}
 	else {
 		qDebug()<<" Responder initialisation complete.";
-		qDebug() << "Responder ID:- " << this->responder_ID << endl;
 		rid = "ID: " + QString::number(podObjResponder->unique_id, 10);
 	}
 
 	//set the value of responder's unique id
 	this->responder_ID = rid;
+	qDebug() << "Responder ID:- " << rid << endl;
+
 	emit this->responderIDChanged();
 
 	return podObjResponder;

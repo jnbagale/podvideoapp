@@ -20,6 +20,11 @@
 /* #endif */
 #include "xmlutils.h"
 
+#ifdef __QNX__
+#undef POD_SCHEMA
+#define POD_SCHEMA "packedobjectsd.xsd" // Using local path for pod schema in blackberry 10 QNX
+#endif
+
 #define DEFAULT_SERVER_ADDRESS "buildhost.uwl.ac.uk"   /* the default lookup server address */
 #define DEFAULT_SERVER_PORT 5555  /* the default lookup server port */
 
@@ -46,6 +51,11 @@ enum NODE_TYPE {
   SEARES
 };
 
+enum INIT_FLAGS {
+  NO_COMPRESSION = 1,
+  NO_HEARTBEAT = 2,
+};
+
 typedef struct {
   void *publisher_context;
   void *subscriber_context;
@@ -64,19 +74,27 @@ typedef struct {
   int error_code;
   int server_port;
   int node_type;
+  int init_options;
   unsigned long unique_id;
   unsigned long last_searcher;
   packedobjectsContext *pc;
 } packedobjectsdObject;
 
-packedobjectsdObject *init_packedobjectsd(const char *schema_file, int node_type);
+// API functions for initialising and freeing
+packedobjectsdObject *init_packedobjectsd(const char *schema_file, int node_type, int options);
+void free_packedobjectsd(packedobjectsdObject *pod_obj);
+
+// API functions for simple PUB SUB communication
 int packedobjectsd_send(packedobjectsdObject *pod_obj, xmlDocPtr doc);
 xmlDocPtr packedobjectsd_receive(packedobjectsdObject *pod_obj);
-void free_packedobjectsd(packedobjectsdObject *pod_obj);
+
+// API functions for SEARCHER RESPONDER communication
 int packedobjectsd_send_search(packedobjectsdObject *pod_obj, xmlDocPtr doc);
 xmlDocPtr packedobjectsd_receive_search(packedobjectsdObject *pod_obj);
 int packedobjectsd_send_response(packedobjectsdObject *pod_obj, xmlDocPtr doc);
 xmlDocPtr packedobjectsd_receive_response(packedobjectsdObject *pod_obj);
+
+// API functions for error handling
 const char *pod_strerror(int error_code);
 
 #endif

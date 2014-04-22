@@ -291,7 +291,6 @@ int _sendSearch(ApplicationUI *app_object, packedobjectsdObject *pod_object1, xm
 	char size_str[200];
 
 	xml_size = xml_doc_size(doc_search);
-	printf("size of search XML %d\n", xml_size);
 
 	if(packedobjectsd_send_search(pod_object1, doc_search) == -1){
 		printf("message could not be sent\n");
@@ -299,6 +298,8 @@ int _sendSearch(ApplicationUI *app_object, packedobjectsdObject *pod_object1, xm
 	}
 
 	po_xml_size = pod_object1->bytes_sent - 1;
+
+	qDebug() << "Size of search XML" << xml_size << "Size PO Data" << po_xml_size;
 	sprintf(size_str, "Size of Search XML %d. Size PO Data %d", xml_size, po_xml_size);
 
 	app_object->setquerySize(QString(size_str));
@@ -309,21 +310,5 @@ int _sendSearch(ApplicationUI *app_object, packedobjectsdObject *pod_object1, xm
 	resetResponse();
 	return 0;
 }
-
-packedobjectsdObject *_initialiseSearcher()
-{
-	packedobjectsdObject *pod_obj = NULL;
-
-	printf("///////////////////// VIDEO SEARCHER  /////////////////// \n");
-	////////////////////// Initialising    ///////////////////
-
-	// Initialise packedobjectsd
-	if((pod_obj = init_packedobjectsd(XML_SCHEMA, SEARCHER)) == NULL) {
-		printf("failed to initialise libpackedobjectsd\n");
-	}
-
-	return pod_obj;
-}
-
 
 
