@@ -99,6 +99,19 @@
     </message>
 </context>
 <context>
+    <name>ResponderPage</name>
+    <message>
+        <location filename="../assets/ResponderPage.qml" line="175"/>
+        <source>PackedobjectsD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/ResponderPage.qml" line="176"/>
+        <source>New Search query received</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SearchResponsePage</name>
     <message>
         <location filename="../assets/SearchResponsePage.qml" line="38"/>

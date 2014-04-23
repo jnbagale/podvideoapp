@@ -1,4 +1,5 @@
-import  bb.data 1.0
+import bb.data 1.0
+import bb.platform 1.2
 import bb.cascades 1.2
 
 NavigationPane {
@@ -126,7 +127,9 @@ NavigationPane {
                 
                 function onCPPqueryChanged()
                 {
+                    notification.deleteFromInbox();
                     refreshDataModel();
+                    notification.notify();
                 }
                 
                 function refreshDataModel(){
@@ -166,7 +169,12 @@ NavigationPane {
                 ComponentDefinition {
                     id: queryPageDefinition
                     source: "QueryPage.qml"
-                }       
+                },
+                Notification {
+                    id: notification
+                    title: qsTr ("PackedobjectsD")
+                    body: qsTr ("New Search query received")
+                }         
             ]
         }
     }

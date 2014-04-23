@@ -239,7 +239,6 @@ NavigationPane {
                     id: notification
                     title: qsTr ("PackedobjectsD")
                     body: qsTr ("New Search response received")
-                    //soundUrl: _publicDir + ".wav"
                 }   
                     
             ]
