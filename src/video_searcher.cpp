@@ -24,7 +24,7 @@
 
 
 /* function prototypes */
-int read_response(ApplicationUI *app_object, xmlDocPtr doc_response);
+int read_response(ApplicationUI *appObject, xmlDocPtr doc_response);
 
 /* function definitions */
 
@@ -97,7 +97,7 @@ int addSearchResult(string responderID, string videoTitle, string videoPrice, st
 	return ret;
 }
 
-int read_response(ApplicationUI *app_object, xmlDocPtr doc_response)
+int read_response(ApplicationUI *appObject, xmlDocPtr doc_response)
 {
 	/* Declare variables */
 	int i;
@@ -209,7 +209,7 @@ int read_response(ApplicationUI *app_object, xmlDocPtr doc_response)
 		ret = addSearchResult(responder_id, movie_title, movie_price, movie_genre, movie_release_date, movie_director);
 
 		if(ret!= -1) {
-			app_object->setSearchResponse(); // Triggers searchResponseChanged() signal
+			appObject->setSearchResponse(); // Triggers searchResponseChanged() signal
 		}
 	}
 	///////////////////// Freeing ///////////////////
@@ -234,6 +234,8 @@ packedobjectsdObject *_receiveResponse(ApplicationUI *app_Object, packedobjectsd
 
 		qDebug() << "new search response received...";
 		qDebug() << "Size of PO data" << podObj_Searcher->bytes_received << "Sized of Processed XML" << xml_doc_size(doc_response);
+
+		qDebug() << "CPU time for decode (in ms)" << podObj_Searcher->decode_cpu_time;
 
 		/* process the received response XML */
 		if((ret = read_response(app_Object, doc_response)) != 1) {
@@ -284,7 +286,7 @@ xmlDocPtr create_search(char *movie_title, double max_price)
 	return doc_search;
 }
 
-int _sendSearch(ApplicationUI *app_object, packedobjectsdObject *pod_object1, xmlDocPtr doc_search)
+int _sendSearch(ApplicationUI *app_Object, packedobjectsdObject *podObjSearcher, xmlDocPtr doc_search)
 {
 	///////////////////// Sending search request ///////////////////
 	int xml_size;
@@ -293,17 +295,18 @@ int _sendSearch(ApplicationUI *app_object, packedobjectsdObject *pod_object1, xm
 
 	xml_size = xml_doc_size(doc_search);
 
-	if(packedobjectsd_send_search(pod_object1, doc_search) == -1){
+	if(packedobjectsd_send_search(podObjSearcher, doc_search) == -1){
 		qDebug() << "message could not be sent";
 		return -1;
 	}
 
-	po_xml_size = pod_object1->bytes_sent - 1;
+	po_xml_size = podObjSearcher->bytes_sent - 1;
 
 	qDebug() << "Size of search XML" << xml_size << "Size PO Data" << po_xml_size;
 	sprintf(size_str, "Size of Search XML %d. Size PO Data %d", xml_size, po_xml_size);
+	qDebug() << "CPU time for encode (in ms)" << podObjSearcher->encode_cpu_time;
 
-	app_object->setquerySize(QString(size_str));
+	app_Object->setquerySize(QString(size_str));
 
 	// reset previous search history
 	resetResponse();

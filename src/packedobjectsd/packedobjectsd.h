@@ -22,7 +22,7 @@
 
 #ifdef __QNX__
 #undef POD_SCHEMA
-#define POD_SCHEMA "packedobjectsd.xsd" // Using local path for pod schema in blackberry 10 QNX
+#define POD_SCHEMA "app/native/packedobjectsd.xsd" // Using local path for pod schema in blackberry 10 QNX
 #endif
 
 #define DEFAULT_SERVER_ADDRESS "buildhost.uwl.ac.uk"   /* the default lookup server address */
@@ -75,6 +75,8 @@ typedef struct {
   int server_port;
   int node_type;
   int init_options;
+  double encode_cpu_time;
+  double decode_cpu_time;
   unsigned long unique_id;
   unsigned long last_searcher;
   packedobjectsContext *pc;
@@ -96,6 +98,6 @@ xmlDocPtr packedobjectsd_receive_response(packedobjectsdObject *pod_obj);
 
 // API functions for error handling
 const char *pod_strerror(int error_code);
-
+double get_process_time(); 
 #endif
 /* End of packedobjectsd.h */

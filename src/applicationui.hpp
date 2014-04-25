@@ -128,7 +128,7 @@ class ReceiveThread : public QThread
 public:
      ApplicationUI *app_Object;
      packedobjectsdObject *podObj_Searcher;
-     ReceiveThread(ApplicationUI *app_object, packedobjectsdObject *podObjSearcher);
+     ReceiveThread(ApplicationUI *appObject, packedobjectsdObject *podObjSearcher);
 
 public slots:
      void process();
