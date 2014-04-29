@@ -110,6 +110,7 @@ int send_response(ApplicationUI *app_Object, packedobjectsdObject *podObj_Respon
 	char id_string[100];
 	xmlDocPtr doc_response = NULL;
 	xmlNodePtr video_node = NULL, message_node = NULL, response_node = NULL;
+	clock_t start_t, end_t;
 
 	///////////////////// Creating Root and other parent nodes ///////////////////
 
@@ -137,6 +138,7 @@ int send_response(ApplicationUI *app_Object, packedobjectsdObject *podObj_Respon
 
 	///////////////////// Sending response to the searcher ///////////////////
 	//xml_dump_doc(doc_response);
+	start_t = clock();
 
 	/* send the response doc to the searcher */
 	if(packedobjectsd_send_response(podObj_Responder, doc_response) == -1){
@@ -147,8 +149,15 @@ int send_response(ApplicationUI *app_Object, packedobjectsdObject *podObj_Respon
 	xml_size = xml_doc_size(doc_response);
 	po_xml_size = podObj_Responder->bytes_sent - 1;
 
+	end_t = clock();
+	double cpu_time_elapsed = (double)end_t / CLOCKS_PER_SEC - (double)start_t / CLOCKS_PER_SEC ;
+
 	qDebug() << "Size of Response XML" << xml_size << " Size of PO Data" << po_xml_size;
+	qDebug() << "CPU time for Encode" << cpu_time_elapsed * 1000000.0 / 3000 << " microseconds";
+
+
 	sprintf(size_str, "Size of Response XML %d. Size of PO Data %d", xml_size, po_xml_size);
+
 
 	app_Object->setresponseSize(QString(size_str));
 
@@ -407,18 +416,25 @@ int start_responder(ApplicationUI *app_Object, packedobjectsdObject *podObj_Sear
 {
 	/* Declare variables */
 	xmlDocPtr doc_search = NULL;
+	clock_t start_t, end_t;
+
 
 
 	while (1) {
 		/* waiting for search broadcast */
+		start_t = clock();
 		qDebug() << "waiting for new search broadcast...";
+
 		if((doc_search = packedobjectsd_receive_search(podObj_Responder)) == NULL) {
 			qDebug() << "message could not be received";
 			return -1;
 		}
+		end_t = clock();
+		double cpu_time_elapsed = (double)end_t / CLOCKS_PER_SEC - (double)start_t / CLOCKS_PER_SEC ;
 
 		qDebug() << "new search broadcast received... ";
 		qDebug() << "Size of PO data" << podObj_Responder->bytes_received << "Sized of Processed XML" << xml_doc_size(doc_search);
+		qDebug() << "CPU time for Decode" << cpu_time_elapsed * 1000000.0 / 3000 << " microseconds";
 
 		///////////////////// Processing search broadcast ///////////////////
 

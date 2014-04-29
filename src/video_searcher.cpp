@@ -224,18 +224,23 @@ packedobjectsdObject *_receiveResponse(ApplicationUI *app_Object, packedobjectsd
 {
 	int ret;
 	xmlDocPtr doc_response = NULL;
+	clock_t start_t, end_t;
 
 	///////////////////// Receiving search response ///////////////////
 	while(1)
 	{
+		start_t = clock();
+
 		if((doc_response = packedobjectsd_receive_response(podObj_Searcher)) == NULL) {
 			qDebug() << "message could not be received";
 		}
 
+		end_t = clock();
+		double cpu_time_elapsed = (double)end_t / CLOCKS_PER_SEC - (double)start_t / CLOCKS_PER_SEC ;
+
 		qDebug() << "new search response received...";
 		qDebug() << "Size of PO data" << podObj_Searcher->bytes_received << "Sized of Processed XML" << xml_doc_size(doc_response);
-
-		qDebug() << "CPU time for decode (in ms)" << podObj_Searcher->decode_cpu_time;
+		qDebug() << "CPU time for Decode" << cpu_time_elapsed * 1000000.0 / 3000 << " microseconds";
 
 		/* process the received response XML */
 		if((ret = read_response(app_Object, doc_response)) != 1) {
@@ -292,24 +297,30 @@ int _sendSearch(ApplicationUI *app_Object, packedobjectsdObject *podObjSearcher,
 	int xml_size;
 	int po_xml_size;
 	char size_str[200];
+	clock_t start_t, end_t;
 
-	xml_size = xml_doc_size(doc_search);
+	start_t = clock();
 
 	if(packedobjectsd_send_search(podObjSearcher, doc_search) == -1){
 		qDebug() << "message could not be sent";
 		return -1;
 	}
 
+	xml_size = xml_doc_size(doc_search);
 	po_xml_size = podObjSearcher->bytes_sent - 1;
 
-	qDebug() << "Size of search XML" << xml_size << "Size PO Data" << po_xml_size;
-	sprintf(size_str, "Size of Search XML %d. Size PO Data %d", xml_size, po_xml_size);
-	qDebug() << "CPU time for encode (in ms)" << podObjSearcher->encode_cpu_time;
+	end_t = clock();
+	double cpu_time_elapsed = (double)end_t / CLOCKS_PER_SEC - (double)start_t / CLOCKS_PER_SEC ;
 
+	qDebug() << "Size of search XML" << xml_size << "Size PO Data" << po_xml_size;
+	qDebug() << "CPU time for Encode" << cpu_time_elapsed * 1000000.0 / 3000 << " microseconds";
+
+	sprintf(size_str, "Size of Search XML %d. Size PO Data %d", xml_size, po_xml_size);
 	app_Object->setquerySize(QString(size_str));
 
+
 	// reset previous search history
-	resetResponse();
+	//resetResponse(); // causes crash when search sent in quick succession
 	return 0;
 }
 
