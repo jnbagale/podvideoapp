@@ -21,7 +21,7 @@
 // Clients interested in the video then respond to this searcher
 
 #include "video_searcher.h"
-
+#include <QFile>
 
 /* function prototypes */
 int read_response(ApplicationUI *appObject, xmlDocPtr doc_response);
@@ -318,6 +318,33 @@ int _sendSearch(ApplicationUI *app_Object, packedobjectsdObject *podObjSearcher,
 	sprintf(size_str, "Size of Search XML %d. Size PO Data %d", xml_size, po_xml_size);
 	app_Object->setquerySize(QString(size_str));
 
+	// Write log to a file
+	QFile logFile("app/native/assets/logFile.txt");
+	bool result = logFile.open(QIODevice::WriteOnly | QIODevice::Text);
+	if(result == true) {
+		QTextStream out(&logFile);
+		qDebug() << "Writing to log file";
+		out << "This is a log file\n";
+		out << size_str;
+	}
+	logFile.close();
+	bool success = QFile::copy( "app/native/assets/logFile.txt",
+			"file:///accounts/1000/shared/misc/logFile.txt");
+	if(success == true) {
+		qDebug() << "Copied log file";
+	}
+	// Read the log
+	if (logFile.open(QIODevice::ReadOnly | QIODevice::Text))
+	{
+		qDebug() << "Reading from log file";
+	    QTextStream stream ( &logFile );
+	    QString line;
+	    do {
+	        line = stream.readLine();
+	        qDebug() << line;
+	    } while (!line.isNull());
+	}
+	logFile.close();
 
 	// reset previous search history
 	//resetResponse(); // causes crash when search sent in quick succession
